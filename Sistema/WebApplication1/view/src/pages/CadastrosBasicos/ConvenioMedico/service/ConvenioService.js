@@ -53,7 +53,7 @@ export class ConvenioService {
 
     static updateConvenio(convenio) {
         console.log("update ", convenio);
-        return api.put(`/updateConvenioMedicos`, convenio);
+        return api.patch(`/updateConvenioMedicos`, convenio);
     }
 
     static deleteConvenio(id) {
