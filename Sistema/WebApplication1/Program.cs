@@ -9,6 +9,7 @@ builder.Services.AddScoped<AppDbContext>(provider => {
 });
 
 builder.Services.AddScoped<ConvenioMedicosBE>();
+builder.Services.AddScoped<ProfissoesBE>();
 
 // Add services to the container.
 

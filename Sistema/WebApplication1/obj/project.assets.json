@@ -1108,19 +1108,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\augusto.neri\\.nuget\\packages\\": {}
+    "C:\\Users\\henri\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\WebApplication1\\app.csproj",
+      "projectUniqueName": "C:\\Users\\henri\\Source\\Repos\\augustoneriii\\Sistema\\Sistema\\WebApplication1\\app.csproj",
       "projectName": "app",
-      "projectPath": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\WebApplication1\\app.csproj",
-      "packagesPath": "C:\\Users\\augusto.neri\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\WebApplication1\\obj\\",
+      "projectPath": "C:\\Users\\henri\\Source\\Repos\\augustoneriii\\Sistema\\Sistema\\WebApplication1\\app.csproj",
+      "packagesPath": "C:\\Users\\henri\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\henri\\Source\\Repos\\augustoneriii\\Sistema\\Sistema\\WebApplication1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\augusto.neri\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\henri\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1182,7 +1182,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }
