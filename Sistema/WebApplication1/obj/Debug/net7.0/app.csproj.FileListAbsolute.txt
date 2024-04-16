@@ -107,3 +107,8 @@ C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\De
 C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.pdb
 C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.genruntimeconfig.cache
 C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\ref\app.dll
+C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll

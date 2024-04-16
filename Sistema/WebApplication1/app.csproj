@@ -22,11 +22,13 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.5.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="DTO\Request\" />
     <Folder Include="DTO\Response\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

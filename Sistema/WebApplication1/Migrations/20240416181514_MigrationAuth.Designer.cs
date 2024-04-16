@@ -12,8 +12,8 @@ using app.Data;
 namespace app.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20240416153217_firstMigration")]
-    partial class firstMigration
+    [Migration("20240416181514_MigrationAuth")]
+    partial class MigrationAuth
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
