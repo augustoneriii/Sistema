@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 
 namespace app.Controllers
 {
@@ -38,14 +39,14 @@ namespace app.Controllers
         {
             try
             {
-                var isSuccess = await authService.Authenticate(user);
-                if (isSuccess)
-                    return Ok($"User {user.Email} is authenticated successfully");
-                return BadRequest("Authentication failed");
+                var token = await authService.Authenticate(user);
+                if (!string.IsNullOrEmpty(token))
+                    return Ok(new { Token = token }); // Retorna o token no corpo da resposta
+                return Unauthorized(); // Retorna 401 Unauthorized se a autenticação falhar
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(ex.Message); // Retorna 400 Bad Request se ocorrer algum erro durante a autenticação
             }
         }
 
