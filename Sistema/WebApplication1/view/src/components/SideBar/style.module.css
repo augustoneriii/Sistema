@@ -1,0 +1,35 @@
+.sidebar {
+    width: 10vw;
+    height: 100vh;
+    transition: width 0.3s ease;
+    border-right: 1px solid #164059;
+}
+
+.sidebar.expanded {
+    width: 10vw;
+}
+
+.sidebar.collapsed {
+    width: 3.5vw;
+}
+
+.nav-link {
+    color: #0D0D0D; /* Cor do texto dos links escuro */
+}
+
+.nav-link:hover {
+    background-color: #17BFAE; /* Cor de fundo ao passar o mouse */
+}
+
+.nav-item .icon {
+    color: #0D0D0D; /* Cor dos ícones escuro */
+}
+
+hr {
+    border-color: #164059; /* Cor das linhas de separação escuro */
+}
+
+.border-circle {
+    border-color: #1ED9B7; /* Cor da borda do botão */
+    background-color: #C4F2EE !important; /* Cor de fundo do botão claro */
+}
