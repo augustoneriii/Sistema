@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\italo\\OneDrive\\Área de Trabalho\\Sistema\\Sistema\\StartReact\\StartReact.csproj": {}
+    "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\StartReact\\StartReact.csproj": {}
   },
   "projects": {
-    "C:\\Users\\italo\\OneDrive\\Área de Trabalho\\Sistema\\Sistema\\StartReact\\StartReact.csproj": {
+    "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\StartReact\\StartReact.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\italo\\OneDrive\\Área de Trabalho\\Sistema\\Sistema\\StartReact\\StartReact.csproj",
+        "projectUniqueName": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\StartReact\\StartReact.csproj",
         "projectName": "StartReact",
-        "projectPath": "C:\\Users\\italo\\OneDrive\\Área de Trabalho\\Sistema\\Sistema\\StartReact\\StartReact.csproj",
-        "packagesPath": "C:\\Users\\italo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\italo\\OneDrive\\Área de Trabalho\\Sistema\\Sistema\\StartReact\\obj\\",
+        "projectPath": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\StartReact\\StartReact.csproj",
+        "packagesPath": "C:\\Users\\augusto.neri\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\StartReact\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\italo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\augusto.neri\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -34,11 +34,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -89,30 +84,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[7.0.18, 7.0.18]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[7.0.18, 7.0.18]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[7.0.18, 7.0.18]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[7.0.18, 7.0.18]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

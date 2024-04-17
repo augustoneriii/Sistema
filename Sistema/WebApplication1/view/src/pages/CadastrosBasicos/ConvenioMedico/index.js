@@ -2,16 +2,17 @@ import React, { useContext, useRef } from 'react';
 import { Button } from 'primereact/button';
 import { SidebarContext } from '../../../context/SideBarContext';
 import { InputText } from 'primereact/inputtext';
-import { useState, useEffect } from 'react'; // Removi 'useRef' não utilizado
+import { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ConvenioService } from './service/ConvenioService.js';
 import { Toast } from 'primereact/toast';
 import { Dialog } from 'primereact/dialog';
+import Modal from '../../../components/Modal/index.js';
 
 function ConvenioMedico() {
-  // const { convenioVisible, setConvenioVisible } = useContext(SidebarContext);
-  const [convenioVisible, setConvenioVisible] = useState(true);
+  const { convenioVisible, setConvenioVisible } = useContext(SidebarContext);
+  // const [convenioVisible, setConvenioVisible] = useState(true);
 
   const emptyConvenio = {
     id: null,
@@ -34,14 +35,16 @@ function ConvenioMedico() {
 
 
   useEffect(() => {
-    const currentToken = localStorage.getItem('token') || '';
-    ConvenioService.getConvenios(currentToken)
-      .then(response => {
-        setConvenios(response.data); // Acesso à array de convenios
-      })
-      .catch(error => {
+    async function fetchConvenios() {
+      const currentToken = localStorage.getItem('token') || '';
+      try {
+        const response = await ConvenioService.getConvenios(currentToken);
+        setConvenios(response.data); // Assuming response.data contains the array of convenios
+      } catch (error) {
         console.error("Erro ao buscar convenios:", error);
-      });
+      }
+    }
+    fetchConvenios();
   }, []);
 
   const openNew = () => {
@@ -58,27 +61,27 @@ function ConvenioMedico() {
     setSubmitted(true);
 
     if (convenio.nome.trim()) {
-        let _convenios = [...convenios];
-        let _convenio = { ...convenio };
+      let _convenios = [...convenios];
+      let _convenio = { ...convenio };
 
-        const currentToken = localStorage.getItem('token') || '';
-        if (convenio.id) {
-            const index = findIndexById(convenio.id);
-            _convenios[index] = _convenio;
-            toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Convenio Atualizado', life: 3000 });
-            ConvenioService.updateConvenio(_convenio);
-        } else {
-            _convenios.push(_convenio);
-            console.log("convenio", _convenio);
-            ConvenioService.createConvenio(_convenio);
-            toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Convenio Criado', life: 3000 });
-        }
+      const currentToken = localStorage.getItem('token') || '';
+      if (convenio.id) {
+        const index = findIndexById(convenio.id);
+        _convenios[index] = _convenio;
+        toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Convenio Atualizado', life: 3000 });
+        ConvenioService.updateConvenio(_convenio);
+      } else {
+        _convenios.push(_convenio);
+        console.log("convenio", _convenio);
+        ConvenioService.createConvenio(_convenio);
+        toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Convenio Criado', life: 3000 });
+      }
 
-        setConvenios(_convenios);
-        setConvenioDialog(false);
-        setConvenio(emptyConvenio);
+      setConvenios(_convenios);
+      setConvenioDialog(false);
+      setConvenio(emptyConvenio);
     }
-};
+  };
 
 
   const editConvenio = (convenio) => {
@@ -162,7 +165,7 @@ function ConvenioMedico() {
     <>
       <Toast ref={toast} />
 
-      <Dialog header={header} modal={false}  visible={convenioVisible} style={{ width: '80vw', height:'80vh' }} onHide={() => setConvenioVisible(false)}>
+      <Modal header={header} modal={false} visible={convenioVisible} style={{ width: '80vw', height: '80vh' }} onHide={() => setConvenioVisible(false)}>
         <div className='card'>
           <div className='grid'>
             <div className="field col-6">
@@ -189,7 +192,7 @@ function ConvenioMedico() {
 
         <div className="card">
           <DataTable ref={dt} value={convenios} selection={selectedConvenios} onSelectionChange={e => setSelectedConvenios(e.value)}
-            dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} scrollable scrollHeight="200px" 
+            dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} scrollable scrollHeight="200px"
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} convenios" globalFilter={globalFilter}>
             <Column field="nome" header="Nome" sortable></Column>
@@ -206,7 +209,7 @@ function ConvenioMedico() {
             {convenio && <span>Tem certeza que deseja excluir o convenio <b>{convenio.nome}</b>?</span>}
           </div>
         </Dialog>
-      </Dialog>
+      </Modal>
     </>
   )
 }

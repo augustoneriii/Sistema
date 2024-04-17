@@ -26,7 +26,7 @@ function useAuth() {
 
     async function register(user) {
         try {
-            const data = await api.post('/users/register', user)
+            const data = await api.post('/api/Auth/register', user)
                 .then((response) => {
                     return response.data
                 })
@@ -40,7 +40,7 @@ function useAuth() {
 
     async function login(user) {
         try {
-            const data = await api.post('/users/login', user)
+            const data = await api.post('/api/Auth/authenticate', user)
                 .then((response) => {
                     return response.data
                 })

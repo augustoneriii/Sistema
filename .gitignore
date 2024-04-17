@@ -132,4 +132,8 @@ Desktop.ini
 sftp-config.json
 
 # TypeScript compiled files
+<<<<<<< HEAD
 *.tsbuildinfo
+=======
+*.tsbuildinfo
+>>>>>>> 59d5a85238b559e2380222d9d19fe627dbcb3b69

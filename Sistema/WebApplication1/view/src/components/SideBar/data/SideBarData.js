@@ -13,7 +13,9 @@ const sidebarItems = [
     {
       text: 'Consultas',
       icon: 'pi pi-calendar',
-      link: '/consulta',
+      link: '',
+      action: 'setConsultaVisible',
+      actionValue: true
     },
     {
       text: 'Pacientes',
@@ -25,7 +27,9 @@ const sidebarItems = [
     {
       text: 'Profissionais',
       icon: 'pi pi-user-edit',
-      link: '/profissional',
+      link: '',
+      action: 'setProfissionalVisible',
+      actionValue: true
     },
     {
       text: 'Convênios Médicos',

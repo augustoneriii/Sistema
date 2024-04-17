@@ -14,10 +14,12 @@ import { Calendar } from 'primereact/calendar';
 import { Checkbox } from "primereact/checkbox";
 import { InputTextarea } from 'primereact/inputtextarea';
 import { FilterMatchMode } from 'primereact/api';
+import Modal from '../../components/Modal/index.js';
 
 
 export default function Consulta() {
     const { setPacienteVisible } = useContext(SidebarContext);
+    const { consultaVisible, setConsultaVisible } = useContext(SidebarContext);
 
     let emptyConsulta = {
         id: null,
@@ -252,7 +254,10 @@ export default function Consulta() {
         )
     }
 
-    const header = renderHeader();
+    const header = (
+        <h1>Gerenciar Consultas</h1>
+    );
+    // const header = renderHeader();
 
     const consultaDialogFooter = (
         <React.Fragment>
@@ -269,91 +274,93 @@ export default function Consulta() {
     );
 
     return (
-        <div>
+        <>
             <Toast ref={toast} />
-
+            <Modal header={header} modal={false} visible={consultaVisible} style={{ width: '50vw' }} onHide={() => setConsultaVisible(false)}>
+                {/* 
             <Card>
                 <span className="p-text-center p-mb-4" style={{ fontSize: '24px', color: '#333', borderBottom: 'solid 1px #6c757d' }}>
                     Cadastro de Consulta
                 </span>
-            </Card>
+            </Card> */}
 
-            <div className="card">
-                <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
+                <div className="card">
+                    <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
 
-                <DataTable ref={dt} value={consultas} selection={selectedConsultas} onSelectionChange={e => setSelectedConsultas(e.value)}
-                    dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} rowGroupMode="subheader" groupRowsBy="NomeProfissional" sortOrder={1}
-                    sortField="NomeProfissional" paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                    expandableRowGroups expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)} sortMode="single" rowGroupHeaderTemplate={headerTemplate}
-                    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} consultas" globalFilter={globalFilter} header={header}>
-                    <Column style={{ width: '14.28%' }} field="NomeProfissional" header="Profissional" sortable></Column>
-                    <Column style={{ width: '14.28%' }} field="NomePaciente" header="Paciente" sortable></Column>
-                    <Column style={{ width: '14.28%' }} field="DataConsulta" header="Data" body={(rowData) => formatDate(rowData.DataConsulta)} sortable></Column>
-                    <Column style={{ width: '14.28%' }} field="HoraConsulta" header="Hora" sortable></Column>
-                    <Column style={{ width: '14.28%' }} field="status" header="Status" sortable></Column>
-                    <Column style={{ width: '14.28%' }} field="tipo" header="Tipo" sortable></Column>
-                    <Column style={{ width: '14.28%' }} header="Ações" body={actionBodyTemplate}></Column>
-                </DataTable>
-            </div>
+                    <DataTable ref={dt} value={consultas} selection={selectedConsultas} onSelectionChange={e => setSelectedConsultas(e.value)}
+                        dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} rowGroupMode="subheader" groupRowsBy="NomeProfissional" sortOrder={1}
+                        sortField="NomeProfissional" paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                        expandableRowGroups expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)} sortMode="single" rowGroupHeaderTemplate={headerTemplate}
+                        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} consultas" globalFilter={globalFilter} header={header}>
+                        <Column style={{ width: '14.28%' }} field="NomeProfissional" header="Profissional" sortable></Column>
+                        <Column style={{ width: '14.28%' }} field="NomePaciente" header="Paciente" sortable></Column>
+                        <Column style={{ width: '14.28%' }} field="DataConsulta" header="Data" body={(rowData) => formatDate(rowData.DataConsulta)} sortable></Column>
+                        <Column style={{ width: '14.28%' }} field="HoraConsulta" header="Hora" sortable></Column>
+                        <Column style={{ width: '14.28%' }} field="status" header="Status" sortable></Column>
+                        <Column style={{ width: '14.28%' }} field="tipo" header="Tipo" sortable></Column>
+                        <Column style={{ width: '14.28%' }} header="Ações" body={actionBodyTemplate}></Column>
+                    </DataTable>
+                </div>
 
-            <Dialog visible={consultaDialog} style={{ width: '850px', margin: 'auto' }} header="Detalhes do Consulta" modal className="p-fluid" footer={consultaDialogFooter} onHide={hideDialog}>
+                <Dialog visible={consultaDialog} style={{ width: '850px', margin: 'auto' }} header="Detalhes do Consulta" modal className="p-fluid" footer={consultaDialogFooter} onHide={hideDialog}>
 
-                <div className='grid'>
-                    <div className="field col-6">
-                        <label htmlFor="profissional">Profissional</label>
-                        <Dropdown editable id='profissional' value={consulta.profissional} onChange={(e) => onInputChange(e, 'profissional')} options={profissionais} optionLabel="nome"
-                            placeholder="Selecione o Profissional" className="w-full" />
-                    </div>
-                    <div className="field col-6">
-                        <label htmlFor="email">Paciente</label>
-                        <div className="p-inputgroup flex-1">
-                            <Dropdown editable id='paciente' value={consulta.paciente} onChange={(e) => onInputChange(e, 'paciente')} options={pacientes} optionLabel="nome"
-                                placeholder="Selecione o Paciente" className="w-full" />
-                            <Button icon="pi pi-plus" onClick={() => setPacienteVisible(true)} className="p-button-secondary border-round-right" />
+                    <div className='grid'>
+                        <div className="field col-6">
+                            <label htmlFor="profissional">Profissional</label>
+                            <Dropdown editable id='profissional' value={consulta.profissional} onChange={(e) => onInputChange(e, 'profissional')} options={profissionais} optionLabel="nome"
+                                placeholder="Selecione o Profissional" className="w-full" />
+                        </div>
+                        <div className="field col-6">
+                            <label htmlFor="email">Paciente</label>
+                            <div className="p-inputgroup flex-1">
+                                <Dropdown editable id='paciente' value={consulta.paciente} onChange={(e) => onInputChange(e, 'paciente')} options={pacientes} optionLabel="nome"
+                                    placeholder="Selecione o Paciente" className="w-full" />
+                                <Button icon="pi pi-plus" onClick={() => setPacienteVisible(true)} className="p-button-secondary border-round-right" />
+                            </div>
+                        </div>
+
+                        <div className="field col-6">
+                            <label htmlFor="status">Status</label>
+                            <Dropdown editable value={consulta.status} onChange={(e) => onInputChange(e, 'status')} options={["Agendada", "Cancelada", "Realizada"]}
+                                placeholder="Selecione o Status" className="w-full" />
+                        </div>
+                        <div className="field col-6">
+                            <label htmlFor="tipo">Tipo</label>
+                            <Dropdown editable value={consulta.tipo} onChange={(e) => onInputChange(e, 'tipo')} options={["Consulta", "Retorno"]}
+                                placeholder="Selecione o Tipo" className="w-full" />
                         </div>
                     </div>
+                    <div className='grid'>
+                        <div className="field col">
+                            <label htmlFor="data">Data</label>
+                            <Calendar id="data" value={consulta.data} onChange={(e) => onInputChange(e, 'data')} showIcon />
+                        </div>
 
-                    <div className="field col-6">
-                        <label htmlFor="status">Status</label>
-                        <Dropdown editable value={consulta.status} onChange={(e) => onInputChange(e, 'status')} options={["Agendada", "Cancelada", "Realizada"]}
-                            placeholder="Selecione o Status" className="w-full" />
+                        <div className="field col">
+                            <label htmlFor="hora">Hora</label>
+                            <Calendar id="hora" value={consulta.hora} onChange={(e) => onInputChange(e, 'hora')} timeOnly />
+                        </div>
                     </div>
-                    <div className="field col-6">
-                        <label htmlFor="tipo">Tipo</label>
-                        <Dropdown editable value={consulta.tipo} onChange={(e) => onInputChange(e, 'tipo')} options={["Consulta", "Retorno"]}
-                            placeholder="Selecione o Tipo" className="w-full" />
+                    <div className='grid'>
+                        <div className="field col">
+                            <label htmlFor="observacoes">Observações</label>
+                            <InputTextarea id="observacoes" value={consulta.observacoes} onChange={(e) => onInputChange(e, 'observacoes')} />
+                        </div>
                     </div>
-                </div>
-                <div className='grid'>
-                    <div className="field col">
-                        <label htmlFor="data">Data</label>
-                        <Calendar id="data" value={consulta.data} onChange={(e) => onInputChange(e, 'data')} showIcon />
+                    <div className="flex align-items-center">
+                        <Checkbox inputId="atendida" value={consulta.atendida} onChange={(e) => onInputChange(e, 'atendida')} />
+                        <label className="ml-2" htmlFor="atendida">Atendida</label>
                     </div>
+                </Dialog>
 
-                    <div className="field col">
-                        <label htmlFor="hora">Hora</label>
-                        <Calendar id="hora" value={consulta.hora} onChange={(e) => onInputChange(e, 'hora')} timeOnly />
+                <Dialog visible={deleteConsultaDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deleteConsultaDialogFooter} onHide={hideDeleteConsultaDialog}>
+                    <div className="confirmation-content">
+                        <i className="pi pi-exclamation-triangle mr-2" style={{ fontSize: '2rem' }} />
+                        {consulta && <span>Tem certeza que deseja excluir a consulta de <b>{consulta.NomePaciente}</b> com o profissional <b>{consulta.NomeProfissional}</b>?</span>}
                     </div>
-                </div>
-                <div className='grid'>
-                    <div className="field col">
-                        <label htmlFor="observacoes">Observações</label>
-                        <InputTextarea id="observacoes" value={consulta.observacoes} onChange={(e) => onInputChange(e, 'observacoes')} />
-                    </div>
-                </div>
-                <div className="flex align-items-center">
-                    <Checkbox inputId="atendida" value={consulta.atendida} onChange={(e) => onInputChange(e, 'atendida')} />
-                    <label className="ml-2" htmlFor="atendida">Atendida</label>
-                </div>
-            </Dialog>
+                </Dialog>
 
-            <Dialog visible={deleteConsultaDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deleteConsultaDialogFooter} onHide={hideDeleteConsultaDialog}>
-                <div className="confirmation-content">
-                    <i className="pi pi-exclamation-triangle mr-2" style={{ fontSize: '2rem' }} />
-                    {consulta && <span>Tem certeza que deseja excluir a consulta de <b>{consulta.NomePaciente}</b> com o profissional <b>{consulta.NomeProfissional}</b>?</span>}
-                </div>
-            </Dialog>
-
-        </div>
+            </Modal>
+        </>
     );
 }

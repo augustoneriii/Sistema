@@ -1,28 +1,27 @@
-﻿using app.BE;
+﻿using Microsoft.AspNetCore.Mvc;
+using app.BE;
 using app.Data;
 using app.DTO;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace app.Controllers
 {
-    
-    public class ConvenioMedicosController : Controller
+    public class ProfissoesController : Controller
     {
-        private ConvenioMedicosBE _be;
+        private ProfissoesBE _be;
         private AppDbContext _context;
 
-        public ConvenioMedicosController(ConvenioMedicosBE be, AppDbContext context)
+        public ProfissoesController(ProfissoesBE be, AppDbContext context)
         {
             _be = be;
             _context = context;
         }
 
-        // GET: ConvenioMedicos
+        // GET: Profissoes
         [Authorize]
-        [Route("getAllConvenioMedicos")]
+        [Route("getAllProfissoes")]
         [HttpGet]
-        public async Task<IActionResult> GetAll(ConvenioMedicosDTO dto)
+        public async Task<IActionResult> GetAll(ProfissoesDTO dto)
         {
             try
             {
@@ -35,38 +34,16 @@ namespace app.Controllers
             }
         }
 
-        // POST: ConvenioMedicos
-
-
+        // POST: Profissoes
         [Authorize]
+        [Route("insertProfissoes")]
         [HttpPost]
-        [Route("insertConvenioMedicos")]
-        public async Task<IActionResult> Insert([FromBody] ConvenioMedicosDTO convenioMedicos)
-        {
-            try
-            {
-                _context.BeginTransaction();  
-                var response = await _be.Insert(convenioMedicos);
-                _context.Commit();  
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                _context.Rollback();  
-                return BadRequest(ex.Message);
-            }
-        }
-
-        // PATCH: ConvenioMedicos
-        [Authorize]
-        [Route("updateConvenioMedicos")]
-        [HttpPatch]
-        public async Task<IActionResult> Update([FromBody] ConvenioMedicosDTO convenioMedicos)
+        public async Task<IActionResult> Insert([FromBody] ProfissoesDTO profissoes)
         {
             try
             {
                 _context.BeginTransaction();
-                var response = await _be.Update(convenioMedicos);
+                var response = await _be.Insert(profissoes);
                 _context.Commit();
                 return Ok(response);
             }
@@ -77,9 +54,29 @@ namespace app.Controllers
             }
         }
 
-        // DELETE: ConvenioMedicos
+        // PATCH: Profissoes
         [Authorize]
-        [Route("deleteConvenioMedicos")]
+        [Route("updateProfissoes")]
+        [HttpPatch]
+        public async Task<IActionResult> Update([FromBody] ProfissoesDTO profissoes)
+        {
+            try
+            {
+                _context.BeginTransaction();
+                var response = await _be.Update(profissoes);
+                _context.Commit();
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _context.Rollback();
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // DELETE: Profissoes
+        [Authorize]
+        [Route("deleteProfissoes")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] int id)
         {

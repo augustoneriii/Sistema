@@ -5,8 +5,6 @@ VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "app", "WebApplication1\app.csproj", "{AB415280-1EB9-420B-BFB1-E0E7A767AD4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartReact", "StartReact\StartReact.csproj", "{4FBDD8DC-14D3-40FA-82E9-FDA465270BE6}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{AB415280-1EB9-420B-BFB1-E0E7A767AD4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB415280-1EB9-420B-BFB1-E0E7A767AD4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB415280-1EB9-420B-BFB1-E0E7A767AD4F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4FBDD8DC-14D3-40FA-82E9-FDA465270BE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4FBDD8DC-14D3-40FA-82E9-FDA465270BE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4FBDD8DC-14D3-40FA-82E9-FDA465270BE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4FBDD8DC-14D3-40FA-82E9-FDA465270BE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

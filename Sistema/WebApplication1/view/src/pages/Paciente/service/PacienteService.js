@@ -2,42 +2,42 @@
 import api from '../../../utils/api';
 
 export class PacienteService {
-    static getPacientes(token) {
-        return api.get('/pacientes/getAll', {
+    static async getPacientes(token) {
+        return await api.get('/pacientes/getAll', {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
     }
 
-    static getConvenios(token) {
-        return api.get('/convenios/getAll', {
+    static async getConvenios(token) {
+        return await api.get('/convenios/getAll', {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
     }
 
-    static createPaciente(paciente, token) {
-        return api.post('/pacientes/create', paciente, {
+    static async createPaciente(paciente, token) {
+        return await api.post('/pacientes/create', paciente, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
     }
 
-    static updatePaciente(paciente, token) {
+    static async updatePaciente(paciente, token) {
         console.log("update ",paciente);
-        return api.put(`/pacientes/update/${paciente.id}`, paciente, {
+        return await api.put(`/pacientes/update/${paciente.id}`, paciente, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
     }
 
-    static deletePaciente(id, token) {
+    static async deletePaciente(id, token) {
         console.log("delete ",id);
-        return api.delete(`/pacientes/delete/${id}`, {
+        return await api.delete(`/pacientes/delete/${id}`, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }

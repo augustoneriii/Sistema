@@ -1,4 +1,4 @@
-﻿CREATE SCHEMA IF NOT EXISTS "Sistema";
+﻿--CREATE SCHEMA IF NOT EXISTS "Sistema";
 
 -- -----------------------------------------------------
 -- Table "Sistema"."Users"

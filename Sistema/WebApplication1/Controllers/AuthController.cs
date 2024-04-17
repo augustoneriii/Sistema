@@ -2,14 +2,13 @@
 using app.DTO;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace app.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    
     public class AuthController : Controller
     {
         private readonly AuthBE authService;
@@ -18,15 +17,18 @@ namespace app.Controllers
             authService = serv;
         }
 
-        [HttpPost("register")]
+        [HttpPost]
+        [Route("register")]
         public async Task<IActionResult> Register(UserRegisterDTO user)
         {
             try
             {
-                var isSuccess = await authService.RegisterNewUser(user);
-                if (isSuccess)
-                    return Ok($"User {user.Email} is registered successfully");
-                return BadRequest("Failed to register user");
+                var response = await authService.RegisterNewUser(user);
+
+                if (response.Succeeded == false)
+                    return BadRequest(response.Errors);
+
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -34,19 +36,40 @@ namespace app.Controllers
             }
         }
 
-        [HttpPost("authenticate")]
+        [HttpPost]
+        [Route("Authenticate")]
         public async Task<IActionResult> AuthUser(UserLoginDTO user)
         {
             try
             {
                 var token = await authService.Authenticate(user);
                 if (!string.IsNullOrEmpty(token))
-                    return Ok(new { Token = token }); // Retorna o token no corpo da resposta
+                    return Ok(new { Token = token, Message = "Usuário autenticado com sucesso!" });
                 return Unauthorized(); // Retorna 401 Unauthorized se a autenticação falhar
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message); // Retorna 400 Bad Request se ocorrer algum erro durante a autenticação
+            }
+        }
+
+        
+        [HttpGet]
+        [Route("findUserByToken")]
+        public async Task<IActionResult> FindUserByToken()
+        {
+            try
+            {
+           
+                var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                var user = await authService.FindUserByToken(token);
+                if (user != null)
+                    return Ok(user);
+                return Unauthorized();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 

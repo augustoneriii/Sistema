@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StartReact")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b03c63f7ff9676b5248db3a77e1e93311d3b6b7a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+872bff0ec1a0d789316d8815ff821ed84ca8a9ec")]
 [assembly: System.Reflection.AssemblyProductAttribute("StartReact")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StartReact")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
