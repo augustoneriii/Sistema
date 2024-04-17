@@ -107,24 +107,25 @@ function Profissao() {
 
     const deleteProfissao = () => {
         const currentToken = localStorage.getItem('token') || '';
-
+    
         if (profissao && profissao.id) {
-
             ProfissaoService.deleteProfissao(profissao.id, currentToken)
                 .then(() => {
-                    toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissao Deletado', life: 3000 });
+                    toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissão Deletada', life: 3000 });
                     setProfissoes(profissoes.filter(val => val.id !== profissao.id));
                     setDeleteProfissaoDialog(false);
                     setProfissao(emptyProfissao);
                 })
                 .catch(error => {
-                    toast.current.show({ severity: 'Error', summary: 'Error', detail: `Erro ao deletar profissao: ${error}`, life: 3000 });
-                    console.error("Erro ao deletar profissao:", error);
+                    toast.current.show({ severity: 'error', summary: 'Erro', detail: `Erro ao deletar profissão: ${error}`, life: 3000 });
+                    console.error("Erro ao deletar profissão:", error);
                 });
         } else {
-            console.error("Erro: id do profissao é undefined");
+            console.error("Erro: ID da profissão é undefined");
+            toast.current.show({ severity: 'error', summary: 'Erro', detail: 'ID da profissão é indefinido', life: 3000 });
         }
     };
+    
 
     const findIndexById = (id) => {
         let index = -1;
@@ -151,7 +152,7 @@ function Profissao() {
         );
     };
 
-    const actionBurronGroupTemplate = (rowData) => {
+    const actionButtonGroupTemplate = (rowData) => {
         return (
             <React.Fragment>
                 <Button icon="pi pi-bars" className="border-round p-button-rounded p-button-text" onClick={(e) => toggleMenu(rowData, e)} />
@@ -217,7 +218,7 @@ function Profissao() {
                         dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} scrollable scrollHeight="200px"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} profissoes" globalFilter={globalFilter}>
-                        <Column body={actionBurronGroupTemplate}></Column>
+                        <Column body={actionButtonGroupTemplate}></Column>
                         <Column field="nome" header="Nome" sortable></Column>
                         <Column field="conselhoProfissional" header="Conselho Profissional" sortable></Column>
                     </DataTable>

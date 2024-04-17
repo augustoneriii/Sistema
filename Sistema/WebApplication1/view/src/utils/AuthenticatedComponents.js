@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 import SideBar from '../components/SideBar';
 import ConvenioMedico from '../pages/CadastrosBasicos/ConvenioMedico';
 import Profissao from '../pages/CadastrosBasicos/Profissao';
 import Paciente from '../pages/Paciente';
 import Consulta from '../pages/Consulta';
-import { useEffect, useState } from 'react';
 import Profissional from '../pages/Profissional';
 
 function AuthenticatedComponents() {
-    var token
+    const [token, setToken] = useState(null);
+    const navigate = useNavigate()
 
     useEffect(() => {
-        token = localStorage.getItem('token')
-    }, [token])
+        const tokenFromStorage = localStorage.getItem('token');
+        setToken(tokenFromStorage);
 
-    return (
+        if (!tokenFromStorage) {
+            navigate('/')
+        }
+    }, []); 
+
+    return token ? (
         <>
             <SideBar />
             <ConvenioMedico />
@@ -23,7 +29,7 @@ function AuthenticatedComponents() {
             <Profissao />
             <Paciente />
         </>
-    );
+    ) : null;
 }
 
 export default AuthenticatedComponents;
