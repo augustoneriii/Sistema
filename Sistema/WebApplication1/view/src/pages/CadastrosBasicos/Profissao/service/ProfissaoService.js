@@ -3,7 +3,7 @@ import api from '../../../../utils/api';
 
 export class ProfissaoService {
     static getProfissoes(token) {
-        return api.get('/profissoes/getAll', {
+        return api.get('/getAllProfissoes', {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
@@ -11,7 +11,9 @@ export class ProfissaoService {
     }
 
     static createProfissao(profissao, token) {
-        return api.post('/profissoes/create', profissao, {
+        console.log("create ", profissao);
+
+        return api.post('/insertProfissoes', profissao, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
@@ -20,7 +22,7 @@ export class ProfissaoService {
 
     static updateProfissao(profissao, token) {
         console.log("update ",profissao);
-        return api.put(`/profissoes/update/${profissao.id}`, profissao, {
+        return api.patch(`/updateProfissoes`, profissao, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
@@ -29,7 +31,7 @@ export class ProfissaoService {
 
     static deleteProfissao(id, token) {
         console.log("delete ",id);
-        return api.delete(`/profissoes/delete/${id}`, {
+        return api.delete(`/deleteProfissoes?id=${id}`, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
