@@ -10,6 +10,7 @@ import { Toast } from 'primereact/toast';
 import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import { Menu } from 'primereact/menu';
+import Modal from '../../../components/Modal/index.js';
 
 function Profissao() {
     const { profissaoVisible, setProfissaoVisible } = useContext(SidebarContext);
@@ -33,14 +34,16 @@ function Profissao() {
     const menuRef = useRef(null);
 
     useEffect(() => {
-        const currentToken = localStorage.getItem('token') || '';
-        ProfissaoService.getProfissoes(currentToken)
-            .then(response => {
-                setProfissoes(response.data);
-            })
-            .catch(error => {
+        async function fetchProfissoes() {
+            const currentToken = localStorage.getItem('token') || '';
+            try {
+                const response = await ProfissaoService.getProfissoes(currentToken);
+                setProfissoes(response.data); // Assuming response.data contains the array of profissoes
+            } catch (error) {
                 console.error("Erro ao buscar profissoes:", error);
-            });
+            }
+        }
+        fetchProfissoes();
     }, []);
 
     const openNew = () => {
@@ -104,24 +107,25 @@ function Profissao() {
 
     const deleteProfissao = () => {
         const currentToken = localStorage.getItem('token') || '';
-
+    
         if (profissao && profissao.id) {
-
             ProfissaoService.deleteProfissao(profissao.id, currentToken)
                 .then(() => {
-                    toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissao Deletado', life: 3000 });
+                    toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissão Deletada', life: 3000 });
                     setProfissoes(profissoes.filter(val => val.id !== profissao.id));
                     setDeleteProfissaoDialog(false);
                     setProfissao(emptyProfissao);
                 })
                 .catch(error => {
-                    toast.current.show({ severity: 'Error', summary: 'Error', detail: `Erro ao deletar profissao: ${error}`, life: 3000 });
-                    console.error("Erro ao deletar profissao:", error);
+                    toast.current.show({ severity: 'error', summary: 'Erro', detail: `Erro ao deletar profissão: ${error}`, life: 3000 });
+                    console.error("Erro ao deletar profissão:", error);
                 });
         } else {
-            console.error("Erro: id do profissao é undefined");
+            console.error("Erro: ID da profissão é undefined");
+            toast.current.show({ severity: 'error', summary: 'Erro', detail: 'ID da profissão é indefinido', life: 3000 });
         }
     };
+    
 
     const findIndexById = (id) => {
         let index = -1;
@@ -148,7 +152,7 @@ function Profissao() {
         );
     };
 
-    const actionBurronGroupTemplate = (rowData) => {
+    const actionButtonGroupTemplate = (rowData) => {
         return (
             <React.Fragment>
                 <Button icon="pi pi-bars" className="border-round p-button-rounded p-button-text" onClick={(e) => toggleMenu(rowData, e)} />
@@ -192,7 +196,7 @@ function Profissao() {
         <>
             <Toast ref={toast} />
 
-            <Dialog header={header} modal={false} visible={profissaoVisible} style={{ width: '30vw' }} onHide={() => setProfissaoVisible(false)}>
+            <Modal header={header} modal={false} visible={profissaoVisible} style={{ width: '30vw' }} onHide={() => setProfissaoVisible(false)}>
                 <div className='card'>
                     <div className='grid'>
                         <div className="field col-6">
@@ -214,7 +218,7 @@ function Profissao() {
                         dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} scrollable scrollHeight="200px"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} profissoes" globalFilter={globalFilter}>
-                        <Column body={actionBurronGroupTemplate}></Column>
+                        <Column body={actionButtonGroupTemplate}></Column>
                         <Column field="nome" header="Nome" sortable></Column>
                         <Column field="conselhoProfissional" header="Conselho Profissional" sortable></Column>
                     </DataTable>
@@ -226,7 +230,7 @@ function Profissao() {
                         {profissao && <span>Tem certeza que deseja excluir o profissao <b>{profissao.nome}</b>?</span>}
                     </div>
                 </Dialog>
-            </Dialog>
+            </Modal>
         </>
     )
 }

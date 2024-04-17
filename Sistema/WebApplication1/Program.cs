@@ -26,6 +26,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkSto
 builder.Services.AddScoped<ConvenioMedicosBE>();
 builder.Services.AddScoped<AuthBE>();
 builder.Services.AddScoped<ProfissoesBE>();
+builder.Services.AddScoped<ProfissionaisBE>();
 
 builder.Services.AddControllers();
 
@@ -76,9 +77,7 @@ void StartReactProject()
                 sw.WriteLine("cd view");
 
                 // Comando para iniciar o aplicativo React
-                sw.WriteLine("npm install");
                 sw.WriteLine("npm start");
-
             }
         }
     }

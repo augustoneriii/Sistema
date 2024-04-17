@@ -2,50 +2,53 @@
 import api from '../../../utils/api';
 
 export class ProfissionalService {
-    static getProfissoes(token) {
-        return api.get('/profissoes/getAll', {
+    static async getProfissoes(token) {
+        return await api.get('/getAllProfissoes', {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
     }
 
-    static getConvenios(token) {
-        return api.get('/convenios/getAll', {
+    static async getConvenios(token) {
+        return await api.get('/getAllConvenioMedicos', {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
     }
 
-    static getProfissionais(token) {
-        return api.get('/profissionais/getAll', {
+    static async getProfissionais(token) {
+        return await api.get('/getAllProfissionais', {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
     }
 
-    static createProfissional(profissional, token) {
-        return api.post('/profissionais/create', profissional, {
+    static async createProfissional(profissional, token) {
+        console.log("create ", profissional);
+
+        return await api.post('/insertProfissionais', profissional, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+
+
+    static async updateProfissional(profissional, token) {
+        console.log("update ", profissional);
+        return await api.put(`/updateProfissionais`, profissional, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
     }
 
-    static updateProfissional(profissional, token) {
-        console.log("update ",profissional);
-        return api.put(`/profissionais/update/${profissional.id}`, profissional, {
-            headers: {
-                Authorization: `Bearer ${JSON.parse(token)}`
-            }
-        });
-    }
-
-    static deleteProfissional(id, token) {
-        console.log("delete ",id);
-        return api.delete(`/profissionais/delete/${id}`, {
+    static async deleteProfissional(id, token) {
+        console.log("delete ", id);
+        return await api.delete(`/deleteProfissionais?id=${id}`, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }

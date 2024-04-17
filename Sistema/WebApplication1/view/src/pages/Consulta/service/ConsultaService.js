@@ -3,16 +3,16 @@ import api from '../../../utils/api';
 
 export class ConsultaService {
 
-    static getPacientes(token) {
-        return api.get('/pacientes/getAll', {
+    static async getPacientes(token) {
+        return await api.get('/pacientes/getAll', {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
     }
 
-    static getProfissionais(token) {
-        return api.get('/profissionais/getAll', {
+    static async getProfissionais(token) {
+        return await api.get('/profissionais/getAll', {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
@@ -20,34 +20,34 @@ export class ConsultaService {
     }
 
 
-    static getConsultas(token) {
-        return api.get('/consultas/getAll', {
+    static async getConsultas(token) {
+        return await api.get('/consultas/getAll', {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
     }
 
-    static createConsulta(consulta, token) {
-        return api.post('/consultas/create', consulta, {
+    static async createConsulta(consulta, token) {
+        return await api.post('/consultas/create', consulta, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
     }
 
-    static updateConsulta(consulta, token) {
+    static async updateConsulta(consulta, token) {
         console.log("update ", consulta);
-        return api.put(`/consultas/update/${consulta.id}`, consulta, {
+        return await api.put(`/consultas/update/${consulta.id}`, consulta, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
     }
 
-    static deleteConsulta(id, token) {
+    static async deleteConsulta(id, token) {
         console.log("delete ", id);
-        return api.delete(`/consultas/delete/${id}`, {
+        return await api.delete(`/consultas/delete/${id}`, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
