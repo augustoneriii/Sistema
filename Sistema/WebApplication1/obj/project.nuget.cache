@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qxkEEFBHY6oN7A1zeGOsi6TLzALeMoJ3Xjg5JpHV6gtt1zyhwXVuJSdiyfzhwLqmAhKz/cIECuF90f2YwacjKQ==",
+  "dgSpecHash": "DPXT7rjnN0Id92P3yOkeJuOgY9laSF4GBDZngx+B5xrwMroW5VYOUwehJbWJuVxqXAoS2PLAK8OdruEpJnc8yw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\WebApplication1\\app.csproj",
+  "projectFilePath": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\Sistema\\WebApplication1\\app.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\augusto.neri\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\augusto.neri\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.1.1\\microsoft.aspnetcore.authentication.2.1.1.nupkg.sha512",

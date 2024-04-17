@@ -3145,11 +3145,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\WebApplication1\\app.csproj",
+      "projectUniqueName": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\Sistema\\WebApplication1\\app.csproj",
       "projectName": "app",
-      "projectPath": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\WebApplication1\\app.csproj",
+      "projectPath": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\Sistema\\WebApplication1\\app.csproj",
       "packagesPath": "C:\\Users\\augusto.neri\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\WebApplication1\\obj\\",
+      "outputPath": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\Sistema\\WebApplication1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\augusto.neri\\AppData\\Roaming\\NuGet\\NuGet.Config",
