@@ -345,7 +345,6 @@ export default function Profissional() {
                                 onChange={onProfissaoChange}
                                 placeholder="Selecione uma profissão"
                             />
-
                         </div>
                     </div>
 

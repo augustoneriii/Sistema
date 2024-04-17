@@ -6,22 +6,23 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace app.Controllers
 {
-    public class ProfissoesController : Controller
+    public class UserController : Controller
     {
-        private ProfissoesBE _be;
+        private UserBE _be;
         private AppDbContext _context;
 
-        public ProfissoesController(ProfissoesBE be, AppDbContext context)
+        public UserController(UserBE be, AppDbContext context)
         {
             _be = be;
             _context = context;
         }
 
-        // GET: Profissoes
+        //GET: Users
+        
         [Authorize]
-        [Route("getAllProfissoes")]
+        [Route("getAllUsers")]
         [HttpGet]
-        public async Task<IActionResult> GetAll(ProfissoesDTO dto)
+        public async Task<IActionResult> GetAll(UserDTO dto)
         {
             try
             {
@@ -34,36 +35,17 @@ namespace app.Controllers
             }
         }
 
-        // POST: Profissoes
-        [Authorize]
-        [Route("insertProfissoes")]
-        [HttpPost]
-        public async Task<IActionResult> Insert([FromBody] ProfissoesDTO profissoes)
-        {
-            try
-            {
-                _context.BeginTransaction();
-                var response = await _be.Insert(profissoes);
-                _context.Commit();
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                _context.Rollback();
-                return BadRequest(ex.Message);
-            }
-        }
 
-        // PATCH: Profissoes
+        // PATCH: Users
         [Authorize]
-        [Route("updateProfissoes")]
+        [Route("updateUsers")]
         [HttpPatch]
-        public async Task<IActionResult> Update([FromBody] ProfissoesDTO profissoes)
+        public async Task<IActionResult> Update([FromBody] UserDTO users)
         {
             try
             {
                 _context.BeginTransaction();
-                var response = await _be.Update(profissoes);
+                var response = await _be.Update(users);
                 _context.Commit();
                 return Ok(response);
             }
@@ -72,13 +54,15 @@ namespace app.Controllers
                 _context.Rollback();
                 return BadRequest(ex.Message);
             }
+
+
         }
 
-        // DELETE: Profissoes
+        // DELETE: Users
         [Authorize]
-        [Route("deleteProfissoes")]
+        [Route("deleteUsers")]
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromQuery] int id)
+        public async Task<IActionResult> Delete([FromQuery] string id)
         {
             try
             {
@@ -93,5 +77,7 @@ namespace app.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
     }
 }

@@ -26,7 +26,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkSto
 builder.Services.AddScoped<ConvenioMedicosBE>();
 builder.Services.AddScoped<AuthBE>();
 builder.Services.AddScoped<ProfissoesBE>();
-builder.Services.AddScoped<ProfissionaisBE>();
+builder.Services.AddScoped<UserBE>();
 
 builder.Services.AddControllers();
 
@@ -73,7 +73,7 @@ void StartReactProject()
         {
             if (sw.BaseStream.CanWrite)
             {
-                // Caminho para o diretório do seu aplicativo React
+                // Caminho para o diretï¿½rio do seu aplicativo React
                 sw.WriteLine("cd view");
 
                 // Comando para iniciar o aplicativo React

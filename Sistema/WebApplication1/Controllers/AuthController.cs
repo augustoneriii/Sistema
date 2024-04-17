@@ -2,14 +2,13 @@
 using app.DTO;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace app.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    
     public class AuthController : Controller
     {
         private readonly AuthBE authService;
@@ -18,7 +17,8 @@ namespace app.Controllers
             authService = serv;
         }
 
-        [HttpPost("register")]
+        [HttpPost]
+        [Route("register")]
         public async Task<IActionResult> Register(UserRegisterDTO user)
         {
             try
@@ -36,7 +36,8 @@ namespace app.Controllers
             }
         }
 
-        [HttpPost("authenticate")]
+        [HttpPost]
+        [Route("Authenticate")]
         public async Task<IActionResult> AuthUser(UserLoginDTO user)
         {
             try
@@ -52,11 +53,14 @@ namespace app.Controllers
             }
         }
 
-        [HttpGet("findUserByToken")]
+        
+        [HttpGet]
+        [Route("findUserByToken")]
         public async Task<IActionResult> FindUserByToken()
         {
             try
             {
+           
                 var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
                 var user = await authService.FindUserByToken(token);
                 if (user != null)

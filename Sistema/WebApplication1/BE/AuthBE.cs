@@ -26,7 +26,8 @@ namespace app.BE
             var identityUser = new IdentityUser()
             {
                 Email = user.Email,
-                UserName = user.Email
+                UserName = user.UserName,
+                PhoneNumber = user.PhoneNumber
             };
             var result = await _userManager.CreateAsync(identityUser, user.Password);
 
@@ -61,7 +62,7 @@ namespace app.BE
                 new Claim(ClaimTypes.Name, identityUser.Email),
                         // Adicione outras reivindicações do usuário aqui, se necessário
                     }),
-                    Expires = DateTime.UtcNow.AddHours(1), // Tempo de expiração do token
+                    Expires = DateTime.UtcNow.AddHours(1), // Tempo de expiração do token.
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
 
