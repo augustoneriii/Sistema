@@ -27,6 +27,7 @@ builder.Services.AddScoped<ConvenioMedicosBE>();
 builder.Services.AddScoped<AuthBE>();
 builder.Services.AddScoped<ProfissoesBE>();
 builder.Services.AddScoped<UserBE>();
+builder.Services.AddScoped<PacientesBE>();
 
 builder.Services.AddControllers();
 
