@@ -23,10 +23,12 @@ namespace app.Controllers
         {
             try
             {
-                var isSuccess = await authService.RegisterNewUser(user);
-                if (isSuccess)
-                    return Ok($"User {user.Email} is registered successfully");
-                return BadRequest("Failed to register user");
+                var response = await authService.RegisterNewUser(user);
+
+                if (response.Succeeded == false)
+                    return BadRequest(response.Errors);
+
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -41,12 +43,29 @@ namespace app.Controllers
             {
                 var token = await authService.Authenticate(user);
                 if (!string.IsNullOrEmpty(token))
-                    return Ok(new { Token = token }); // Retorna o token no corpo da resposta
+                    return Ok(new { Token = token, Message = "Usuário autenticado com sucesso!" });
                 return Unauthorized(); // Retorna 401 Unauthorized se a autenticação falhar
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message); // Retorna 400 Bad Request se ocorrer algum erro durante a autenticação
+            }
+        }
+
+        [HttpGet("findUserByToken")]
+        public async Task<IActionResult> FindUserByToken()
+        {
+            try
+            {
+                var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+                var user = await authService.FindUserByToken(token);
+                if (user != null)
+                    return Ok(user);
+                return Unauthorized();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 

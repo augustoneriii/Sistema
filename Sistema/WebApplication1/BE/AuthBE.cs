@@ -20,26 +20,28 @@ namespace app.BE
             _signInManager = signInManager;
         }
 
-        public async Task<bool> RegisterNewUser(UserRegisterDTO user)
+        public async Task<IdentityResult> RegisterNewUser(UserRegisterDTO user)
         {
+
             var identityUser = new IdentityUser()
             {
                 Email = user.Email,
                 UserName = user.Email
             };
             var result = await _userManager.CreateAsync(identityUser, user.Password);
-            if (result.Succeeded)
+
+            if (!result.Succeeded)
             {
-                return true;
+                return result;
             }
-            return false;
+            return result;
         }
 
         public async Task<string> Authenticate(UserLoginDTO user)
         {
             var identityUser = await _userManager.FindByEmailAsync(user.Email);
             if (identityUser == null)
-                return null; // Retorna null se o usuário não for encontrado
+                return "Usuário não encontrado"; // Retorna uma mensagem de erro se o usuário não for encontrado 
 
             var result = await _signInManager.PasswordSignInAsync(user.Email, user.Password, false, true);
 
@@ -66,7 +68,35 @@ namespace app.BE
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 return tokenHandler.WriteToken(token);
             }
-            return null; // Retorna null se a autenticação falhar
+            return "Falha na autenticação"; // Retorna uma mensagem de erro se a autenticação falhar
+        }
+
+        //find user by token
+        public async Task<IdentityUser> FindUserByToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = new byte[32]; // Ajuste o tamanho da chave conforme necessário
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(key); // Preenche a chave com valores aleatórios
+            }
+
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+
+            SecurityToken securityToken;
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+
+            var email = principal.FindFirst(ClaimTypes.Name).Value;
+            var user = await _userManager.FindByEmailAsync(email);
+            return user;
         }
 
 
