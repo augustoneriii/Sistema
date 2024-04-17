@@ -1,33 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using app.BE;
+﻿using app.BE;
 using app.Data;
 using app.DTO;
-<<<<<<< HEAD
-using Microsoft.AspNetCore.Authorization;
-=======
->>>>>>> Dev
+using app.DTO.Request;
+using Microsoft.AspNetCore.Mvc;
 
 namespace app.Controllers
 {
-    public class ProfissoesController : Controller
+    public class ProfissionaisController : Controller
     {
-        private ProfissoesBE _be;
+        private ProfissionaisBE _be;
         private AppDbContext _context;
 
-        public ProfissoesController(ProfissoesBE be, AppDbContext context)
+        public ProfissionaisController(ProfissionaisBE be, AppDbContext context)
         {
             _be = be;
             _context = context;
         }
 
-        // GET: Profissoes
-<<<<<<< HEAD
-        [Authorize]
-=======
->>>>>>> Dev
-        [Route("getAllProfissoes")]
+        // GET: Profissionais
+        [Route("getAllProfissionais")]
         [HttpGet]
-        public async Task<IActionResult> GetAll(ProfissoesDTO dto)
+        public async Task<IActionResult> GetAll(ProfissionaisDTO dto)
         {
             try
             {
@@ -40,21 +33,17 @@ namespace app.Controllers
             }
         }
 
-        // POST: Profissoes
-<<<<<<< HEAD
-        [Authorize]
-=======
->>>>>>> Dev
-        [Route("insertProfissoes")]
+        // POST: Profissionais
+        [Route("insertProfissionais")]
         [HttpPost]
-        public async Task<IActionResult> Insert([FromBody] ProfissoesDTO profissoes)
+        public async Task<IActionResult> Insert([FromBody] ProfissionaisRequest profissionais)
         {
             try
             {
                 _context.BeginTransaction();
-                var response = await _be.Insert(profissoes);
+                var response = await _be.Insert(profissionais);
                 _context.Commit();
-                return Ok(response);
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -63,21 +52,17 @@ namespace app.Controllers
             }
         }
 
-        // PATCH: Profissoes
-<<<<<<< HEAD
-        [Authorize]
-=======
->>>>>>> Dev
-        [Route("updateProfissoes")]
+        // PATCH: Profissionais
+        [Route("updateProfissionais")]
         [HttpPatch]
-        public async Task<IActionResult> Update([FromBody] ProfissoesDTO profissoes)
+        public async Task<IActionResult> Update([FromBody] ProfissionaisRequest profissionais)
         {
             try
             {
                 _context.BeginTransaction();
-                var response = await _be.Update(profissoes);
+                var response = await _be.Update(profissionais);
                 _context.Commit();
-                return Ok(response);
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -86,19 +71,15 @@ namespace app.Controllers
             }
         }
 
-        // DELETE: Profissoes
-<<<<<<< HEAD
-        [Authorize]
-=======
->>>>>>> Dev
-        [Route("deleteProfissoes")]
+        // DELETE: Profissionais
+        [Route("deleteProfissionais")]
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromQuery] int id)
+        public async Task<IActionResult> Delete([FromQuery] long id)
         {
             try
             {
                 _context.BeginTransaction();
-                await _be.Delete(id);
+                 await _be.Delete(id);
                 _context.Commit();
                 return Ok();
             }

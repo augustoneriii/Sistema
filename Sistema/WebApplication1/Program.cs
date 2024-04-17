@@ -73,7 +73,7 @@ void StartReactProject()
         {
             if (sw.BaseStream.CanWrite)
             {
-                // Caminho para o diretório do seu aplicativo React
+                // Caminho para o diretï¿½rio do seu aplicativo React
                 sw.WriteLine("cd view");
 
                 // Comando para iniciar o aplicativo React

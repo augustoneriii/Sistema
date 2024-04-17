@@ -9,6 +9,10 @@ import { ConvenioService } from './service/ConvenioService.js';
 import { Toast } from 'primereact/toast';
 import { Dialog } from 'primereact/dialog';
 import Modal from '../../../components/Modal/index.js';
+<<<<<<< HEAD
+=======
+import { Menu } from 'primereact/menu';
+>>>>>>> Dev
 
 function ConvenioMedico() {
   const { convenioVisible, setConvenioVisible } = useContext(SidebarContext);
@@ -30,6 +34,9 @@ function ConvenioMedico() {
   const [submitted, setSubmitted] = useState(false);
   const [globalFilter, setGlobalFilter] = useState(null);
   const toast = useRef(null);
+  const menuRef = useRef(null);
+  const [menuModel, setMenuModel] = useState([]);
+
 
   const dt = useRef(null);
 
@@ -142,12 +149,32 @@ function ConvenioMedico() {
     );
   };
 
-  const actionBodyTemplate = (rowData) => {
+  const actionButtonGroupTemplate = (rowData) => {
     return (
       <React.Fragment>
-        <Button icon="pi pi-trash" className="border-round p-button-rounded p-button-danger" onClick={() => confirmDeleteConvenio(rowData)} />
+        <Button icon="pi pi-bars" className="border-round p-button-rounded p-button-text" onClick={(e) => toggleMenu(rowData, e)} />
+        <Menu model={menuModel} ref={menuRef} popup={true} id="popup_menu" />
       </React.Fragment>
     );
+  };
+
+  const toggleMenu = (rowData, e) => {
+    setMenuModel([])
+
+    let arrayMenu = [
+      { label: 'Editar', icon: 'pi pi-pencil', command: () => editConvenio(rowData) },
+      { label: 'Excluir', icon: 'pi pi-trash', command: () => confirmDeleteConvenio(rowData) }
+    ];
+
+    arrayMenu.forEach((item) => {
+      setMenuModel(prevState => [...prevState, item]);
+    });
+
+    if (menuRef.current) {
+      menuRef.current.toggle(e);
+    } else {
+      console.error('Menu ref não está definido');
+    }
   };
 
   const header = (
@@ -195,11 +222,11 @@ function ConvenioMedico() {
             dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} scrollable scrollHeight="200px"
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} convenios" globalFilter={globalFilter}>
+            <Column body={actionButtonGroupTemplate}></Column>
             <Column field="nome" header="Nome" sortable></Column>
             <Column field="telefone" header="Telefone" sortable></Column>
             <Column field="email" header="E-Mail" sortable></Column>
             <Column field="site" header="Site" sortable></Column>
-            <Column body={actionBodyTemplate}></Column>
           </DataTable>
         </div>
 

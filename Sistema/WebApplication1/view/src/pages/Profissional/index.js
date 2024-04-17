@@ -18,19 +18,19 @@ import { SidebarContext } from '../../context/SideBarContext.js';
 
 export default function Profissional() {
     let emptyProfissional = {
-        IdProfissional: null,
-        NomeProfissional: '',
-        cpf: '',
-        rg: '',
-        telefone: '',
-        endereco: '',
-        nascimento: '',
-        sexo: '',
-        EmailProfissional: '',
-        NomeProfissao: '',
-        ConselhoProfissao: '',
-        NomeConvenio: '',
-        observacoes: ''
+        id: null,
+        nome: "",
+        cpf: "",
+        rg: "",
+        telefone: "",
+        email: "",
+        endereco: "",
+        nascimento: "",
+        sexo: "",
+        observacoes: "",
+        image: "",
+        profissaoId: null,
+        convenioId: null
     };
 
     const { profissionalVisible, setProfissionalVisible } = useContext(SidebarContext);
@@ -45,6 +45,7 @@ export default function Profissional() {
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
     const [token] = useState(localStorage.getItem('token') || '');
+    const [conselho, setConselho] = useState("");
     const toast = useRef(null);
     const dt = useRef(null);
 
@@ -58,6 +59,12 @@ export default function Profissional() {
                 console.error("Erro ao buscar profissionais:", error);
             });
     }, []);
+
+    useEffect(() => {
+        if (profissional.conselho) {
+            setConselho(profissional.conselho); // inicializa com o valor do conselho quando este estiver disponível
+        }
+    }, [profissional.conselho]);
 
     useEffect(() => {
         const currentToken = localStorage.getItem('token') || '';
@@ -84,20 +91,20 @@ export default function Profissional() {
     const dropdownConvenios = convenios.map(convenio => {
         return {
             label: convenio.nome,
-            value: convenio.nome
+            value: convenio.id
         };
     });
 
     const dropdownProfissoes = profissoes.map(profissao => {
         return {
             label: profissao.nome,
-            value: profissao.conselhoProfissional
+            value: profissao.id
         };
     });
 
     const dropdownSexo = [
-        { label: 'Masculino', value: 'Masculino' },
-        { label: 'Feminino', value: 'Feminino' }
+        { label: 'Masculino', value: 'M' },
+        { label: 'Feminino', value: 'F' }
     ];
 
     const openNew = () => {
@@ -117,11 +124,11 @@ export default function Profissional() {
 
     const saveProfissional = () => {
         setSubmitted(true);
-
+    
         if (profissional.nome.trim()) {
             let _profissionais = [...profissionais];
-            let _profissional = { ...profissional };
-
+            let _profissional = { ...profissional, conselho: conselho }; // atualiza o conselho com o valor digitado
+    
             const currentToken = localStorage.getItem('token') || '';
             if (profissional.id) {
                 const index = findIndexById(profissional.id);
@@ -129,12 +136,11 @@ export default function Profissional() {
                 toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissional Atualizado', life: 3000 });
                 ProfissionalService.updateProfissional(_profissional, currentToken);
             } else {
-                _profissional.id = createId();
                 _profissionais.push(_profissional);
                 toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissional Criado', life: 3000 });
                 ProfissionalService.createProfissional(_profissional, currentToken);
             }
-
+    
             setProfissionais(_profissionais);
             setProfissionalDialog(false);
             setProfissional(emptyProfissional);
@@ -182,39 +188,54 @@ export default function Profissional() {
         return index;
     };
 
-    const createId = () => {
-        return Math.random().toString(36).substr(2, 9);
-    };
-
     const onInputChange = (e, name) => {
-        const val = (e.target && e.target.value) || '';
+        const val = e.target.value || '';
         let _profissional = { ...profissional };
-        _profissional[`${name}`] = val;
+
+        if (name === 'convenio') {
+            _profissional.convenioId = val;
+        } else if (name === 'profissao') {
+            _profissional.profissaoId = val;
+        } else {
+            _profissional[name] = val;
+        }
+
         setProfissional(_profissional);
     };
 
+
     const leftToolbarTemplate = () => {
         return (
-            <React.Fragment>
+            <>
                 <Button label="Novo" icon="pi pi-plus" className="border-round p-button-success mr-2" onClick={openNew} />
-            </React.Fragment>
+            </>
         );
     };
 
     const actionBodyTemplate = (rowData) => {
         return (
-            <React.Fragment>
+            <>
                 <Button icon="pi pi-pencil" className="border-round p-button-rounded p-button-success mr-2" onClick={() => editProfissional(rowData)} />
                 <Button icon="pi pi-trash" className="border-round p-button-rounded p-button-danger" onClick={() => confirmDeleteProfissional(rowData)} />
-            </React.Fragment>
+            </>
         );
     };
 
     const onProfissaoChange = (e) => {
-        let _profissional = { ...profissional };
-        _profissional.profissao = profissoes.find(prof => prof.conselhoProfissional === e.value);
+        const selectedProfissaoId = e.value;
+        const selectedProfissao = profissoes.find(prof => prof.id === selectedProfissaoId);
+        let _profissional = { ...profissional, profissaoId: selectedProfissaoId };
+
+        // Configura o conselho se existir na profissão selecionada
+        if (selectedProfissao && selectedProfissao.conselhoProfissional) {
+            _profissional.conselho = selectedProfissao.conselhoProfissional;
+        } else {
+            _profissional.conselho = '';
+        }
+
         setProfissional(_profissional);
     };
+
 
     const header = (
         <div className="table-header">
@@ -227,17 +248,17 @@ export default function Profissional() {
     );
 
     const profissionalDialogFooter = (
-        <React.Fragment>
+        <>
             <Button label="Cancelar" icon="pi pi-times" className="border-round p-button-text" onClick={hideDialog} />
             <Button label="Salvar" icon="pi pi-check" className="border-round p-button-text" onClick={saveProfissional} />
-        </React.Fragment>
+        </>
     );
 
     const deleteProfissionalDialogFooter = (
-        <React.Fragment>
+        <>
             <Button label="Não" icon="pi pi-times" className="border-round p-button-text" onClick={hideDeleteProfissionalDialog} />
             <Button label="Sim" icon="pi pi-check" className="border-round p-button-text" onClick={deleteProfissional} />
-        </React.Fragment>
+        </>
     );
 
     return (
@@ -319,16 +340,25 @@ export default function Profissional() {
                             <label htmlFor="profissao">Especialidade</label>
                             <Dropdown
                                 id="profissao"
+<<<<<<< HEAD
                                 value={profissional.profissao_id}
+=======
+                                value={profissional.profissaoId}
+>>>>>>> Dev
                                 options={dropdownProfissoes}
                                 onChange={onProfissaoChange}
                                 placeholder="Selecione uma profissão"
                             />
+<<<<<<< HEAD
+=======
+
+>>>>>>> Dev
                         </div>
                     </div>
 
                     <div className='grid'>
                         <div className="field col">
+<<<<<<< HEAD
                             <label htmlFor="conselho">
                                 {profissional.profissao ? profissional.profissao.conselhoProfissional : "Conselho"}
                             </label>
@@ -337,12 +367,30 @@ export default function Profissional() {
                                 disabled={!profissional.profissao}
                                 value={profissional.conselho}
                                 onChange={(e) => onInputChange(e, 'conselho')}
+=======
+                            <label htmlFor="conselho">{profissional.conselho ? `Conselho (${profissional.conselho})` : "Conselho"}</label>
+                            <InputText
+                                id="conselho"
+                                disabled={!profissional.conselho}
+                                value={conselho}
+                                onChange={(e) => setConselho(e.target.value)}
+>>>>>>> Dev
                             />
                         </div>
 
                         <div className="field col">
                             <label htmlFor="convenio">Convenio</label>
+<<<<<<< HEAD
                             <Dropdown id="convenio" value={profissional.convenio} options={dropdownConvenios} onChange={(e) => onInputChange(e, 'convenio')} placeholder="Selecione um convenio" />
+=======
+                            <Dropdown
+                                id="convenio"
+                                value={profissional.convenioId}
+                                options={dropdownConvenios}
+                                onChange={(e) => onInputChange(e, 'convenio')}
+                                placeholder="Selecione um convenio"
+                            />
+>>>>>>> Dev
                         </div>
                     </div>
 

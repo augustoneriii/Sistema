@@ -53,14 +53,21 @@ namespace app.Controllers
             }
         }
 
+<<<<<<< HEAD
         
         [HttpGet]
         [Route("findUserByToken")]
+=======
+        [HttpGet("findUserByToken")]
+>>>>>>> Dev
         public async Task<IActionResult> FindUserByToken()
         {
             try
             {
+<<<<<<< HEAD
            
+=======
+>>>>>>> Dev
                 var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
                 var user = await authService.FindUserByToken(token);
                 if (user != null)
