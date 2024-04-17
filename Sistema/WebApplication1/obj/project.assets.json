@@ -3140,19 +3140,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\augusto.neri\\.nuget\\packages\\": {}
+    "C:\\Users\\Augusto\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\WebApplication1\\app.csproj",
+      "projectUniqueName": "D:\\Sistema\\Sistema\\Sistema\\WebApplication1\\app.csproj",
       "projectName": "app",
-      "projectPath": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\WebApplication1\\app.csproj",
-      "packagesPath": "C:\\Users\\augusto.neri\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\WebApplication1\\obj\\",
+      "projectPath": "D:\\Sistema\\Sistema\\Sistema\\WebApplication1\\app.csproj",
+      "packagesPath": "C:\\Users\\Augusto\\.nuget\\packages\\",
+      "outputPath": "D:\\Sistema\\Sistema\\Sistema\\WebApplication1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\augusto.neri\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Augusto\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3172,6 +3172,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -3242,7 +3247,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
       }
     }
   }

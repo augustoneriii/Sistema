@@ -76,9 +76,7 @@ void StartReactProject()
                 sw.WriteLine("cd view");
 
                 // Comando para iniciar o aplicativo React
-                sw.WriteLine("npm install");
                 sw.WriteLine("npm start");
-
             }
         }
     }
