@@ -340,49 +340,27 @@ export default function Profissional() {
                             <label htmlFor="profissao">Especialidade</label>
                             <Dropdown
                                 id="profissao"
-<<<<<<< HEAD
-                                value={profissional.profissao_id}
-=======
                                 value={profissional.profissaoId}
->>>>>>> Dev
                                 options={dropdownProfissoes}
                                 onChange={onProfissaoChange}
                                 placeholder="Selecione uma profissão"
                             />
-<<<<<<< HEAD
-=======
-
->>>>>>> Dev
                         </div>
                     </div>
 
                     <div className='grid'>
                         <div className="field col">
-<<<<<<< HEAD
-                            <label htmlFor="conselho">
-                                {profissional.profissao ? profissional.profissao.conselhoProfissional : "Conselho"}
-                            </label>
-                            <InputText
-                                id="conselho"
-                                disabled={!profissional.profissao}
-                                value={profissional.conselho}
-                                onChange={(e) => onInputChange(e, 'conselho')}
-=======
                             <label htmlFor="conselho">{profissional.conselho ? `Conselho (${profissional.conselho})` : "Conselho"}</label>
                             <InputText
                                 id="conselho"
                                 disabled={!profissional.conselho}
                                 value={conselho}
                                 onChange={(e) => setConselho(e.target.value)}
->>>>>>> Dev
                             />
                         </div>
 
                         <div className="field col">
                             <label htmlFor="convenio">Convenio</label>
-<<<<<<< HEAD
-                            <Dropdown id="convenio" value={profissional.convenio} options={dropdownConvenios} onChange={(e) => onInputChange(e, 'convenio')} placeholder="Selecione um convenio" />
-=======
                             <Dropdown
                                 id="convenio"
                                 value={profissional.convenioId}
@@ -390,7 +368,6 @@ export default function Profissional() {
                                 onChange={(e) => onInputChange(e, 'convenio')}
                                 placeholder="Selecione um convenio"
                             />
->>>>>>> Dev
                         </div>
                     </div>
 

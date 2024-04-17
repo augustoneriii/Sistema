@@ -5,19 +5,6 @@ import ConvenioMedico from '../pages/CadastrosBasicos/ConvenioMedico';
 import Profissao from '../pages/CadastrosBasicos/Profissao';
 import Paciente from '../pages/Paciente';
 import Consulta from '../pages/Consulta';
-<<<<<<< HEAD
-import { useEffect, useState } from 'react';
-import Profissional from '../pages/Profissional';
-
-function AuthenticatedComponents() {
-    var token
-
-    useEffect(() => {
-        token = localStorage.getItem('token')
-    }, [token])
-
-    return (
-=======
 import Profissional from '../pages/Profissional';
 
 function AuthenticatedComponents() {
@@ -34,7 +21,6 @@ function AuthenticatedComponents() {
     }, []); 
 
     return token ? (
->>>>>>> Dev
         <>
             <SideBar />
             <ConvenioMedico />

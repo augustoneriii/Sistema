@@ -2,10 +2,7 @@
 using app.BE;
 using app.Data;
 using app.DTO;
-<<<<<<< HEAD
 using Microsoft.AspNetCore.Authorization;
-=======
->>>>>>> Dev
 
 namespace app.Controllers
 {
@@ -21,10 +18,7 @@ namespace app.Controllers
         }
 
         // GET: Profissoes
-<<<<<<< HEAD
         [Authorize]
-=======
->>>>>>> Dev
         [Route("getAllProfissoes")]
         [HttpGet]
         public async Task<IActionResult> GetAll(ProfissoesDTO dto)
@@ -41,10 +35,7 @@ namespace app.Controllers
         }
 
         // POST: Profissoes
-<<<<<<< HEAD
         [Authorize]
-=======
->>>>>>> Dev
         [Route("insertProfissoes")]
         [HttpPost]
         public async Task<IActionResult> Insert([FromBody] ProfissoesDTO profissoes)
@@ -64,10 +55,7 @@ namespace app.Controllers
         }
 
         // PATCH: Profissoes
-<<<<<<< HEAD
         [Authorize]
-=======
->>>>>>> Dev
         [Route("updateProfissoes")]
         [HttpPatch]
         public async Task<IActionResult> Update([FromBody] ProfissoesDTO profissoes)
@@ -87,10 +75,7 @@ namespace app.Controllers
         }
 
         // DELETE: Profissoes
-<<<<<<< HEAD
         [Authorize]
-=======
->>>>>>> Dev
         [Route("deleteProfissoes")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] int id)

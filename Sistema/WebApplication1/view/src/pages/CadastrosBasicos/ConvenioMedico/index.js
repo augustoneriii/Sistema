@@ -9,10 +9,7 @@ import { ConvenioService } from './service/ConvenioService.js';
 import { Toast } from 'primereact/toast';
 import { Dialog } from 'primereact/dialog';
 import Modal from '../../../components/Modal/index.js';
-<<<<<<< HEAD
-=======
 import { Menu } from 'primereact/menu';
->>>>>>> Dev
 
 function ConvenioMedico() {
   const { convenioVisible, setConvenioVisible } = useContext(SidebarContext);
