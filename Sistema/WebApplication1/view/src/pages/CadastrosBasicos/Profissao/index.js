@@ -10,6 +10,7 @@ import { Toast } from 'primereact/toast';
 import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import { Menu } from 'primereact/menu';
+import Modal from '../../../components/Modal/index.js';
 
 function Profissao() {
     const { profissaoVisible, setProfissaoVisible } = useContext(SidebarContext);
@@ -33,14 +34,16 @@ function Profissao() {
     const menuRef = useRef(null);
 
     useEffect(() => {
-        const currentToken = localStorage.getItem('token') || '';
-        ProfissaoService.getProfissoes(currentToken)
-            .then(response => {
-                setProfissoes(response.data);
-            })
-            .catch(error => {
+        async function fetchProfissoes() {
+            const currentToken = localStorage.getItem('token') || '';
+            try {
+                const response = await ProfissaoService.getProfissoes(currentToken);
+                setProfissoes(response.data); // Assuming response.data contains the array of profissoes
+            } catch (error) {
                 console.error("Erro ao buscar profissoes:", error);
-            });
+            }
+        }
+        fetchProfissoes();
     }, []);
 
     const openNew = () => {
@@ -192,7 +195,7 @@ function Profissao() {
         <>
             <Toast ref={toast} />
 
-            <Dialog header={header} modal={false} visible={profissaoVisible} style={{ width: '30vw' }} onHide={() => setProfissaoVisible(false)}>
+            <Modal header={header} modal={false} visible={profissaoVisible} style={{ width: '30vw' }} onHide={() => setProfissaoVisible(false)}>
                 <div className='card'>
                     <div className='grid'>
                         <div className="field col-6">
@@ -226,7 +229,7 @@ function Profissao() {
                         {profissao && <span>Tem certeza que deseja excluir o profissao <b>{profissao.nome}</b>?</span>}
                     </div>
                 </Dialog>
-            </Dialog>
+            </Modal>
         </>
     )
 }

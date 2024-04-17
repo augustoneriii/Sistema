@@ -7,6 +7,8 @@ export const SidebarProvider = ({ children }) => {
     const [convenioVisible, setConvenioVisible] = useState(false);
     const [profissaoVisible, setProfissaoVisible] = useState(false);
     const [pacienteVisible, setPacienteVisible] = useState(false);
+    const [consultaVisible, setConsultaVisible] = useState(false);
+    const [profissionalVisible, setProfissionalVisible] = useState(false);
 
     return (
         <SidebarContext.Provider
@@ -14,7 +16,9 @@ export const SidebarProvider = ({ children }) => {
                 visible, setVisible,
                 convenioVisible, setConvenioVisible,
                 profissaoVisible, setProfissaoVisible,
-                pacienteVisible, setPacienteVisible
+                pacienteVisible, setPacienteVisible,
+                consultaVisible, setConsultaVisible,
+                profissionalVisible, setProfissionalVisible
             }}
         >
             {children}
