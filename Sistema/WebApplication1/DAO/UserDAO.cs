@@ -35,9 +35,9 @@ namespace app.DAO
             {
                 objSelect.Append($" AND \"Email\" = '{dto.Email}' ");
             }
-            if (!string.IsNullOrEmpty(dto.Phone))
+            if (!string.IsNullOrEmpty(dto.PhoneNumber))
             {
-                objSelect.Append($" AND \"PhoneNumber\" = '{dto.Phone}' ");
+                objSelect.Append($" AND \"PhoneNumber\" = '{dto.PhoneNumber}' ");
             }
 
             var dt = _context.ExecuteQuery(objSelect.ToString());
@@ -51,7 +51,7 @@ namespace app.DAO
                     Id = (row["Id"]).ToString(),
                     UserName = row["UserName"].ToString(),
                     Email = row["Email"].ToString(),
-                    Phone = row["PhoneNumber"].ToString(),
+                    PhoneNumber = row["PhoneNumber"].ToString(),
                 });
             }
             return lstUsers;
@@ -66,7 +66,7 @@ namespace app.DAO
             objUpdate.Append("SET ");
             objUpdate.Append($"\"UserName\" = '{users.UserName}', ");
             objUpdate.Append($"\"Email\" = '{users.Email}', ");
-            objUpdate.Append($"\"PhoneNumber\" = '{users.Phone}', ");
+            objUpdate.Append($"\"PhoneNumber\" = '{users.PhoneNumber}', ");
             
             objUpdate.Append($"WHERE \"Id\" = {users.Id}; ");
 

@@ -1,317 +1,67 @@
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\appsettings.Development.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\appsettings.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\app.exe
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\app.deps.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\app.runtimeconfig.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\app.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\app.pdb
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.OpenApi.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.Logging.Abstractions.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.OpenApi.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\Npgsql.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\System.Data.SqlClient.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win-arm64\native\sni.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win-x64\native\sni.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win-x86\native\sni.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\app.csproj.AssemblyReference.cache
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\app.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\app.AssemblyInfoInputs.cache
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\app.AssemblyInfo.cs
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\app.csproj.CoreCompileInputs.cache
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\app.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\app.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.app.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.build.app.props
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.app.props
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.app.props
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets.pack.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets.build.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets.development.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\scopedcss\bundle\app.styles.css
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\app.csproj.CopyComplete
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\app.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\refint\app.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\app.pdb
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\app.genruntimeconfig.cache
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\obj\Debug\net7.0\ref\app.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\view\build\asset-manifest.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\view\build\manifest.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\view\package-lock.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\view\package.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\WebApplication1\bin\Debug\net7.0\view\public\manifest.json
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\package-lock.json
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\appsettings.Development.json
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\appsettings.json
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\build\asset-manifest.json
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\build\manifest.json
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\package.json
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\public\manifest.json
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.exe
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.deps.json
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.runtimeconfig.json
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.pdb
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Humanizer.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.Internal.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.OpenApi.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Abstractions.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.Identity.Core.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.OpenApi.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Mono.TextTemplating.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Npgsql.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.CodeDom.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.Data.SqlClient.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.Security.Permissions.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win-arm64\native\sni.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win-x64\native\sni.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win-x86\native\sni.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.csproj.AssemblyReference.cache
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.AssemblyInfoInputs.cache
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.AssemblyInfo.cs
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.csproj.CoreCompileInputs.cache
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.sourcelink.json
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets.build.json
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets.development.json
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.app.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.build.app.props
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.app.props
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.app.props
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets.pack.json
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\scopedcss\bundle\app.styles.css
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.csproj.Up2Date
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\refint\app.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.pdb
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.genruntimeconfig.cache
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\ref\app.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
-C:\Users\italo\OneDrive\Área de Trabalho\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\appsettings.Development.json
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\appsettings.json
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\build\asset-manifest.json
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\build\manifest.json
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\package-lock.json
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\package.json
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\public\manifest.json
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.exe
-C:\Users\henri\source\repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.deps.json
-C:\Users\henri\source\repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.runtimeconfig.json
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.pdb
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Humanizer.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.Internal.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.OpenApi.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Abstractions.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.Identity.Core.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.OpenApi.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Mono.TextTemplating.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Npgsql.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.CodeDom.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.Data.SqlClient.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.Security.Permissions.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win-arm64\native\sni.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win-x64\native\sni.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win-x86\native\sni.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.csproj.AssemblyReference.cache
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.AssemblyInfoInputs.cache
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.AssemblyInfo.cs
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.csproj.CoreCompileInputs.cache
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.sourcelink.json
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets.build.json
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets.development.json
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.app.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.build.app.props
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.app.props
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.app.props
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets.pack.json
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\scopedcss\bundle\app.styles.css
-C:\Users\henri\source\repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.csproj.CopyComplete
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\refint\app.dll
-C:\Users\henri\Source\Repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.pdb
-C:\Users\henri\source\repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.genruntimeconfig.cache
-C:\Users\henri\source\repos\augustoneriii\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\ref\app.dll
-<<<<<<< HEAD
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\appsettings.Development.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\appsettings.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\build\asset-manifest.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\build\manifest.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\package-lock.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\package.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\public\manifest.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.exe
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.deps.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.runtimeconfig.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.pdb
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Humanizer.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.Internal.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.OpenApi.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Abstractions.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.Identity.Core.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.OpenApi.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Mono.TextTemplating.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Npgsql.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.CodeDom.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.Data.SqlClient.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.Security.Permissions.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win-arm64\native\sni.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win-x64\native\sni.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win-x86\native\sni.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.csproj.AssemblyReference.cache
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.AssemblyInfoInputs.cache
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.AssemblyInfo.cs
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.csproj.CoreCompileInputs.cache
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.app.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.build.app.props
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.app.props
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.app.props
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets.pack.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets.build.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets.development.json
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\scopedcss\bundle\app.styles.css
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.csproj.CopyComplete
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\refint\app.dll
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.pdb
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.genruntimeconfig.cache
-C:\Users\augusto.neri\Documents\estudos\AON\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\ref\app.dll
-=======
->>>>>>> Dev
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\appsettings.Development.json
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\appsettings.json
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\build\asset-manifest.json
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\build\manifest.json
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\package-lock.json
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\package.json
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\public\manifest.json
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.exe
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.deps.json
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.runtimeconfig.json
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.pdb
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Humanizer.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.Internal.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.OpenApi.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Abstractions.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.Identity.Core.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.OpenApi.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Mono.TextTemplating.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Npgsql.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.CodeDom.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.Data.SqlClient.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.Security.Permissions.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win-arm64\native\sni.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win-x64\native\sni.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win-x86\native\sni.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.csproj.AssemblyReference.cache
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.GeneratedMSBuildEditorConfig.editorconfig
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.AssemblyInfoInputs.cache
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.AssemblyInfo.cs
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.csproj.CoreCompileInputs.cache
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.MvcApplicationPartsAssemblyInfo.cs
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.MvcApplicationPartsAssemblyInfo.cache
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.sourcelink.json
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets.build.json
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets.development.json
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.app.Microsoft.AspNetCore.StaticWebAssets.props
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.build.app.props
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.app.props
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.app.props
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets.pack.json
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\scopedcss\bundle\app.styles.css
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.csproj.Up2Date
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\refint\app.dll
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.pdb
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.genruntimeconfig.cache
-D:\Sistema\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\ref\app.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\appsettings.Development.json
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\appsettings.json
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\build\asset-manifest.json
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\build\manifest.json
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\package-lock.json
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\package.json
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\view\public\manifest.json
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.exe
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.deps.json
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.runtimeconfig.json
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\app.pdb
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Humanizer.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.Extensions.Options.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Microsoft.OpenApi.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Mono.TextTemplating.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Npgsql.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.CodeDom.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.Data.SqlClient.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\System.Security.Permissions.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win-arm64\native\sni.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win-x64\native\sni.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win-x86\native\sni.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\bin\Debug\net7.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.csproj.AssemblyReference.cache
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.AssemblyInfoInputs.cache
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.AssemblyInfo.cs
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.csproj.CoreCompileInputs.cache
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.sourcelink.json
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets.build.json
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets.development.json
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.app.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.build.app.props
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.app.props
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.app.props
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\staticwebassets.pack.json
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\scopedcss\bundle\app.styles.css
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.csproj.Up2Date
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\refint\app.dll
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.pdb
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\app.genruntimeconfig.cache
+C:\Users\italo\OneDrive\Documentos\Sistema\Sistema\WebApplication1\obj\Debug\net7.0\ref\app.dll

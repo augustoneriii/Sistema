@@ -37,6 +37,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "app.Controllers.ProfissionaisController",
+    "Method": "Delete",
+    "RelativePath": "deleteProfissionais",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int64",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "app.Controllers.ProfissoesController",
     "Method": "Delete",
     "RelativePath": "deleteProfissoes",
@@ -115,6 +131,107 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "app.Controllers.ProfissionaisController",
+    "Method": "GetAll",
+    "RelativePath": "getAllProfissionais",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Nullable\u00601[[System.Int64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Nome",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Cpf",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Rg",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Telefone",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Email",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Conselho",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Endereco",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Nascimento",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Sexo",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Observacoes",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Image",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "ConvenioMedicos",
+        "Type": "System.Collections.Generic.List\u00601[[app.DTO.ConvenioMedicosDTO, app, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Profissoes.Id",
+        "Type": "System.Nullable\u00601[[System.Int64, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Profissoes.Nome",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Profissoes.ConselhoProfissional",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Profissoes.CreatedAt",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Profissoes.UpdatedAt",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "app.Controllers.ProfissoesController",
     "Method": "GetAll",
     "RelativePath": "getAllProfissoes",
@@ -139,7 +256,7 @@
       },
       {
         "Name": "CreatedAt",
-        "Type": "System.DateTime",
+        "Type": "System.Nullable\u00601[[System.DateTime, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "IsRequired": false
       },
       {
@@ -179,7 +296,7 @@
         "IsRequired": false
       },
       {
-        "Name": "Phone",
+        "Name": "PhoneNumber",
         "Type": "System.String",
         "IsRequired": false
       }
@@ -197,6 +314,22 @@
       {
         "Name": "convenioMedicos",
         "Type": "app.DTO.ConvenioMedicosDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "app.Controllers.ProfissionaisController",
+    "Method": "Insert",
+    "RelativePath": "insertProfissionais",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "profissionais",
+        "Type": "app.DTO.Request.ProfissionaisRequest",
         "IsRequired": true
       }
     ],
@@ -275,6 +408,22 @@
       {
         "Name": "convenioMedicos",
         "Type": "app.DTO.ConvenioMedicosDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "app.Controllers.ProfissionaisController",
+    "Method": "Update",
+    "RelativePath": "updateProfissionais",
+    "HttpMethod": "PATCH",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "profissionais",
+        "Type": "app.DTO.Request.ProfissionaisRequest",
         "IsRequired": true
       }
     ],

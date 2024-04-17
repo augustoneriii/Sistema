@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\WebApplication1\\app.csproj": {}
+    "C:\\Users\\italo\\OneDrive\\Documentos\\Sistema\\Sistema\\WebApplication1\\app.csproj": {}
   },
   "projects": {
-    "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\WebApplication1\\app.csproj": {
+    "C:\\Users\\italo\\OneDrive\\Documentos\\Sistema\\Sistema\\WebApplication1\\app.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\WebApplication1\\app.csproj",
+        "projectUniqueName": "C:\\Users\\italo\\OneDrive\\Documentos\\Sistema\\Sistema\\WebApplication1\\app.csproj",
         "projectName": "app",
-        "projectPath": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\WebApplication1\\app.csproj",
-        "packagesPath": "C:\\Users\\augusto.neri\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\augusto.neri\\Documents\\estudos\\AON\\Sistema\\Sistema\\WebApplication1\\obj\\",
+        "projectPath": "C:\\Users\\italo\\OneDrive\\Documentos\\Sistema\\Sistema\\WebApplication1\\app.csproj",
+        "packagesPath": "C:\\Users\\italo\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\italo\\OneDrive\\Documentos\\Sistema\\Sistema\\WebApplication1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\augusto.neri\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\italo\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -34,6 +34,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -96,6 +101,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.18, 7.0.18]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[7.0.18, 7.0.18]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[7.0.18, 7.0.18]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[7.0.18, 7.0.18]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -104,7 +127,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
         }
       }
     }
