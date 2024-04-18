@@ -29,6 +29,8 @@ builder.Services.AddScoped<ProfissoesBE>();
 builder.Services.AddScoped<UserBE>();
 builder.Services.AddScoped<PacientesBE>();
 builder.Services.AddScoped<ConsultaBE>();
+builder.Services.AddScoped<PreAgendamentoBE>();
+
 
 builder.Services.AddControllers();
 
