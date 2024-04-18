@@ -12,7 +12,6 @@ function useAuth() {
         const token = localStorage.getItem('token')
 
         if (token) {
-            //JSON.parse() converte JSON em string
             api.defaults.headers.Authorization = `Bearer ${JSON.parse(token)}`
             setAuthenticated(true)
         }
@@ -26,7 +25,7 @@ function useAuth() {
 
     async function register(user) {
         try {
-            const data = await api.post('/api/Auth/register', user)
+            const data = await api.post('/register', user)
                 .then((response) => {
                     return response.data
                 })
@@ -40,7 +39,7 @@ function useAuth() {
 
     async function login(user) {
         try {
-            const data = await api.post('/api/Auth/authenticate', user)
+            const data = await api.post('/Authenticate', user)
                 .then((response) => {
                     return response.data
                 })

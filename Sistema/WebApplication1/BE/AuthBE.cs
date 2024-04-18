@@ -72,33 +72,7 @@ namespace app.BE
             return "Falha na autenticação"; // Retorna uma mensagem de erro se a autenticação falhar
         }
 
-        //find user by token
-        public async Task<IdentityUser> FindUserByToken(string token)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = new byte[32]; // Ajuste o tamanho da chave conforme necessário
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(key); // Preenche a chave com valores aleatórios
-            }
-
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key),
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero
-            };
-
-            SecurityToken securityToken;
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
-
-            var email = principal.FindFirst(ClaimTypes.Name).Value;
-            var user = await _userManager.FindByEmailAsync(email);
-            return user;
-        }
+     
 
 
     }
