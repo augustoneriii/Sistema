@@ -31,7 +31,8 @@ export default function Consulta() {
         atendida: false,
         status: '',
         tipo: '',
-        observacoes: ''
+        observacoes: '',
+        
     };
 
     const [consultas, setConsultas] = useState([]);
@@ -48,14 +49,16 @@ export default function Consulta() {
     const dt = useRef(null);
 
     useEffect(() => {
-        const currentToken = localStorage.getItem('token') || '';
-        ConsultaService.getConsultas(currentToken)
-            .then(response => {
-                setConsultas(response.data); // Acesso à array de consultas
-            })
-            .catch(error => {
-                console.error("Erro ao buscar consultas:", error);
-            });
+        async function fetchConsulta() {
+            const currentToken = localStorage.getItem('token') || '';
+            try {
+                const response = await ConsultaService.getConsultas(currentToken);
+                setConsultas(response.data); // Assuming response.data contains the array of consultas
+            } catch (error) {
+                console.error("Erro ao buscar Consultas:", error);
+            }
+        }
+        fetchConsulta();
     }, []);
 
     useEffect(() => {
@@ -126,7 +129,6 @@ export default function Consulta() {
                 ConsultaService.updateConsulta(_consulta, currentToken);
             } else {
                 console.log("create consulta", _consulta);
-                _consulta.id = createId();
                 _consultas.push(_consulta);
                 toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Criado', life: 3000 });
                 ConsultaService.createConsulta(_consulta, currentToken);
