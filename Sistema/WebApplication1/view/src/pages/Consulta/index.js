@@ -23,15 +23,14 @@ export default function Consulta() {
 
     let emptyConsulta = {
         id: null,
+        atendida: false,
         data: '',
         hora: '',
-        paciente: '',
-        profissional: '',
-        user: '',
-        atendida: false,
-        status: '',
-        tipo: '',
         observacoes: '',
+        
+        profissional: '',
+        status: '',
+        tipo: ''
         
     };
 
@@ -65,7 +64,7 @@ export default function Consulta() {
         const currentToken = localStorage.getItem('token') || '';
         ConsultaService.getPacientes(currentToken)
             .then(response => {
-                setPacientes(response.data.pacientes); // Acesso à array de pacientes
+                setPacientes(response.data); // Acesso à array de pacientes
             })
             .catch(error => {
                 console.error("Erro ao buscar pacientes:", error);

@@ -36,7 +36,7 @@ namespace app.Controllers
             }
         }
 
-        
+        //Post: Consulta
         [Route("insertConsulta")]
         [HttpPost]
         public async Task<IActionResult> Insert([FromBody] ConsultaRequest consulta)

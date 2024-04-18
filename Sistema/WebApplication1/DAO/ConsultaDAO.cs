@@ -24,7 +24,7 @@ namespace app.DAO
             objSelect.Append("TO_CHAR(\"Sistema\".\"Consultas\".\"Hora\", 'HH24:MI:SS') AS \"Hora\", "                                             );
             objSelect.Append("\"Sistema\".\"Consultas\".\"PacienteId\", "                                                                          );
             objSelect.Append("\"Sistema\".\"Consultas\".\"ProfissionalId\", ");
-            objSelect.Append("\"Sistema\".\"Consultas\".\"UserId\", "                                                                              );
+            
             objSelect.Append("\"Sistema\".\"Consultas\".\"Atendida\", "                                                                            );
             objSelect.Append("\"Sistema\".\"Consultas\".\"Status\", "                                                                              );
             objSelect.Append("\"Sistema\".\"Consultas\".\"Tipo\", "                                                                                );
@@ -34,15 +34,12 @@ namespace app.DAO
             objSelect.Append("\"Pacientes\".\"Nome\" AS \"NomePacientes\", "                                                                       );
             objSelect.Append("\"Pacientes\".\"Cpf\" AS \"CpfPacientes\", "                                                                         );
             objSelect.Append("\"Pacientes\".\"Telefone\" AS \"TelefonePacientes\", "                                                               );
-            objSelect.Append("\"AspNetUsers\".\"Id\" AS \"UserId\", "                                                                              );
-            objSelect.Append("\"AspNetUsers\".\"UserName\" AS \"UserName\", "                                                                      );
-            objSelect.Append("\"AspNetUsers\".\"Email\" AS \"UserEmail\", "                                                                        );
             objSelect.Append("\"Profissionais\".\"Nome\" AS \"NomeProfissionais\", "                                                               );
             objSelect.Append("\"Profissionais\".\"Email\" AS \"EmailProfissionais\" "                                                              );
             objSelect.Append("FROM \"Sistema\".\"Consultas\" "                                                                                     );
             objSelect.Append("LEFT JOIN \"Sistema\".\"Pacientes\"     ON \"Sistema\".\"Consultas\".\"PacienteId\"      = \"Pacientes\".\"Id\" "             );
             objSelect.Append("LEFT JOIN \"Sistema\".\"Profissionais\" ON \"Sistema\".\"Consultas\".\"ProfissionalId\" = \"Profissionais\".\"Id\" ");
-            objSelect.Append("LEFT JOIN \"public\".\"AspNetUsers\"    ON \"Sistema\".\"Consultas\".\"UserId\"          = \"AspNetUsers\".\"Id\" ");
+            
             
             objSelect.Append("WHERE 1 = 1"                                                                                                         );
 
@@ -83,24 +80,22 @@ namespace app.DAO
                     Observacoes = row["Observacoes"].ToString(),
                     Pacientes = new PacientesDTO
                     {
-                        Id = Convert.ToInt32(row["PacientesId"] != DBNull.Value ? Convert.ToInt32(row["PacientesId"]) : 0),
+                        Id = Convert.ToInt32(row["PacienteId"] != DBNull.Value ? Convert.ToInt32(row["PacienteId"]) : 0),
                         Nome = row["NomePacientes"] != DBNull.Value ? row["NomePacientes"].ToString() : string.Empty,
                         Cpf = row["CpfPacientes"] != DBNull.Value ? row["CpfPacientes"].ToString() : string.Empty,
                         Telefone = row["TelefonePacientes"] != DBNull.Value ? row["TelefonePacientes"].ToString() : string.Empty,
+                        
                     },
 
-                    User = new UserDTO
-                    {
-                        Id = row["UserId"] != DBNull.Value ? row["UserId"].ToString() : string.Empty,
-                        UserName = row["UserName"] != DBNull.Value ? row["UserName"].ToString() : string.Empty,
-                        Email = row["UserEmail"] != DBNull.Value ? row["UserEmail"].ToString() : string.Empty,
-                    },
+                    
 
                     Profissionais = new ProfissionaisDTO
                     {
-                        Id = Convert.ToInt32(row["ProfissionaisId"] != DBNull.Value ? Convert.ToInt32(row["ProfissionaisId"]) : 0),
+                        Id = Convert.ToInt32(row["ProfissionalId"] != DBNull.Value ? Convert.ToInt32(row["ProfissionalId"]) : 0),
+                        
                         Nome = row["NomeProfissionais"] != DBNull.Value ? row["NomeProfissionais"].ToString() : string.Empty,
                         Email = row["EmailProfissionais"] != DBNull.Value ? row["EmailProfissionais"].ToString() : string.Empty,
+                        
                     }
                     
 
@@ -114,25 +109,26 @@ namespace app.DAO
         {
             var objInsert = new StringBuilder();
             objInsert.Append("INSERT INTO \"Sistema\".\"Consultas\" (");
+            
             objInsert.Append(" \"Data\", ");
             objInsert.Append(" \"Hora\", ");
             objInsert.Append(" \"Atendida\", ");
             objInsert.Append(" \"Status\", ");
             objInsert.Append(" \"Tipo\", ");
             objInsert.Append(" \"Observacoes\", ");
-            objInsert.Append(" \"UserId\", ");
+          
             objInsert.Append(" \"PacienteId\", ");
             objInsert.Append(" \"ProfissionalId\" ");
 
 
             objInsert.Append(") VALUES (");
+            
             objInsert.Append($" '{dto.Data:MM-dd-yyyy}', ");
             objInsert.Append($" '{dto.Hora:HH:mm:ss}', ");
             objInsert.Append($" '{dto.Atendida:  1 : 0}', "); // Correção na definição de Atendida
             objInsert.Append($" '{dto.Status}', ");
             objInsert.Append($" '{dto.Tipo}', ");
             objInsert.Append($" '{dto.Observacoes}', ");
-            objInsert.Append($" '{dto.UserId}', ");
             objInsert.Append($" '{dto.PacienteId}', ");
             objInsert.Append($" '{dto.ProfissionalId}' ");
 

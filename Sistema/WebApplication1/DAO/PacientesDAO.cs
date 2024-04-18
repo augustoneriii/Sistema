@@ -33,12 +33,12 @@ namespace app.DAO
             objSelect.Append("         \"Alergias\", ");
             objSelect.Append("         \"Medicamentos\", ");
             objSelect.Append("         \"Cirurgias\", ");
-            objSelect.Append("         \"Historico\", ");
-            objSelect.Append("         \"Sistema\".\"Pacientes\".\"UserId\" AS \"UserIdPaciente\", ");
-            objSelect.Append("         \"AspNetUsers\".\"Id\" AS \"AspUsersId\" ");
+            objSelect.Append("         \"Historico\" ");
+            
+            
             objSelect.Append("FROM     \"Sistema\".\"Pacientes\" ");
             objSelect.Append("LEFT JOIN \"Sistema\".\"ConvenioMedicos\" ON \"Sistema\".\"Pacientes\".\"ConvenioId\" = \"ConvenioMedicos\".\"Id\" ");
-            objSelect.Append("LEFT JOIN \"public\".\"AspNetUsers\" ON \"Sistema\".\"Pacientes\".\"UserId\"::text = \"AspNetUsers\".\"Id\" ");
+            
             objSelect.Append("WHERE    1 = 1 ");
 
             //
@@ -121,11 +121,7 @@ namespace app.DAO
                     Medicamentos = row["Medicamentos"].ToString(),
                     Cirurgias = row["Cirurgias"].ToString(),
                     Historico = row["Historico"].ToString(),
-                    User = new UserDTO
-                    {
-                        Id = row["Id"] != DBNull.Value ? row["Id"].ToString() : ""
-
-                    }
+                   
                     //CreatedAt = DateTime.Parse(row["CreatedAt"].ToString()),
                     //UpdatedAt = DateTime.Parse(row["UpdatedAt"].ToString())
                 });
@@ -151,8 +147,8 @@ namespace app.DAO
             objInsert.Append("  \"Alergias\", ");
             objInsert.Append("  \"Medicamentos\", ");
             objInsert.Append("  \"Cirurgias\", ");
-            objInsert.Append("  \"Historico\", ");
-            objInsert.Append("  \"UserId\" ");
+            objInsert.Append("  \"Historico\" ");
+            
             objInsert.Append(" ) VALUES ( ");
             objInsert.Append($" '{dto.Nome}', ");
             objInsert.Append($" '{dto.Cpf}', ");
@@ -167,8 +163,8 @@ namespace app.DAO
             objInsert.Append($" '{dto.Alergias}', ");
             objInsert.Append($" '{dto.Medicamentos}', ");
             objInsert.Append($" '{dto.Cirurgias}', ");
-            objInsert.Append($" '{dto.Historico}', ");
-            objInsert.Append($" '{dto.UserId}' ");
+            objInsert.Append($" '{dto.Historico}' ");
+            
             objInsert.Append(" )RETURNING \"Id\"; ");
 
             var id = _context.ExecuteNonQuery(objInsert.ToString());
@@ -195,7 +191,7 @@ namespace app.DAO
             objUpdate.Append($" \"Medicamentos\" = '{dto.Medicamentos}', ");
             objUpdate.Append($" \"Cirurgias\" = '{dto.Cirurgias}', ");
             objUpdate.Append($" \"Historico\" = '{dto.Historico}', ");
-            objUpdate.Append($" \"UserId\" = {dto.UserId} ");
+            
             objUpdate.Append($"WHERE \"Id\" = {dto.Id}; ");
 
             var id = _context.ExecuteNonQuery(objUpdate.ToString());

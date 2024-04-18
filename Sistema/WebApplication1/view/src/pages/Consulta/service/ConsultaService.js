@@ -21,7 +21,7 @@ export class ConsultaService {
 
 
     static async getConsultas(token) {
-        return await api.get('/getAllConsultas', {
+        return await api.get('/getAllConsulta', {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
@@ -29,12 +29,13 @@ export class ConsultaService {
     }
 
     static async createConsulta(consulta, token) {
-     console.log("consulta---> ", consulta)
-       return await api.post('/insertConsulta', consulta, {
-           headers: {
-             Authorization: `Bearer ${JSON.parse(token)}`
-        }
-     });
+        console.log("create ", consulta);
+
+        return await api.post('/insertConsulta', consulta, {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(token)}`
+            }
+        });
     }
 
     static async updateConsulta(consulta, token) {

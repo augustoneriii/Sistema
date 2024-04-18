@@ -13,6 +13,6 @@
         public DateTime? UpdatedAt { get; set; }
         public long? PacienteId { get; set; }
         public long? ProfissionalId { get; set; }
-        public string? UserId { get; set; }
+        
     }
 }
