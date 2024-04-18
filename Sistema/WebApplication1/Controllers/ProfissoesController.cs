@@ -18,9 +18,9 @@ namespace app.Controllers
         }
 
         // GET: Profissoes
+        [HttpGet]
         [Authorize]
         [Route("getAllProfissoes")]
-        [HttpGet]
         public async Task<IActionResult> GetAll(ProfissoesDTO dto)
         {
             try
