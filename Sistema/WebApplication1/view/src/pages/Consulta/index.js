@@ -31,7 +31,8 @@ export default function Consulta() {
         atendida: false,
         status: '',
         tipo: '',
-        observacoes: ''
+        observacoes: '',
+        
     };
 
     const [consultas, setConsultas] = useState([]);
@@ -128,7 +129,6 @@ export default function Consulta() {
                 ConsultaService.updateConsulta(_consulta, currentToken);
             } else {
                 console.log("create consulta", _consulta);
-                _consulta.id = createId();
                 _consultas.push(_consulta);
                 toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Criado', life: 3000 });
                 ConsultaService.createConsulta(_consulta, currentToken);

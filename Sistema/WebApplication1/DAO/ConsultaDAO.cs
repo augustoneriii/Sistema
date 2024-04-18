@@ -23,6 +23,7 @@ namespace app.DAO
             objSelect.Append("\"Sistema\".\"Consultas\".\"Data\", "                                                                                );
             objSelect.Append("TO_CHAR(\"Sistema\".\"Consultas\".\"Hora\", 'HH24:MI:SS') AS \"Hora\", "                                             );
             objSelect.Append("\"Sistema\".\"Consultas\".\"PacienteId\", "                                                                          );
+            objSelect.Append("\"Sistema\".\"Consultas\".\"ProfissionalId\", ");
             objSelect.Append("\"Sistema\".\"Consultas\".\"UserId\", "                                                                              );
             objSelect.Append("\"Sistema\".\"Consultas\".\"Atendida\", "                                                                            );
             objSelect.Append("\"Sistema\".\"Consultas\".\"Status\", "                                                                              );
@@ -39,9 +40,9 @@ namespace app.DAO
             objSelect.Append("\"Profissionais\".\"Nome\" AS \"NomeProfissionais\", "                                                               );
             objSelect.Append("\"Profissionais\".\"Email\" AS \"EmailProfissionais\" "                                                              );
             objSelect.Append("FROM \"Sistema\".\"Consultas\" "                                                                                     );
-            objSelect.Append("LEFT JOIN \"Sistema\".\"Pacientes\" ON \"Sistema\".\"Consultas\".\"PacienteId\" = \"Pacientes\".\"Id\" "             );
-            objSelect.Append("LEFT JOIN \"Sistema\".\"Profissionais\" ON \"Sistema\".\"Consultas\".\"ProfissionaisId\" = \"Profissionais\".\"Id\" ");
-            objSelect.Append("LEFT JOIN \"public\".\"AspNetUsers\" ON CAST(\"Sistema\".\"Consultas\".\"UserId\" AS TEXT) = \"AspNetUsers\".\"Id\" ");
+            objSelect.Append("LEFT JOIN \"Sistema\".\"Pacientes\"     ON \"Sistema\".\"Consultas\".\"PacienteId\"      = \"Pacientes\".\"Id\" "             );
+            objSelect.Append("LEFT JOIN \"Sistema\".\"Profissionais\" ON \"Sistema\".\"Consultas\".\"ProfissionalId\" = \"Profissionais\".\"Id\" ");
+            objSelect.Append("LEFT JOIN \"public\".\"AspNetUsers\"    ON \"Sistema\".\"Consultas\".\"UserId\"          = \"AspNetUsers\".\"Id\" ");
             
             objSelect.Append("WHERE 1 = 1"                                                                                                         );
 
@@ -82,7 +83,7 @@ namespace app.DAO
                     Observacoes = row["Observacoes"].ToString(),
                     Pacientes = new PacientesDTO
                     {
-                        Id = Convert.ToInt32(row["PacienteId"] != DBNull.Value ? Convert.ToInt32(row["PacienteId"]) : 0),
+                        Id = Convert.ToInt32(row["PacientesId"] != DBNull.Value ? Convert.ToInt32(row["PacientesId"]) : 0),
                         Nome = row["NomePacientes"] != DBNull.Value ? row["NomePacientes"].ToString() : string.Empty,
                         Cpf = row["CpfPacientes"] != DBNull.Value ? row["CpfPacientes"].ToString() : string.Empty,
                         Telefone = row["TelefonePacientes"] != DBNull.Value ? row["TelefonePacientes"].ToString() : string.Empty,
@@ -118,17 +119,24 @@ namespace app.DAO
             objInsert.Append(" \"Atendida\", ");
             objInsert.Append(" \"Status\", ");
             objInsert.Append(" \"Tipo\", ");
-            objInsert.Append(" \"Observacoes\" ");
-            
-            
+            objInsert.Append(" \"Observacoes\", ");
+            objInsert.Append(" \"UserId\", ");
+            objInsert.Append(" \"PacienteId\", ");
+            objInsert.Append(" \"ProfissionalId\" ");
+
+
             objInsert.Append(") VALUES (");
-            objInsert.Append($" '{dto.Data:yyyy-MM-dd}', ");
+            objInsert.Append($" '{dto.Data:MM-dd-yyyy}', ");
             objInsert.Append($" '{dto.Hora:HH:mm:ss}', ");
             objInsert.Append($" '{dto.Atendida:  1 : 0}', "); // Correção na definição de Atendida
             objInsert.Append($" '{dto.Status}', ");
             objInsert.Append($" '{dto.Tipo}', ");
-            objInsert.Append($" '{dto.Observacoes}' ");
-            
+            objInsert.Append($" '{dto.Observacoes}', ");
+            objInsert.Append($" '{dto.UserId}', ");
+            objInsert.Append($" '{dto.PacienteId}', ");
+            objInsert.Append($" '{dto.ProfissionalId}' ");
+
+
             objInsert.Append(" ); ");
             
             var id = _context.ExecuteNonQuery(objInsert.ToString());

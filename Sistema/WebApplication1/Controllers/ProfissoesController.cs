@@ -19,7 +19,7 @@ namespace app.Controllers
 
         // GET: Profissoes
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         [Route("getAllProfissoes")]
         public async Task<IActionResult> GetAll(ProfissoesDTO dto)
         {
@@ -35,7 +35,7 @@ namespace app.Controllers
         }
 
         // POST: Profissoes
-        [Authorize]
+        //[Authorize]
         [Route("insertProfissoes")]
         [HttpPost]
         public async Task<IActionResult> Insert([FromBody] ProfissoesDTO profissoes)
@@ -55,7 +55,7 @@ namespace app.Controllers
         }
 
         // PATCH: Profissoes
-        [Authorize]
+        //[Authorize]
         [Route("updateProfissoes")]
         [HttpPatch]
         public async Task<IActionResult> Update([FromBody] ProfissoesDTO profissoes)
@@ -75,7 +75,7 @@ namespace app.Controllers
         }
 
         // DELETE: Profissoes
-        [Authorize]
+        //[Authorize]
         [Route("deleteProfissoes")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] int id)
