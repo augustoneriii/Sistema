@@ -169,7 +169,7 @@ namespace app.DAO
             objInsert.Append($" '{dto.Cirurgias}', ");
             objInsert.Append($" '{dto.Historico}', ");
             objInsert.Append($" '{dto.UserId}' ");
-            objInsert.Append(" ); ");
+            objInsert.Append(" )RETURNING \"Id\"; ");
 
             var id = _context.ExecuteNonQuery(objInsert.ToString());
 
@@ -194,8 +194,8 @@ namespace app.DAO
             objUpdate.Append($" \"Alergias\" = '{dto.Alergias}', ");
             objUpdate.Append($" \"Medicamentos\" = '{dto.Medicamentos}', ");
             objUpdate.Append($" \"Cirurgias\" = '{dto.Cirurgias}', ");
-            objUpdate.Append($" \"Historico\" = '{dto.Historico}' ");
-            objUpdate.Append($" \"UserId\" = {dto.UserId}, ");
+            objUpdate.Append($" \"Historico\" = '{dto.Historico}', ");
+            objUpdate.Append($" \"UserId\" = {dto.UserId} ");
             objUpdate.Append($"WHERE \"Id\" = {dto.Id}; ");
 
             var id = _context.ExecuteNonQuery(objUpdate.ToString());
