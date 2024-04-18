@@ -114,3 +114,24 @@ CREATE TABLE IF NOT EXISTS "Sistema"."Consultas" (
   FOREIGN KEY ("ProfissionalId") REFERENCES "Sistema"."Profissionais"("Id"),
   FOREIGN KEY ("UserId") REFERENCES "Sistema"."Users"("Id")
 );
+
+
+-- -----------------------------------------------------
+-- Table "Sistema"."PreAgendamento"
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS "Sistema"."PreAgendamento" (
+  "Id" BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  "Data" DATE NOT NULL,
+  "Hora" TIME NOT NULL,
+  "Nome" VARCHAR(60),
+  "Email" VARCHAR(100),
+  "Telefone" VARCHAR(100),
+  "PlanoDeSaude" VARCHAR(100),
+  "Especialidade" VARCHAR(100),
+  "Status" VARCHAR(50) NOT NULL,
+  "Observacoes" TEXT,
+  "CreatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  "UpdatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE ("Data", "Hora")
+);
