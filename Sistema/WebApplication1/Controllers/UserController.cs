@@ -19,7 +19,7 @@ namespace app.Controllers
 
         //GET: Users
         
-        [Authorize]
+        //[Authorize]
         [Route("getAllUsers")]
         [HttpGet]
         public async Task<IActionResult> GetAll(UserDTO dto)
@@ -37,7 +37,7 @@ namespace app.Controllers
 
 
         // PATCH: Users
-        [Authorize]
+        //[Authorize]
         [Route("updateUsers")]
         [HttpPatch]
         public async Task<IActionResult> Update([FromBody] UserDTO users)
@@ -59,7 +59,7 @@ namespace app.Controllers
         }
 
         // DELETE: Users
-        [Authorize]
+        //[Authorize]
         [Route("deleteUsers")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] string id)

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace app.Controllers
 {
-    
+
     public class AuthController : Controller
     {
         private readonly AuthBE authService;
@@ -38,40 +38,19 @@ namespace app.Controllers
 
         [HttpPost]
         [Route("Authenticate")]
-        public async Task<IActionResult> AuthUser(UserLoginDTO user)
+        public async Task<IActionResult> AuthUser([FromBody]UserLoginDTO user)
         {
             try
             {
                 var token = await authService.Authenticate(user);
                 if (!string.IsNullOrEmpty(token))
                     return Ok(new { Token = token, Message = "Usuário autenticado com sucesso!" });
-                return Unauthorized(); // Retorna 401 Unauthorized se a autenticação falhar
+                return Unauthorized(new { Message = "Usuario não autenticado!" });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); // Retorna 400 Bad Request se ocorrer algum erro durante a autenticação
+                return BadRequest(ex.Message); 
             }
         }
-
-        
-        [HttpGet]
-        [Route("findUserByToken")]
-        public async Task<IActionResult> FindUserByToken()
-        {
-            try
-            {
-           
-                var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-                var user = await authService.FindUserByToken(token);
-                if (user != null)
-                    return Ok(user);
-                return Unauthorized();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
     }
 }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "EUVlSvi+A8qtmfcf2dxoNdGz+EejWXiEaBm1OUjWPRFsz0kgl/kFfgUgO2+8iudV2YJXYq847k1wRNIOmeodIA==",
+  "dgSpecHash": "6Q2C9qE6biemZVf2trLnh0Uk6OnCGCR/pbh2EdHEyVY3nT7sbzAqsQNboQv4OQRfbuMfuKjLFewZTgLrLwh/Jg==",
   "success": true,
   "projectFilePath": "C:\\Users\\italo\\OneDrive\\Documentos\\Sistema\\Sistema\\WebApplication1\\app.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,7 @@
     "C:\\Users\\italo\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.1.1\\microsoft.aspnetcore.authentication.abstractions.2.1.1.nupkg.sha512",
     "C:\\Users\\italo\\.nuget\\packages\\microsoft.aspnetcore.authentication.cookies\\2.1.1\\microsoft.aspnetcore.authentication.cookies.2.1.1.nupkg.sha512",
     "C:\\Users\\italo\\.nuget\\packages\\microsoft.aspnetcore.authentication.core\\2.1.1\\microsoft.aspnetcore.authentication.core.2.1.1.nupkg.sha512",
+    "C:\\Users\\italo\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\7.0.10\\microsoft.aspnetcore.authentication.jwtbearer.7.0.10.nupkg.sha512",
     "C:\\Users\\italo\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\7.0.11\\microsoft.aspnetcore.cryptography.internal.7.0.11.nupkg.sha512",
     "C:\\Users\\italo\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\7.0.11\\microsoft.aspnetcore.cryptography.keyderivation.7.0.11.nupkg.sha512",
     "C:\\Users\\italo\\.nuget\\packages\\microsoft.aspnetcore.dataprotection\\2.1.1\\microsoft.aspnetcore.dataprotection.2.1.1.nupkg.sha512",
@@ -49,6 +50,8 @@
     "C:\\Users\\italo\\.nuget\\packages\\microsoft.identitymodel.abstractions\\7.5.1\\microsoft.identitymodel.abstractions.7.5.1.nupkg.sha512",
     "C:\\Users\\italo\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\7.5.1\\microsoft.identitymodel.jsonwebtokens.7.5.1.nupkg.sha512",
     "C:\\Users\\italo\\.nuget\\packages\\microsoft.identitymodel.logging\\7.5.1\\microsoft.identitymodel.logging.7.5.1.nupkg.sha512",
+    "C:\\Users\\italo\\.nuget\\packages\\microsoft.identitymodel.protocols\\6.15.1\\microsoft.identitymodel.protocols.6.15.1.nupkg.sha512",
+    "C:\\Users\\italo\\.nuget\\packages\\microsoft.identitymodel.protocols.openidconnect\\6.15.1\\microsoft.identitymodel.protocols.openidconnect.6.15.1.nupkg.sha512",
     "C:\\Users\\italo\\.nuget\\packages\\microsoft.identitymodel.tokens\\7.5.1\\microsoft.identitymodel.tokens.7.5.1.nupkg.sha512",
     "C:\\Users\\italo\\.nuget\\packages\\microsoft.net.http.headers\\2.1.1\\microsoft.net.http.headers.2.1.1.nupkg.sha512",
     "C:\\Users\\italo\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
@@ -82,5 +85,12 @@
     "C:\\Users\\italo\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.18\\microsoft.aspnetcore.app.ref.7.0.18.nupkg.sha512",
     "C:\\Users\\italo\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.18\\microsoft.netcore.app.host.win-x64.7.0.18.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Users\\italo\\OneDrive\\Documentos\\Sistema\\Sistema\\WebApplication1\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

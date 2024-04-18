@@ -5,7 +5,8 @@
         public long? Id {  get; set; }
         public DateTime? Data { get; set; }
         public DateTime? Hora {  get; set; }
-        //botar o ID do paciente 
+        
+        public PacientesDTO Pacientes { get; set; }
         public UserDTO User { get; set; }
         public bool? Atendida { get; set; }
         public string? Status { get; set; }

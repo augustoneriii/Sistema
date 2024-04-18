@@ -21,17 +21,17 @@ namespace app.BE
         }
 
         //insert
-        public async Task<ConsultaDTO> Insert(ConsultaDTO consulta)
+        public async Task<int> Insert(ConsultaDTO dto)
         {
             var dao = new ConsultaDAO(_context);
-            return await dao.Insert(consulta);
+            return await dao.Insert(dto);
         }
 
         //update
-        public async Task<ConsultaDTO> Update(ConsultaDTO Consulta)
+        public async Task<int> Update(ConsultaDTO dto)
         {
             var dao = new ConsultaDAO(_context);
-            return await dao.Update(Consulta);
+            return await dao.Update(dto);
         }
 
         //delete

@@ -4,24 +4,25 @@ using app.Data;
 using app.DTO;
 using Microsoft.AspNetCore.Authorization;
 
+
 namespace app.Controllers
 {
-    public class ProfissoesController : Controller
+    public class ConsultaController : Controller
     {
-        private ProfissoesBE _be;
+        private ConsultaBE _be;
         private AppDbContext _context;
 
-        public ProfissoesController(ProfissoesBE be, AppDbContext context)
+        public ConsultaController(ConsultaBE be, AppDbContext context)
         {
             _be = be;
             _context = context;
         }
 
-        // GET: Profissoes
+        //GET: Consultas
+      
+        [Route("getAllConsultas")]
         [HttpGet]
-        [Authorize]
-        [Route("getAllProfissoes")]
-        public async Task<IActionResult> GetAll(ProfissoesDTO dto)
+        public async Task<IActionResult> GetAll(ConsultaDTO dto)
         {
             try
             {
@@ -34,18 +35,17 @@ namespace app.Controllers
             }
         }
 
-        // POST: Profissoes
-        [Authorize]
-        [Route("insertProfissoes")]
+        
+        [Route("insertConsulta")]
         [HttpPost]
-        public async Task<IActionResult> Insert([FromBody] ProfissoesDTO profissoes)
+        public async Task<IActionResult> Insert([FromBody] ConsultaDTO consulta)
         {
             try
             {
                 _context.BeginTransaction();
-                var response = await _be.Insert(profissoes);
+                var response = await _be.Insert(consulta);
                 _context.Commit();
-                return Ok(response);
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -54,18 +54,18 @@ namespace app.Controllers
             }
         }
 
-        // PATCH: Profissoes
-        [Authorize]
-        [Route("updateProfissoes")]
+        // PATCH: Consulta
+       
+        [Route("updateConsulta")]
         [HttpPatch]
-        public async Task<IActionResult> Update([FromBody] ProfissoesDTO profissoes)
+        public async Task<IActionResult> Update([FromBody] ConsultaDTO consulta)
         {
             try
             {
                 _context.BeginTransaction();
-                var response = await _be.Update(profissoes);
+                var response = await _be.Update(consulta);
                 _context.Commit();
-                return Ok(response);
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -74,11 +74,11 @@ namespace app.Controllers
             }
         }
 
-        // DELETE: Profissoes
-        [Authorize]
-        [Route("deleteProfissoes")]
+        //Delete: Consulta
+        
+        [Route("deleteConsulta")]
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromQuery] int id)
+        public async Task<IActionResult> Delete([FromQuery] long id)
         {
             try
             {
@@ -93,5 +93,6 @@ namespace app.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
     }
 }
