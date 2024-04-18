@@ -2,6 +2,7 @@
 using app.BE;
 using app.Data;
 using app.DTO;
+using app.DTO.Request;
 
 namespace app.Controllers
 {
@@ -35,7 +36,7 @@ namespace app.Controllers
         // POST: Pacientes
         [Route("insertPacientes")]
         [HttpPost]
-        public async Task<IActionResult> Insert([FromBody] PacientesDTO pacientes)
+        public async Task<IActionResult> Insert([FromBody] PacientesRequest pacientes)
         {
             try
             {
@@ -54,7 +55,7 @@ namespace app.Controllers
         // PATCH: Pacientes
         [Route("updatePacientes")]
         [HttpPatch]
-        public async Task<IActionResult> Update([FromBody] PacientesDTO pacientes)
+        public async Task<IActionResult> Update([FromBody] PacientesRequest pacientes)
         {
             try
             {

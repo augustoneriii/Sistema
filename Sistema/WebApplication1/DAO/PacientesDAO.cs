@@ -1,6 +1,7 @@
 ﻿using app.BE;
 using app.Data;
 using app.DTO;
+using app.DTO.Request;
 using System.Data;
 using System.Text;
 
@@ -133,7 +134,7 @@ namespace app.DAO
         }
 
         //insert
-        public async Task<int> Insert(PacientesDTO dto)
+        public async Task<int> Insert(PacientesRequest dto)
         {
             var objInsert = new StringBuilder();
             objInsert.Append("INSERT INTO \"Sistema\".\"Pacientes\" (");
@@ -145,11 +146,13 @@ namespace app.DAO
             objInsert.Append("  \"Nascimento\", ");
             objInsert.Append("  \"Sexo\", ");
             objInsert.Append("  \"Email\", ");
+            objInsert.Append("  \"ConvenioId\", ");
             objInsert.Append("  \"TipoSanguineo\", ");
             objInsert.Append("  \"Alergias\", ");
             objInsert.Append("  \"Medicamentos\", ");
             objInsert.Append("  \"Cirurgias\", ");
-            objInsert.Append("  \"Historico\" ");
+            objInsert.Append("  \"Historico\", ");
+            objInsert.Append("  \"UserId\" ");
             objInsert.Append(" ) VALUES ( ");
             objInsert.Append($" '{dto.Nome}', ");
             objInsert.Append($" '{dto.Cpf}', ");
@@ -159,12 +162,14 @@ namespace app.DAO
             objInsert.Append($" '{dto.Nascimento:yyyy-MM-dd}', ");
             objInsert.Append($" '{dto.Sexo}', ");
             objInsert.Append($" '{dto.Email}', ");
+            objInsert.Append($" '{dto.ConvenioId}', ");
             objInsert.Append($" '{dto.TipoSanguineo}', ");
             objInsert.Append($" '{dto.Alergias}', ");
             objInsert.Append($" '{dto.Medicamentos}', ");
             objInsert.Append($" '{dto.Cirurgias}', ");
-            objInsert.Append($" '{dto.Historico}' ");
-            objInsert.Append(" ); ");
+            objInsert.Append($" '{dto.Historico}', ");
+            objInsert.Append($" '{dto.UserId}' ");
+            objInsert.Append(" )RETURNING \"Id\"; ");
 
             var id = _context.ExecuteNonQuery(objInsert.ToString());
 
@@ -172,7 +177,7 @@ namespace app.DAO
         }
 
         //update
-        public async Task<int> Update(PacientesDTO dto)
+        public async Task<int> Update(PacientesRequest dto)
         {
             var objUpdate = new StringBuilder();
             objUpdate.Append("UPDATE \"Sistema\".\"Pacientes\" SET ");
@@ -184,11 +189,13 @@ namespace app.DAO
             objUpdate.Append($" \"Nascimento\" = '{dto.Nascimento:yyyy-MM-dd}', ");
             objUpdate.Append($" \"Sexo\" = '{dto.Sexo}', ");
             objUpdate.Append($" \"Email\" = '{dto.Email}', ");
+            objUpdate.Append($" \"ConvenioId\" = {dto.ConvenioId}, ");
             objUpdate.Append($" \"TipoSanguineo\" = '{dto.TipoSanguineo}', ");
             objUpdate.Append($" \"Alergias\" = '{dto.Alergias}', ");
             objUpdate.Append($" \"Medicamentos\" = '{dto.Medicamentos}', ");
             objUpdate.Append($" \"Cirurgias\" = '{dto.Cirurgias}', ");
-            objUpdate.Append($" \"Historico\" = '{dto.Historico}' ");
+            objUpdate.Append($" \"Historico\" = '{dto.Historico}', ");
+            objUpdate.Append($" \"UserId\" = {dto.UserId} ");
             objUpdate.Append($"WHERE \"Id\" = {dto.Id}; ");
 
             var id = _context.ExecuteNonQuery(objUpdate.ToString());
