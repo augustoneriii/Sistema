@@ -26,6 +26,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkSto
 builder.Services.AddScoped<ConvenioMedicosBE>();
 builder.Services.AddScoped<AuthBE>();
 builder.Services.AddScoped<ProfissoesBE>();
+builder.Services.AddScoped<ProfissionaisBE>();
 builder.Services.AddScoped<UserBE>();
 builder.Services.AddScoped<PacientesBE>();
 builder.Services.AddScoped<ConsultaBE>();
