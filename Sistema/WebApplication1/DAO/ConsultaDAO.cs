@@ -35,10 +35,14 @@ namespace app.DAO
             objSelect.Append("\"Pacientes\".\"Telefone\" AS \"TelefonePacientes\", "                                                               );
             objSelect.Append("\"AspNetUsers\".\"Id\" AS \"UserId\", "                                                                              );
             objSelect.Append("\"AspNetUsers\".\"UserName\" AS \"UserName\", "                                                                      );
-            objSelect.Append("\"AspNetUsers\".\"Email\" AS \"UserEmail\" "                                                                         );
+            objSelect.Append("\"AspNetUsers\".\"Email\" AS \"UserEmail\", "                                                                        );
+            objSelect.Append("\"Profissionais\".\"Nome\" AS \"NomeProfissionais\", "                                                               );
+            objSelect.Append("\"Profissionais\".\"Email\" AS \"EmailProfissionais\" "                                                              );
             objSelect.Append("FROM \"Sistema\".\"Consultas\" "                                                                                     );
             objSelect.Append("LEFT JOIN \"Sistema\".\"Pacientes\" ON \"Sistema\".\"Consultas\".\"PacienteId\" = \"Pacientes\".\"Id\" "             );
+            objSelect.Append("LEFT JOIN \"Sistema\".\"Profissionais\" ON \"Sistema\".\"Consultas\".\"ProfissionaisId\" = \"Profissionais\".\"Id\" ");
             objSelect.Append("LEFT JOIN \"public\".\"AspNetUsers\" ON CAST(\"Sistema\".\"Consultas\".\"UserId\" AS TEXT) = \"AspNetUsers\".\"Id\" ");
+            
             objSelect.Append("WHERE 1 = 1"                                                                                                         );
 
 
@@ -89,6 +93,13 @@ namespace app.DAO
                         Id = row["UserId"] != DBNull.Value ? row["UserId"].ToString() : string.Empty,
                         UserName = row["UserName"] != DBNull.Value ? row["UserName"].ToString() : string.Empty,
                         Email = row["UserEmail"] != DBNull.Value ? row["UserEmail"].ToString() : string.Empty,
+                    },
+
+                    Profissionais = new ProfissionaisDTO
+                    {
+                        Id = Convert.ToInt32(row["ProfissionaisId"] != DBNull.Value ? Convert.ToInt32(row["ProfissionaisId"]) : 0),
+                        Nome = row["NomeProfissionais"] != DBNull.Value ? row["NomeProfissionais"].ToString() : string.Empty,
+                        Email = row["EmailProfissionais"] != DBNull.Value ? row["EmailProfissionais"].ToString() : string.Empty,
                     }
                     
 
@@ -98,7 +109,7 @@ namespace app.DAO
         }
 
         //insert
-        public async Task<int> Insert(ConsultaDTO dto)
+        public async Task<int> Insert(ConsultaRequest dto)
         {
             var objInsert = new StringBuilder();
             objInsert.Append("INSERT INTO \"Sistema\".\"Consultas\" (");
@@ -126,7 +137,7 @@ namespace app.DAO
         }
 
         //Update
-        public async Task<int> Update(ConsultaDTO dto)
+        public async Task<int> Update(ConsultaRequest dto)
         {
             var objUpdate = new StringBuilder();
             objUpdate.Append("UPDATE \"Sistema\".\"Consultas\" SET ");

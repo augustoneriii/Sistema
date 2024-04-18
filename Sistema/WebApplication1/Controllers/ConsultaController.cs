@@ -3,6 +3,7 @@ using app.BE;
 using app.Data;
 using app.DTO;
 using Microsoft.AspNetCore.Authorization;
+using app.DTO.Request;
 
 
 namespace app.Controllers
@@ -38,7 +39,7 @@ namespace app.Controllers
         
         [Route("insertConsulta")]
         [HttpPost]
-        public async Task<IActionResult> Insert([FromBody] ConsultaDTO consulta)
+        public async Task<IActionResult> Insert([FromBody] ConsultaRequest consulta)
         {
             try
             {
@@ -58,7 +59,7 @@ namespace app.Controllers
        
         [Route("updateConsulta")]
         [HttpPatch]
-        public async Task<IActionResult> Update([FromBody] ConsultaDTO consulta)
+        public async Task<IActionResult> Update([FromBody] ConsultaRequest consulta)
         {
             try
             {

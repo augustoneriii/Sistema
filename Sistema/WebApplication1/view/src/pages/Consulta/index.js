@@ -48,14 +48,16 @@ export default function Consulta() {
     const dt = useRef(null);
 
     useEffect(() => {
-        const currentToken = localStorage.getItem('token') || '';
-        ConsultaService.getConsultas(currentToken)
-            .then(response => {
-                setConsultas(response.data); // Acesso à array de consultas
-            })
-            .catch(error => {
-                console.error("Erro ao buscar consultas:", error);
-            });
+        async function fetchConsulta() {
+            const currentToken = localStorage.getItem('token') || '';
+            try {
+                const response = await ConsultaService.getConsultas(currentToken);
+                setConsultas(response.data); // Assuming response.data contains the array of consultas
+            } catch (error) {
+                console.error("Erro ao buscar Consultas:", error);
+            }
+        }
+        fetchConsulta();
     }, []);
 
     useEffect(() => {

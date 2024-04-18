@@ -1,6 +1,7 @@
 ﻿using app.DAO;
 using app.Data;
 using app.DTO;
+using app.DTO.Request;
 
 namespace app.BE
 {
@@ -21,14 +22,15 @@ namespace app.BE
         }
 
         //insert
-        public async Task<int> Insert(ConsultaDTO dto)
+
+        public async Task<int> Insert(ConsultaRequest dto)
         {
             var dao = new ConsultaDAO(_context);
             return await dao.Insert(dto);
         }
 
         //update
-        public async Task<int> Update(ConsultaDTO dto)
+        public async Task<int> Update(ConsultaRequest dto)
         {
             var dao = new ConsultaDAO(_context);
             return await dao.Update(dto);
