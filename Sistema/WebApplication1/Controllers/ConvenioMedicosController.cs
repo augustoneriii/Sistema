@@ -60,7 +60,6 @@ namespace app.Controllers
         }
 
 
-
         [HttpPost]
         [Route("insertConvenioMedicos")]
         public async Task<IActionResult> Insert([FromBody] ConvenioMedicosDTO convenioMedicos)
@@ -87,7 +86,7 @@ namespace app.Controllers
             }
         }
 
-        // PATCH: ConvenioMedico
+        // PATCH: ConvenioMedicos
         [Route("updateConvenioMedicos")]
         [HttpPatch]
         public async Task<IActionResult> Update([FromBody] ConvenioMedicosDTO convenioMedicos)

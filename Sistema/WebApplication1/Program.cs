@@ -42,7 +42,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // Inicia o projeto React
-StartReactProject();
+//StartReactProject();
 
 var app = builder.Build();
 
@@ -63,27 +63,27 @@ app.MapControllers();
 
 app.Run();
 
-void StartReactProject()
-{
-    var startInfo = new ProcessStartInfo
-    {
-        FileName = "cmd.exe",
-        RedirectStandardInput = true,
-        UseShellExecute = false
-    };
+//void StartReactProject()
+//{
+//    var startInfo = new ProcessStartInfo
+//    {
+//        FileName = "cmd.exe",
+//        RedirectStandardInput = true,
+//        UseShellExecute = false
+//    };
 
-    using (var process = Process.Start(startInfo))
-    {
-        using (var sw = process.StandardInput)
-        {
-            if (sw.BaseStream.CanWrite)
-            {
-                // Caminho para o diret�rio do seu aplicativo React
-                sw.WriteLine("cd view");
+//    using (var process = Process.Start(startInfo))
+//    {
+//        using (var sw = process.StandardInput)
+//        {
+//            if (sw.BaseStream.CanWrite)
+//            {
+//                // Caminho para o diret�rio do seu aplicativo React
+//                sw.WriteLine("cd view");
 
-                // Comando para iniciar o aplicativo React
-                sw.WriteLine("npm start");
-            }
-        }
-    }
-}
+//                // Comando para iniciar o aplicativo React
+//                sw.WriteLine("npm start");
+//            }
+//        }
+//    }
+//}

@@ -36,6 +36,7 @@ namespace app.Controllers
         }
 
 
+
         [HttpGet]
         [Route("getAllConsultas")]
         public async Task<IActionResult> GetAll(ConsultaDTO dto)
@@ -51,6 +52,7 @@ namespace app.Controllers
             return Ok(response);
         }
 
+        //Post: Consulta
         [Route("insertConsulta")]
         [HttpPost]
         public async Task<IActionResult> Insert([FromBody] ConsultaRequest consulta)
@@ -58,7 +60,7 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
                 if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
@@ -76,7 +78,7 @@ UserValidationResponse userValidationResponse = _auth.CheckUser(token);
             }
         }
 
-
+        // PATCH: Consulta
 
         [Route("updateConsulta")]
         [HttpPatch]
@@ -104,6 +106,8 @@ UserValidationResponse userValidationResponse = _auth.CheckUser(token);
             }
         }
 
+        //Delete: Consulta
+
         [Route("deleteConsulta")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] long id)
@@ -111,7 +115,7 @@ UserValidationResponse userValidationResponse = _auth.CheckUser(token);
             try
             {
                 var token = ExtractAuthToken();
-    
+
                 UserValidationResponse userValidationResponse = _auth.CheckUser(token);
                 if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {

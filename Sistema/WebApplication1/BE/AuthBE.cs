@@ -14,8 +14,8 @@ namespace app.BE
         SignInManager<IdentityUser> _signInManager;
         private readonly string _key = "uma_chave_muito_secreta_aqui!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
 
-        public AuthBE(UserManager<IdentityUser> userManager, 
-            SignInManager<IdentityUser> signInManager)
+        public AuthBE(UserManager<IdentityUser> userManager,
+        SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -41,16 +41,8 @@ namespace app.BE
 
         public async Task<UserValidationResponse> Authenticate(UserLoginDTO user)
         {
-            var identityUser = await _userManager.FindByEmailAsync(user.EmailOrUsername);
-
+            var identityUser = await _userManager.FindByEmailAsync(user.Email);
             if (identityUser == null)
-            {
-                // Se o usuário não foi encontrado pelo email, tente encontrar pelo nome de usuário
-                identityUser = await _userManager.FindByNameAsync(user.EmailOrUsername);
-            }
-
-            if (identityUser == null)
-
                 return null;
 
             var result = await _signInManager.PasswordSignInAsync(identityUser.UserName, user.Password, false, true);

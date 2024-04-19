@@ -33,6 +33,7 @@ namespace app.Controllers
         }
 
         // GET: Profissoes
+        [HttpGet]
         [Route("getAllProfissoes")]
         public async Task<IActionResult> GetAll(ProfissoesDTO dto)
         {
