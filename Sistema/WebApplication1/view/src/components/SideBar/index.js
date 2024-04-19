@@ -7,7 +7,7 @@ import sidebarItems from './data/SideBarData';
 import { Button } from 'primereact/button';
 
 function SideBar() {
-    const [isExpanded, setIsExpanded] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(true); 
     const context = useContext(SidebarContext);
 
     const handleAction = (actionName, actionValue) => {
@@ -17,6 +17,7 @@ function SideBar() {
     };
 
     const toggleSidebar = () => {
+        console.log('toggleSidebar');
         setIsExpanded(!isExpanded);
     };
 
@@ -50,4 +51,4 @@ function SideBar() {
     )
 }
 
-export default SideBar
+export default SideBar;
