@@ -4,7 +4,6 @@ import React from 'react'
 //components
 import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
-import { Checkbox } from 'primereact/checkbox'
 //hooks
 import { useContext, useState } from 'react'
 //context

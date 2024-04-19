@@ -19,7 +19,6 @@ function SideBar() {
     };
 
     const toggleSidebar = () => {
-        console.log('toggleSidebar');
         setIsExpanded(!isExpanded);
     };
 
