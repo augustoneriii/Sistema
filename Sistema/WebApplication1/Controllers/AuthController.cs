@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace app.Controllers
 {
@@ -16,6 +19,7 @@ namespace app.Controllers
         {
             authService = serv;
         }
+
 
         [HttpPost]
         [Route("register")]

@@ -10,11 +10,26 @@ namespace app.Controllers
     {
         private ProfissoesBE _be;
         private AppDbContext _context;
+        private AuthBE _auth;
 
-        public ProfissoesController(ProfissoesBE be, AppDbContext context)
+        public ProfissoesController(ProfissoesBE be, AppDbContext context, AuthBE auth)
         {
             _be = be;
             _context = context;
+            _auth = auth;
+        }
+
+        private string ExtractAuthToken()
+        {
+            if (HttpContext.Request.Headers.TryGetValue("Authorization", out var authHeader))
+            {
+                var tokenParts = authHeader.ToString().Split(' ');
+                if (tokenParts.Length == 2 && tokenParts[0].Equals("Bearer", StringComparison.OrdinalIgnoreCase))
+                {
+                    return tokenParts[1].Trim('"');
+                }
+            }
+            return null;
         }
 
         // GET: Profissoes
@@ -25,6 +40,12 @@ namespace app.Controllers
         {
             try
             {
+                var token = ExtractAuthToken();
+                var isAuth = _auth.CheckUser(token);
+                if (isAuth == false || !isAuth)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
                 var response = await _be.GetAll(dto);
                 return Ok(response);
             }
@@ -42,6 +63,12 @@ namespace app.Controllers
         {
             try
             {
+                var token = ExtractAuthToken();
+                var isAuth = _auth.CheckUser(token);
+                if (isAuth == false || !isAuth)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
                 _context.BeginTransaction();
                 var response = await _be.Insert(profissoes);
                 _context.Commit();
@@ -62,6 +89,13 @@ namespace app.Controllers
         {
             try
             {
+                var token = ExtractAuthToken();
+                var isAuth = _auth.CheckUser(token);
+                if (isAuth == false || !isAuth)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
+
                 _context.BeginTransaction();
                 var response = await _be.Update(profissoes);
                 _context.Commit();
@@ -82,6 +116,12 @@ namespace app.Controllers
         {
             try
             {
+                var token = ExtractAuthToken();
+                var isAuth = _auth.CheckUser(token);
+                if (isAuth == false || !isAuth)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
                 _context.BeginTransaction();
                 await _be.Delete(id);
                 _context.Commit();

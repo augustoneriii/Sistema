@@ -12,6 +12,7 @@ namespace app.BE
     {
         UserManager<IdentityUser> _userManager;
         SignInManager<IdentityUser> _signInManager;
+        private readonly string _key = "uma_chave_muito_secreta_aqui!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"; 
 
         public AuthBE(UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager)
@@ -42,18 +43,14 @@ namespace app.BE
         {
             var identityUser = await _userManager.FindByEmailAsync(user.Email);
             if (identityUser == null)
-                return null; 
+                return null;
 
-            var result = await _signInManager.PasswordSignInAsync(user.Email, user.Password, false, true);
+            var result = await _signInManager.PasswordSignInAsync(identityUser.UserName, user.Password, false, true);
 
             if (result.Succeeded)
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = new byte[32];
-                using (var rng = RandomNumberGenerator.Create())
-                {
-                    rng.GetBytes(key);
-                }
+                var keyBytes = Encoding.ASCII.GetBytes(_key); // Use a chave estática correta aqui
 
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
@@ -62,14 +59,43 @@ namespace app.BE
                 new Claim(ClaimTypes.Name, identityUser.Email),
                     }),
                     Expires = DateTime.UtcNow.AddHours(1),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
                 };
 
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 return tokenHandler.WriteToken(token);
             }
-            return null; 
+            return null;
         }
 
+
+        public bool CheckUser(string authToken)
+        {
+            if (string.IsNullOrEmpty(authToken))
+            {
+                return false;
+            }
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_key)),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true, 
+                ClockSkew = TimeSpan.Zero
+            };
+
+            try
+            {
+                var principal = tokenHandler.ValidateToken(authToken, validationParameters, out SecurityToken validatedToken);
+                return true; 
+            }
+            catch
+            {
+                return false; 
+            }
+        }
     }
 }
