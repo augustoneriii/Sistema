@@ -5,10 +5,12 @@ import Logo from '../../assets/img/logoSysclin.png';
 import styles from './style.module.css';
 import sidebarItems from './data/SideBarData';
 import { Button } from 'primereact/button';
+import { Context } from '../../context/UserContext';
 
 function SideBar() {
-    const [isExpanded, setIsExpanded] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(true);
     const context = useContext(SidebarContext);
+    const { logout } = useContext(Context);
 
     const handleAction = (actionName, actionValue) => {
         if (actionName in context) {
@@ -26,7 +28,8 @@ function SideBar() {
                 <img src={Logo} height={70} alt="Logo" />
                 {isExpanded ? (<span className="fs-4">SysClin</span>) : ''}
             </Link>
-
+            <hr />
+            <Link to="/" className="nav-link link-dark ml-3" onClick={logout}> <i className="pi pi-sign-out"></i> {isExpanded ? 'Logout' : ''}</Link>
             <hr />
             <ul className="nav nav-pills flex-column mb-auto">
                 {sidebarItems.map(item => (
@@ -43,6 +46,7 @@ function SideBar() {
                     </li>
                 ))}
             </ul>
+            <hr />
             <div className='d-flex justify-content-center mb-5'>
                 <Button onClick={toggleSidebar} icon="pi pi-bars" className='border-circle bg-dark border border-secondary' aria-label="Filter" />
             </div>
@@ -50,4 +54,4 @@ function SideBar() {
     )
 }
 
-export default SideBar
+export default SideBar;

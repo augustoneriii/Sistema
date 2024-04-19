@@ -1,21 +1,20 @@
 import api from '../utils/api.js'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useToast } from '../context/ToastContext';
 
 function useAuth() {
-    //useState() é um hook para alterar o estado de algo
     const [authenticated, setAuthenticated] = useState(false)
-    //useNavigate() é utilizado para redirecionar o usuario para uma rota 
     const navigate = useNavigate()
+    const toast = useToast();
 
     useEffect(() => {
-        const token = localStorage.getItem('token')
-
+        const token = localStorage.getItem('token');
         if (token) {
-            api.defaults.headers.Authorization = `Bearer ${JSON.parse(token)}`
-            setAuthenticated(true)
+            api.defaults.headers.Authorization = `Bearer ${JSON.parse(token)}`;
+            setAuthenticated(true);
         }
-    }, [])
+    }, []);
 
     async function authUser(data) {
         setAuthenticated(true)
@@ -29,11 +28,11 @@ function useAuth() {
                 .then((response) => {
                     return response.data
                 })
-            alert(data.message)
+            toast.current.show({ severity: 'info', summary: 'Registro', detail: data.message, life: 3000 });
             await authUser(data)
         } catch (error) {
             console.log('Erro ao cadastrar ', error)
-            alert(error.response.data.message)
+            toast.current.show({ severity: 'error', summary: 'Erro de Registro', detail: error.response.data.message, life: 3000 });
         }
     }
 
@@ -43,11 +42,11 @@ function useAuth() {
                 .then((response) => {
                     return response.data
                 })
-            alert(data.message)
+            toast.current.show({ severity: 'info', summary: 'Login', detail: data.message, life: 3000 });
             await authUser(data)
             navigate('home')
         } catch (error) {
-            alert(error.response.data.message)
+            toast.current.show({ severity: 'error', summary: 'Erro de Login', detail: error.response.data.message, life: 3000 });
         }
     }
 
@@ -56,11 +55,10 @@ function useAuth() {
         localStorage.removeItem('token')
         api.defaults.headers.Authorization = undefined
         navigate('/')
-        alert('Logout realizado com sucesso')
+        toast.current.show({ severity: 'success', summary: 'Logout', detail: 'Logout realizado com sucesso', life: 3000 });
     }
 
-    return { authenticated, register, login, logout }
-
+    return { authenticated, register, login, logout, toast }
 }
 
 export default useAuth

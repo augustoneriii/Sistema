@@ -49,17 +49,18 @@ namespace app.BE
             }
 
             if (identityUser == null)
-                return "Usuário não encontrado"; 
+
+                return null; 
 
             var result = await _signInManager.PasswordSignInAsync(identityUser, user.Password, false, true);
 
             if (result.Succeeded)
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = new byte[32]; // Ajuste o tamanho da chave conforme necessário
+                var key = new byte[32];
                 using (var rng = RandomNumberGenerator.Create())
                 {
-                    rng.GetBytes(key); // Preenche a chave com valores aleatórios
+                    rng.GetBytes(key);
                 }
 
                 var tokenDescriptor = new SecurityTokenDescriptor
@@ -67,20 +68,16 @@ namespace app.BE
                     Subject = new ClaimsIdentity(new Claim[]
                     {
                 new Claim(ClaimTypes.Name, identityUser.Email),
-                        // Adicione outras reivindicações do usuário aqui, se necessário
                     }),
-                    Expires = DateTime.UtcNow.AddHours(1), // Tempo de expiração do token.
+                    Expires = DateTime.UtcNow.AddHours(1),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
 
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 return tokenHandler.WriteToken(token);
             }
-            return "Falha na autenticação"; // Retorna uma mensagem de erro se a autenticação falhar
+            return null; 
         }
-
-     
-
 
     }
 }

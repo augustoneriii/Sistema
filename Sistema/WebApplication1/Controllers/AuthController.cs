@@ -38,21 +38,22 @@ namespace app.Controllers
 
         [HttpPost]
         [Route("Authenticate")]
-        public async Task<IActionResult> AuthUser([FromBody]UserLoginDTO user)
+        public async Task<IActionResult> AuthUser([FromBody] UserLoginDTO user)
         {
             try
             {
                 var token = await authService.Authenticate(user);
-             
-                if (!string.IsNullOrEmpty(token))
-                    return Ok(new { Token = token,});
-                 
-                return Unauthorized(new { Message = "Usuario não autenticado!" });
+                
+                if (token != null)
+                    return Ok(new { Token = token, Message = "Usuário autenticado com sucesso!" });
+                else
+                    return BadRequest(new { Message = "Usuário ou senha incorretos!" });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); 
+                return BadRequest(ex.Message);
             }
         }
+
     }
 }
