@@ -11,11 +11,27 @@ namespace app.Controllers
     {
         private PacientesBE _be;
         private AppDbContext _context;
+        private AuthBE _auth;
 
-        public PacientesController(PacientesBE be, AppDbContext context)
+
+        public PacientesController(PacientesBE be, AppDbContext context, AuthBE auth)
         {
             _be = be;
             _context = context;
+            _auth = auth;
+        }
+
+        private string ExtractAuthToken()
+        {
+            if (HttpContext.Request.Headers.TryGetValue("Authorization", out var authHeader))
+            {
+                var tokenParts = authHeader.ToString().Split(' ');
+                if (tokenParts.Length == 2 && tokenParts[0].Equals("Bearer", StringComparison.OrdinalIgnoreCase))
+                {
+                    return tokenParts[1].Trim('"');
+                }
+            }
+            return null;
         }
 
         // GET: Pacientes
@@ -26,6 +42,13 @@ namespace app.Controllers
         {
             try
             {
+                var token = ExtractAuthToken();
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
+
                 var response = await _be.GetAll(dto);
                 return Ok(response);
             }
@@ -43,6 +66,14 @@ namespace app.Controllers
         {
             try
             {
+                var token = ExtractAuthToken();
+
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
+
                 _context.BeginTransaction();
                 var response = await _be.Insert(pacientes);
                 _context.Commit();
@@ -63,6 +94,14 @@ namespace app.Controllers
         {
             try
             {
+                var token = ExtractAuthToken();
+
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
+
                 _context.BeginTransaction();
                 var response = await _be.Update(pacientes);
                 _context.Commit();
@@ -83,6 +122,14 @@ namespace app.Controllers
         {
             try
             {
+                var token = ExtractAuthToken();
+
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
+
                 _context.BeginTransaction();
                 await _be.Delete(id);
                 _context.Commit();

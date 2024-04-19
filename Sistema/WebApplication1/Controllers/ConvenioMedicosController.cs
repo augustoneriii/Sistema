@@ -6,26 +6,50 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace app.Controllers
 {
-    
+
     public class ConvenioMedicosController : Controller
     {
         private ConvenioMedicosBE _be;
         private AppDbContext _context;
+        private AuthBE _auth;
 
-        public ConvenioMedicosController(ConvenioMedicosBE be, AppDbContext context)
+
+        public ConvenioMedicosController(ConvenioMedicosBE be, AppDbContext context, AuthBE auth)
         {
             _be = be;
             _context = context;
+            _auth = auth;
+        }
+        private string ExtractAuthToken()
+        {
+            if (HttpContext.Request.Headers.TryGetValue("Authorization", out var authHeader))
+            {
+                var tokenParts = authHeader.ToString().Split(' ');
+                if (tokenParts.Length == 2 && tokenParts[0].Equals("Bearer", StringComparison.OrdinalIgnoreCase))
+                {
+                    return tokenParts[1].Trim('"');
+                }
+            }
+            return null;
         }
 
+
         // GET: ConvenioMedicos
-        [Authorize]
+
         [Route("getAllConvenioMedicos")]
         [HttpGet]
         public async Task<IActionResult> GetAll(ConvenioMedicosDTO dto)
         {
             try
             {
+                var token = ExtractAuthToken();
+
+                UserValidationResponse userLogado = _auth.CheckUser(token);
+                if (userLogado == null || !userLogado.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
+
                 var response = await _be.GetAll(dto);
                 return Ok(response);
             }
@@ -35,36 +59,49 @@ namespace app.Controllers
             }
         }
 
-        // POST: ConvenioMedicos
 
 
-         [Authorize]
         [HttpPost]
         [Route("insertConvenioMedicos")]
         public async Task<IActionResult> Insert([FromBody] ConvenioMedicosDTO convenioMedicos)
         {
             try
             {
-                _context.BeginTransaction();  
+                var token = ExtractAuthToken();
+
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
+
+                _context.BeginTransaction();
                 var response = await _be.Insert(convenioMedicos);
-                _context.Commit();  
+                _context.Commit();
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                _context.Rollback();  
+                _context.Rollback();
                 return BadRequest(ex.Message);
             }
         }
 
-        // PATCH: ConvenioMedicos
-        [Authorize]
+        // PATCH: ConvenioMedico
         [Route("updateConvenioMedicos")]
         [HttpPatch]
         public async Task<IActionResult> Update([FromBody] ConvenioMedicosDTO convenioMedicos)
         {
             try
             {
+                var token = ExtractAuthToken();
+
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
+
                 _context.BeginTransaction();
                 var response = await _be.Update(convenioMedicos);
                 _context.Commit();
@@ -78,13 +115,20 @@ namespace app.Controllers
         }
 
         // DELETE: ConvenioMedicos
-        [Authorize]
         [Route("deleteConvenioMedicos")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] int id)
         {
             try
             {
+                var token = ExtractAuthToken();
+
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
+
                 _context.BeginTransaction();
                 await _be.Delete(id);
                 _context.Commit();

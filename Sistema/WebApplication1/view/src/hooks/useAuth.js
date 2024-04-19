@@ -19,6 +19,7 @@ function useAuth() {
     async function authUser(data) {
         setAuthenticated(true)
         localStorage.setItem('token', JSON.stringify(data.token))
+        localStorage.setItem('user', JSON.stringify(data.user))
         navigate('/')
     }
 
@@ -53,6 +54,7 @@ function useAuth() {
     function logout() {
         setAuthenticated(false)
         localStorage.removeItem('token')
+        localStorage.removeItem('user')
         api.defaults.headers.Authorization = undefined
         navigate('/')
         toast.current.show({ severity: 'success', summary: 'Logout', detail: 'Logout realizado com sucesso', life: 3000 });

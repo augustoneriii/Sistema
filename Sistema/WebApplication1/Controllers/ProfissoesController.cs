@@ -10,21 +10,40 @@ namespace app.Controllers
     {
         private ProfissoesBE _be;
         private AppDbContext _context;
+        private AuthBE _auth;
 
-        public ProfissoesController(ProfissoesBE be, AppDbContext context)
+        public ProfissoesController(ProfissoesBE be, AppDbContext context, AuthBE auth)
         {
             _be = be;
             _context = context;
+            _auth = auth;
+        }
+
+        private string ExtractAuthToken()
+        {
+            if (HttpContext.Request.Headers.TryGetValue("Authorization", out var authHeader))
+            {
+                var tokenParts = authHeader.ToString().Split(' ');
+                if (tokenParts.Length == 2 && tokenParts[0].Equals("Bearer", StringComparison.OrdinalIgnoreCase))
+                {
+                    return tokenParts[1].Trim('"');
+                }
+            }
+            return null;
         }
 
         // GET: Profissoes
-        [HttpGet]
-        [Authorize]
         [Route("getAllProfissoes")]
         public async Task<IActionResult> GetAll(ProfissoesDTO dto)
         {
             try
             {
+                var token = ExtractAuthToken();
+                UserValidationResponse userLogado = _auth.CheckUser(token);
+                if (userLogado == null || !userLogado.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
                 var response = await _be.GetAll(dto);
                 return Ok(response);
             }
@@ -35,13 +54,18 @@ namespace app.Controllers
         }
 
         // POST: Profissoes
-        [Authorize]
         [Route("insertProfissoes")]
         [HttpPost]
         public async Task<IActionResult> Insert([FromBody] ProfissoesDTO profissoes)
         {
             try
             {
+                var token = ExtractAuthToken();
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
                 _context.BeginTransaction();
                 var response = await _be.Insert(profissoes);
                 _context.Commit();
@@ -55,13 +79,19 @@ namespace app.Controllers
         }
 
         // PATCH: Profissoes
-        [Authorize]
         [Route("updateProfissoes")]
         [HttpPatch]
         public async Task<IActionResult> Update([FromBody] ProfissoesDTO profissoes)
         {
             try
             {
+                var token = ExtractAuthToken();
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
+
                 _context.BeginTransaction();
                 var response = await _be.Update(profissoes);
                 _context.Commit();
@@ -75,13 +105,20 @@ namespace app.Controllers
         }
 
         // DELETE: Profissoes
-        [Authorize]
         [Route("deleteProfissoes")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] int id)
         {
             try
             {
+                var token = ExtractAuthToken();
+
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
+
                 _context.BeginTransaction();
                 await _be.Delete(id);
                 _context.Commit();
