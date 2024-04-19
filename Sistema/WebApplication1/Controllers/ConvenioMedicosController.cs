@@ -35,7 +35,7 @@ namespace app.Controllers
 
 
         // GET: ConvenioMedicos
-        //* [Authorize]
+        
         [Route("getAllConvenioMedicos")]
         [HttpGet]
         public async Task<IActionResult> GetAll(ConvenioMedicosDTO dto)
@@ -57,10 +57,7 @@ namespace app.Controllers
             }
         }
 
-        // POST: ConvenioMedicos
-
-
-        //* [Authorize]
+       
         [HttpPost]
         [Route("insertConvenioMedicos")]
         public async Task<IActionResult> Insert([FromBody] ConvenioMedicosDTO convenioMedicos)
@@ -88,7 +85,6 @@ namespace app.Controllers
         }
 
         // PATCH: ConvenioMedicos
-        // [Authorize]
         [Route("updateConvenioMedicos")]
         [HttpPatch]
         public async Task<IActionResult> Update([FromBody] ConvenioMedicosDTO convenioMedicos)
@@ -116,7 +112,6 @@ namespace app.Controllers
         }
 
         // DELETE: ConvenioMedicos
-        // [Authorize]
         [Route("deleteConvenioMedicos")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] int id)

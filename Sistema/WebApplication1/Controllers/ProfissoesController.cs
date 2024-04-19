@@ -34,18 +34,17 @@ namespace app.Controllers
 
         // GET: Profissoes
         [HttpGet]
-        //[Authorize]
         [Route("getAllProfissoes")]
         public async Task<IActionResult> GetAll(ProfissoesDTO dto)
         {
             try
             {
-                var token = ExtractAuthToken();
-                var isAuth = _auth.CheckUser(token);
-                if (isAuth == false || !isAuth)
-                {
-                    return BadRequest(new { Message = "Usuário não autenticado!" });
-                }
+                //var token = ExtractAuthToken();
+                //var isAuth = _auth.CheckUser(token);
+                //if (isAuth == false || !isAuth)
+                //{
+                //    return BadRequest(new { Message = "Usuário não autenticado!" });
+                //}
                 var response = await _be.GetAll(dto);
                 return Ok(response);
             }
@@ -56,7 +55,6 @@ namespace app.Controllers
         }
 
         // POST: Profissoes
-        //[Authorize]
         [Route("insertProfissoes")]
         [HttpPost]
         public async Task<IActionResult> Insert([FromBody] ProfissoesDTO profissoes)
@@ -82,7 +80,6 @@ namespace app.Controllers
         }
 
         // PATCH: Profissoes
-        //[Authorize]
         [Route("updateProfissoes")]
         [HttpPatch]
         public async Task<IActionResult> Update([FromBody] ProfissoesDTO profissoes)
@@ -109,7 +106,6 @@ namespace app.Controllers
         }
 
         // DELETE: Profissoes
-        //[Authorize]
         [Route("deleteProfissoes")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] int id)
