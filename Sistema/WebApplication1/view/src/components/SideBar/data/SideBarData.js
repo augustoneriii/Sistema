@@ -1,4 +1,3 @@
-// sidebarData.js
 const sidebarItems = [
     {
       text: 'Home',
