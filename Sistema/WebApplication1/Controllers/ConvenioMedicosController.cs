@@ -94,7 +94,6 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-
                 UserValidationResponse userValidationResponse = _auth.CheckUser(token);
                 if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
