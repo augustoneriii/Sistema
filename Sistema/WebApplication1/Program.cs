@@ -21,7 +21,7 @@ builder.Services.AddDbContext<AuthDbContext>(options =>
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AuthDbContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AuthDbContext>().AddDefaultTokenProviders();
 
 builder.Services.AddScoped<ConvenioMedicosBE>();
 builder.Services.AddScoped<AuthBE>();

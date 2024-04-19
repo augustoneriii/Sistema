@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 
 namespace app.Controllers
 {
@@ -20,6 +22,7 @@ namespace app.Controllers
             authService = serv;
            
         }
+
 
         [HttpPost]
         [Route("register")]
@@ -46,9 +49,10 @@ namespace app.Controllers
         {
             try
             {
-                var token = await authService.Authenticate(user);
-                if (token != null)
-                    return Ok(new { Token = token, Message = "Usuário autenticado com sucesso!" });
+
+                var obj = await authService.Authenticate(user);
+                if (obj != null)
+                    return Ok(new { User = obj, Token = obj.Token, Message = "Usuário autenticado com sucesso!" });
                 else
                     return BadRequest(new { Message = "Usuário ou senha incorretos!" });
             }

@@ -12,9 +12,10 @@ namespace app.BE
     {
         UserManager<IdentityUser> _userManager;
         SignInManager<IdentityUser> _signInManager;
+        private readonly string _key = "uma_chave_muito_secreta_aqui!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
 
-        public AuthBE(UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager)
+        public AuthBE(UserManager<IdentityUser> userManager, 
+            SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -38,37 +39,89 @@ namespace app.BE
             return result;
         }
 
-        public async Task<string> Authenticate(UserLoginDTO user)
+        public async Task<UserValidationResponse> Authenticate(UserLoginDTO user)
         {
-            var identityUser = await _userManager.FindByEmailAsync(user.Email);
-            if (identityUser == null)
-                return null; 
+            var identityUser = await _userManager.FindByEmailAsync(user.EmailOrUsername);
 
-            var result = await _signInManager.PasswordSignInAsync(user.Email, user.Password, false, true);
+            if (identityUser == null)
+            {
+                // Se o usuário não foi encontrado pelo email, tente encontrar pelo nome de usuário
+                identityUser = await _userManager.FindByNameAsync(user.EmailOrUsername);
+            }
+
+            if (identityUser == null)
+
+                return null;
+
+            var result = await _signInManager.PasswordSignInAsync(identityUser.UserName, user.Password, false, true);
 
             if (result.Succeeded)
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = new byte[32];
-                using (var rng = RandomNumberGenerator.Create())
-                {
-                    rng.GetBytes(key);
-                }
+                var keyBytes = Encoding.ASCII.GetBytes(_key); // Use a chave estática correta aqui
 
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                new Claim(ClaimTypes.Name, identityUser.Email),
+                        new Claim(ClaimTypes.Name, identityUser.UserName), // UserName
+                        new Claim(ClaimTypes.Email, identityUser.Email), // Email
                     }),
                     Expires = DateTime.UtcNow.AddHours(1),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
                 };
 
                 var token = tokenHandler.CreateToken(tokenDescriptor);
-                return tokenHandler.WriteToken(token);
+
+                return new UserValidationResponse
+                {
+                    IsAuthenticated = true,
+                    Token = tokenHandler.WriteToken(token),
+                    UserName = identityUser.UserName,
+                    Email = identityUser.Email
+                };
             }
-            return null; 
+            return null;
+        }
+
+
+
+        public UserValidationResponse CheckUser(string authToken)
+        {
+            var result = new UserValidationResponse();
+            if (string.IsNullOrEmpty(authToken))
+            {
+                result.ErrorMessage = "No token provided.";
+                return result;
+            }
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_key)),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+
+            try
+            {
+                var principal = tokenHandler.ValidateToken(authToken, validationParameters, out SecurityToken validatedToken);
+                var identityClaims = (ClaimsIdentity)principal.Identity;
+
+                result.IsAuthenticated = true;
+                result.UserName = identityClaims.FindFirst(ClaimTypes.Name)?.Value; // UserName armazenado em ClaimTypes.Name
+                result.Email = identityClaims.FindFirst(ClaimTypes.Email)?.Value; // Certifique-se de que o e-mail está incluído quando o token é emitido
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = ex.Message;
+                return result;
+            }
         }
 
     }

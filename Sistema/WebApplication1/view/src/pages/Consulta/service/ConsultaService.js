@@ -40,7 +40,7 @@ export class ConsultaService {
 
     static async updateConsulta(consulta, token) {
         console.log("update ", consulta);
-        return await api.patch(`/updateConsulta?consulta.id=${consulta.id}`, consulta, {
+        return await api.patch(`/updateConsulta`, consulta, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
@@ -48,11 +48,11 @@ export class ConsultaService {
     }
 
     static async deleteConsulta(id, token) {
-        console.log("delete ", id);
-        return await api.delete(`/deleteConsulta/${id}`, {
-            headers: {
-                Authorization: `Bearer ${JSON.parse(token)}`
-            }
-        });
-    }
+    console.log("delete ", id);
+    return await api.delete(`/deleteConsulta?id=${id}`, {
+        headers: {
+            Authorization: `Bearer ${JSON.parse(token)}`
+        }
+    });
+}
 }
