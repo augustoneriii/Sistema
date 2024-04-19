@@ -2,6 +2,7 @@
 using app.Data;
 using app.DTO;
 using app.DTO.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace app.Controllers
@@ -34,6 +35,7 @@ namespace app.Controllers
         }
 
         // GET: Profissionais
+        [Authorize]
         [Route("getAllProfissionais")]
         [HttpGet]
         public async Task<IActionResult> GetAll(ProfissionaisDTO dto)
@@ -56,6 +58,7 @@ namespace app.Controllers
         }
 
         // POST: Profissionais
+        [Authorize]
         [Route("insertProfissionais")]
         [HttpPost]
         public async Task<IActionResult> Insert([FromBody] ProfissionaisRequest profissionais)
@@ -83,6 +86,7 @@ namespace app.Controllers
         }
 
         // PATCH: Profissionais
+        [Authorize]
         [Route("updateProfissionais")]
         [HttpPatch]
         public async Task<IActionResult> Update([FromBody] ProfissionaisRequest profissionais)
@@ -111,6 +115,7 @@ namespace app.Controllers
         }
 
         // DELETE: Profissionais
+        [Authorize]
         [Route("deleteProfissionais")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] long id)

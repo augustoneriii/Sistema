@@ -36,7 +36,6 @@ namespace app.Controllers
         }
 
 
-
         [HttpGet]
         [Route("getAllConsultas")]
         public async Task<IActionResult> GetAll(ConsultaDTO dto)
@@ -52,7 +51,6 @@ namespace app.Controllers
             return Ok(response);
         }
 
-        //Post: Consulta
         [Route("insertConsulta")]
         [HttpPost]
         public async Task<IActionResult> Insert([FromBody] ConsultaRequest consulta)
@@ -78,7 +76,7 @@ UserValidationResponse userValidationResponse = _auth.CheckUser(token);
             }
         }
 
-        // PATCH: Consulta
+
 
         [Route("updateConsulta")]
         [HttpPatch]
@@ -105,8 +103,6 @@ UserValidationResponse userValidationResponse = _auth.CheckUser(token);
                 return BadRequest(ex.Message);
             }
         }
-
-        //Delete: Consulta
 
         [Route("deleteConsulta")]
         [HttpDelete]

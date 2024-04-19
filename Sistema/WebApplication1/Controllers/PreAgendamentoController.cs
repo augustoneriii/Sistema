@@ -2,6 +2,7 @@
 using app.BE;
 using app.Data;
 using app.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace app.Controllers
 {
@@ -17,6 +18,7 @@ namespace app.Controllers
         }
 
         // GET: PreAgendamentos
+        [Authorize]
         [Route("getAllPreAgendamento")]
         [HttpGet]
         public async Task<IActionResult> GetAll(PreAgendamentoDTO dto)
@@ -33,6 +35,7 @@ namespace app.Controllers
         }
 
         // POST: PreAgendamentos
+        [Authorize]
         [Route("insertPreAgendamento")]
         [HttpPost]
         public async Task<IActionResult> Insert([FromBody] PreAgendamentoDTO preAgendamento)
@@ -52,6 +55,7 @@ namespace app.Controllers
         }
 
         // PATCH: PreAgendamentos
+        [Authorize]
         [Route("updatePreAgendamento")]
         [HttpPatch]
         public async Task<IActionResult> Update([FromBody] PreAgendamentoDTO preAgendamento)
@@ -71,6 +75,7 @@ namespace app.Controllers
         }
 
         // DELETE: PreAgendamentos
+        [Authorize]
         [Route("deletePreAgendamentos")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] long id)

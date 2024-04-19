@@ -150,7 +150,7 @@ namespace app.DAO
             objUpdate.Append($" \"Atendida\" = '{dto.Atendida}', ");
             objUpdate.Append($" \"Status\" = '{dto.Status}', ");
             objUpdate.Append($" \"Tipo\" = '{dto.Tipo}', ");
-            objUpdate.Append($" \"Observacoes\" = '{dto.Observacoes}', ");
+            objUpdate.Append($" \"Observacoes\" = '{dto.Observacoes}' ");
             
          
             objUpdate.Append($"WHERE \"Id\" = {dto.Id}; ");

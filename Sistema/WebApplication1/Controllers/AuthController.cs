@@ -46,6 +46,7 @@ namespace app.Controllers
         {
             try
             {
+
                 var obj = await authService.Authenticate(user);
                 if (obj != null)
                     return Ok(new { User = obj, Token = obj.Token, Message = "Usuário autenticado com sucesso!" });

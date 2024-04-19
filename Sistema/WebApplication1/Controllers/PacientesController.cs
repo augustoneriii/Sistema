@@ -3,6 +3,7 @@ using app.BE;
 using app.Data;
 using app.DTO;
 using app.DTO.Request;
+using Microsoft.AspNetCore.Authorization;
 
 namespace app.Controllers
 {
@@ -34,6 +35,7 @@ namespace app.Controllers
         }
 
         // GET: Pacientes
+        [Authorize]
         [Route("getAllPacientes")]
         [HttpGet]
         public async Task<IActionResult> GetAll(PacientesDTO dto)
@@ -57,6 +59,7 @@ namespace app.Controllers
         }
 
         // POST: Pacientes
+        [Authorize]
         [Route("insertPacientes")]
         [HttpPost]
         public async Task<IActionResult> Insert([FromBody] PacientesRequest pacientes)
@@ -84,6 +87,7 @@ namespace app.Controllers
         }
 
         // PATCH: Pacientes
+        [Authorize]
         [Route("updatePacientes")]
         [HttpPatch]
         public async Task<IActionResult> Update([FromBody] PacientesRequest pacientes)
@@ -110,6 +114,8 @@ namespace app.Controllers
             }
         }
 
+        //Delete: Pacientes
+        [Authorize]
         [Route("deletePacientes")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] long id)
