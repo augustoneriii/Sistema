@@ -325,7 +325,6 @@ export default function Consulta() {
                         <Column style={{ width: '14.28%' }} field="profissionais.nome" header="Profissional" sortable></Column>
                         <Column style={{ width: '14.28%' }} field="pacientes.nome" header="Paciente" sortable></Column>
                         <Column style={{ width: '14.28%' }} field="data" header="Data" body={(rowData) => <span>{formatDate(rowData.data)}</span>} sortable></Column>
-
                         <Column style={{ width: '14.28%' }} field="hora" header="Hora" sortable></Column>
                         <Column style={{ width: '14.28%' }} field="status" header="Status" sortable></Column>
                         <Column style={{ width: '14.28%' }} field="tipo" header="Tipo" sortable></Column>

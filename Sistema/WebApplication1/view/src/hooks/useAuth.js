@@ -51,6 +51,8 @@ function useAuth() {
         }
     }
 
+    
+
     function logout() {
         setAuthenticated(false)
         localStorage.removeItem('token')

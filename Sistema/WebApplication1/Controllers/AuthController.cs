@@ -15,9 +15,12 @@ namespace app.Controllers
     public class AuthController : Controller
     {
         private readonly AuthBE authService;
+       
+
         public AuthController(AuthBE serv)
         {
             authService = serv;
+           
         }
 
 
@@ -57,6 +60,24 @@ namespace app.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet]
+        [Route("checkuser")]
+        public IActionResult CheckUser()
+        {
+          
+            if (!HttpContext.Request.Headers.ContainsKey("Authorization"))
+            {
+               
+                return BadRequest(new { Message = "Usuário não está logado!" });
+            }
+
+            // Obter o token do cabeçalho da solicitação
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Split(' ')[1];
+
+            
+            return Ok(new { Message = "Usuário logado!" });
         }
 
     }
