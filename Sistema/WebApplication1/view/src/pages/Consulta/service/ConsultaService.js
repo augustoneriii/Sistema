@@ -40,7 +40,7 @@ export class ConsultaService {
 
     static async updateConsulta(consulta, token) {
         console.log("update ", consulta);
-        return await api.put(`/updateConsulta/${consulta.id}`, consulta, {
+        return await api.patch(`/updateConsulta?consulta.id=${consulta.id}`, consulta, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
