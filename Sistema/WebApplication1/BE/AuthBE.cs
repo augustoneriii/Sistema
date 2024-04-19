@@ -12,7 +12,7 @@ namespace app.BE
     {
         UserManager<IdentityUser> _userManager;
         SignInManager<IdentityUser> _signInManager;
-        private readonly string _key = "uma_chave_muito_secreta_aqui!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"; 
+        private readonly string _key = "uma_chave_muito_secreta_aqui!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
 
         public AuthBE(UserManager<IdentityUser> userManager,
         SignInManager<IdentityUser> signInManager)
@@ -39,7 +39,7 @@ namespace app.BE
             return result;
         }
 
-        public async Task<string> Authenticate(UserLoginDTO user)
+        public async Task<UserValidationResponse> Authenticate(UserLoginDTO user)
         {
             var identityUser = await _userManager.FindByEmailAsync(user.Email);
             if (identityUser == null)
@@ -56,24 +56,35 @@ namespace app.BE
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                new Claim(ClaimTypes.Name, identityUser.Email),
+                        new Claim(ClaimTypes.Name, identityUser.UserName), // UserName
+                        new Claim(ClaimTypes.Email, identityUser.Email), // Email
                     }),
                     Expires = DateTime.UtcNow.AddHours(1),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
                 };
 
                 var token = tokenHandler.CreateToken(tokenDescriptor);
-                return tokenHandler.WriteToken(token);
+
+                return new UserValidationResponse
+                {
+                    IsAuthenticated = true,
+                    Token = tokenHandler.WriteToken(token),
+                    UserName = identityUser.UserName,
+                    Email = identityUser.Email
+                };
             }
             return null;
         }
 
 
-        public bool CheckUser(string authToken)
+
+        public UserValidationResponse CheckUser(string authToken)
         {
+            var result = new UserValidationResponse();
             if (string.IsNullOrEmpty(authToken))
             {
-                return false;
+                result.ErrorMessage = "No token provided.";
+                return result;
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -83,19 +94,27 @@ namespace app.BE
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_key)),
                 ValidateIssuer = false,
                 ValidateAudience = false,
-                ValidateLifetime = true, 
+                ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
             };
 
             try
             {
                 var principal = tokenHandler.ValidateToken(authToken, validationParameters, out SecurityToken validatedToken);
-                return true; 
+                var identityClaims = (ClaimsIdentity)principal.Identity;
+
+                result.IsAuthenticated = true;
+                result.UserName = identityClaims.FindFirst(ClaimTypes.Name)?.Value; // UserName armazenado em ClaimTypes.Name
+                result.Email = identityClaims.FindFirst(ClaimTypes.Email)?.Value; // Certifique-se de que o e-mail está incluído quando o token é emitido
+
+                return result;
             }
-            catch
+            catch (Exception ex)
             {
-                return false; 
+                result.ErrorMessage = ex.Message;
+                return result;
             }
         }
+
     }
 }

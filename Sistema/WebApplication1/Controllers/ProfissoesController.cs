@@ -39,12 +39,12 @@ namespace app.Controllers
         {
             try
             {
-                //var token = ExtractAuthToken();
-                //var isAuth = _auth.CheckUser(token);
-                //if (isAuth == false || !isAuth)
-                //{
-                //    return BadRequest(new { Message = "Usuário não autenticado!" });
-                //}
+                var token = ExtractAuthToken();
+                UserValidationResponse userLogado = _auth.CheckUser(token);
+                if (userLogado == null || !userLogado.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
                 var response = await _be.GetAll(dto);
                 return Ok(response);
             }
@@ -62,8 +62,8 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-                var isAuth = _auth.CheckUser(token);
-                if (isAuth == false || !isAuth)
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
@@ -87,8 +87,8 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-                var isAuth = _auth.CheckUser(token);
-                if (isAuth == false || !isAuth)
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
@@ -113,11 +113,13 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-                var isAuth = _auth.CheckUser(token);
-                if (isAuth == false || !isAuth)
+
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
+
                 _context.BeginTransaction();
                 await _be.Delete(id);
                 _context.Commit();
