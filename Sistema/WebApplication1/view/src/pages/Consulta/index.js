@@ -89,6 +89,7 @@ export default function Consulta() {
     };
 
 
+
     const headerTemplate = (data) => {
         return (
             <React.Fragment>
@@ -96,6 +97,9 @@ export default function Consulta() {
             </React.Fragment>
         );
     };
+
+
+
 
 
     const openNew = () => {
@@ -320,7 +324,7 @@ export default function Consulta() {
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} consultas" globalFilter={globalFilter} header={header}>
                         <Column style={{ width: '14.28%' }} field="profissionais.nome" header="Profissional" sortable></Column>
                         <Column style={{ width: '14.28%' }} field="pacientes.nome" header="Paciente" sortable></Column>
-                        <Column style={{ width: '14.28%' }} field="data" header="Data" body={(rowData) => formatDate(rowData.data)} sortable></Column>
+                        <Column style={{ width: '14.28%' }} field="data" header="Data" body={(rowData) => <span>{formatDate(rowData.data)}</span>} sortable></Column>
                         <Column style={{ width: '14.28%' }} field="hora" header="Hora" sortable></Column>
                         <Column style={{ width: '14.28%' }} field="status" header="Status" sortable></Column>
                         <Column style={{ width: '14.28%' }} field="tipo" header="Tipo" sortable></Column>
@@ -359,12 +363,12 @@ export default function Consulta() {
                     <div className='grid'>
                         <div className="field col">
                             <label htmlFor="data">Data</label>
-                            <Calendar id="data" value={consulta.data} onChange={(e) => onInputChange(e, 'data')} showIcon />
+                            <Calendar id="data" value={consulta.Data} onChange={(e) => onInputChange(e, 'data')} showIcon />
                         </div>
 
                         <div className="field col">
                             <label htmlFor="hora">Hora</label>
-                            <Calendar id="hora" value={consulta.hora} onChange={(e) => onInputChange(e, 'hora')} timeOnly />
+                            <Calendar id="hora" value={consulta .Hora} onChange={(e) => onInputChange(e, 'hora')} timeOnly />
                         </div>
                     </div>
                     <div className='grid'>

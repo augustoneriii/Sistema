@@ -34,15 +34,14 @@ namespace app.Controllers
 
         // GET: Profissoes
         [HttpGet]
-        //[Authorize]
         [Route("getAllProfissoes")]
         public async Task<IActionResult> GetAll(ProfissoesDTO dto)
         {
             try
             {
                 var token = ExtractAuthToken();
-                var isAuth = _auth.CheckUser(token);
-                if (isAuth == false || !isAuth)
+                UserValidationResponse userLogado = _auth.CheckUser(token);
+                if (userLogado == null || !userLogado.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
@@ -56,7 +55,6 @@ namespace app.Controllers
         }
 
         // POST: Profissoes
-        //[Authorize]
         [Route("insertProfissoes")]
         [HttpPost]
         public async Task<IActionResult> Insert([FromBody] ProfissoesDTO profissoes)
@@ -64,8 +62,8 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-                var isAuth = _auth.CheckUser(token);
-                if (isAuth == false || !isAuth)
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
@@ -82,7 +80,6 @@ namespace app.Controllers
         }
 
         // PATCH: Profissoes
-        //[Authorize]
         [Route("updateProfissoes")]
         [HttpPatch]
         public async Task<IActionResult> Update([FromBody] ProfissoesDTO profissoes)
@@ -90,8 +87,8 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-                var isAuth = _auth.CheckUser(token);
-                if (isAuth == false || !isAuth)
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
@@ -109,7 +106,6 @@ namespace app.Controllers
         }
 
         // DELETE: Profissoes
-        //[Authorize]
         [Route("deleteProfissoes")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] int id)
@@ -117,11 +113,13 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-                var isAuth = _auth.CheckUser(token);
-                if (isAuth == false || !isAuth)
+
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
+
                 _context.BeginTransaction();
                 await _be.Delete(id);
                 _context.Commit();

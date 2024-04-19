@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace app.Controllers
 {
-    
+
     public class ConvenioMedicosController : Controller
     {
         private ConvenioMedicosBE _be;
@@ -35,7 +35,7 @@ namespace app.Controllers
 
 
         // GET: ConvenioMedicos
-        //* [Authorize]
+
         [Route("getAllConvenioMedicos")]
         [HttpGet]
         public async Task<IActionResult> GetAll(ConvenioMedicosDTO dto)
@@ -43,11 +43,13 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-                var isAuth = _auth.CheckUser(token);
-                if (isAuth == false || !isAuth)
+
+                UserValidationResponse userLogado = _auth.CheckUser(token);
+                if (userLogado == null || !userLogado.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
+
                 var response = await _be.GetAll(dto);
                 return Ok(response);
             }
@@ -57,10 +59,7 @@ namespace app.Controllers
             }
         }
 
-        // POST: ConvenioMedicos
 
-
-        //* [Authorize]
         [HttpPost]
         [Route("insertConvenioMedicos")]
         public async Task<IActionResult> Insert([FromBody] ConvenioMedicosDTO convenioMedicos)
@@ -68,27 +67,26 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-                var isAuth = _auth.CheckUser(token);
-                if (isAuth == false || !isAuth)
 
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
 
-                _context.BeginTransaction();  
+                _context.BeginTransaction();
                 var response = await _be.Insert(convenioMedicos);
-                _context.Commit();  
+                _context.Commit();
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                _context.Rollback();  
+                _context.Rollback();
                 return BadRequest(ex.Message);
             }
         }
 
         // PATCH: ConvenioMedicos
-        // [Authorize]
         [Route("updateConvenioMedicos")]
         [HttpPatch]
         public async Task<IActionResult> Update([FromBody] ConvenioMedicosDTO convenioMedicos)
@@ -96,9 +94,8 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-                var isAuth = _auth.CheckUser(token);
-                                if (isAuth == false || !isAuth)
-
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
@@ -116,7 +113,6 @@ namespace app.Controllers
         }
 
         // DELETE: ConvenioMedicos
-        // [Authorize]
         [Route("deleteConvenioMedicos")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] int id)
@@ -124,9 +120,9 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-                var isAuth = _auth.CheckUser(token);
-                                if (isAuth == false || !isAuth)
 
+                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
