@@ -123,8 +123,8 @@ namespace app.DAO
 
             objInsert.Append(") VALUES (");
             
-            objInsert.Append($" '{dto.Data:MM-dd-yyyy}', ");
-            objInsert.Append($" '{dto.Hora:HH:mm:ss}', ");
+            objInsert.Append($" '{dto.Data}', ");
+            objInsert.Append($" '{dto.Hora}', ");
             objInsert.Append($" '{dto.Atendida:  1 : 0}', "); // Correção na definição de Atendida
             objInsert.Append($" '{dto.Status}', ");
             objInsert.Append($" '{dto.Tipo}', ");

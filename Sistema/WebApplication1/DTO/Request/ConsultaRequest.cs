@@ -9,8 +9,6 @@
         public string? Status { get; set; }
         public string? Tipo { get; set; }
         public string? Observacoes { get; set; }
-        public DateTime? CreatedAt { get; set; } = DateTime.Now;
-        public DateTime? UpdatedAt { get; set; }
         public long? PacienteId { get; set; }
         public long? ProfissionalId { get; set; }
         

@@ -20,7 +20,7 @@ namespace app.Controllers
         }
 
         //GET: Consultas
-      
+
         [Route("getAllConsultas")]
         [HttpGet]
         public async Task<IActionResult> GetAll(ConsultaDTO dto)
@@ -46,7 +46,7 @@ namespace app.Controllers
                 _context.BeginTransaction();
                 var response = await _be.Insert(consulta);
                 _context.Commit();
-                return Ok();
+                return Ok(new { Message = "Consulta cadastrada com sucesso!" });
             }
             catch (Exception ex)
             {
@@ -56,7 +56,7 @@ namespace app.Controllers
         }
 
         // PATCH: Consulta
-       
+
         [Route("updateConsulta")]
         [HttpPatch]
         public async Task<IActionResult> Update([FromBody] ConsultaRequest consulta)
@@ -76,7 +76,7 @@ namespace app.Controllers
         }
 
         //Delete: Consulta
-        
+
         [Route("deleteConsulta")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] long id)

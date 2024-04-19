@@ -21,7 +21,7 @@ export class ConsultaService {
 
 
     static async getConsultas(token) {
-        return await api.get('/getAllConsulta', {
+        return await api.get('/getAllConsultas', {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
