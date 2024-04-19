@@ -43,8 +43,10 @@ namespace app.Controllers
             try
             {
                 var token = await authService.Authenticate(user);
+             
                 if (!string.IsNullOrEmpty(token))
-                    return Ok(new { Token = token, Message = "Usuário autenticado com sucesso!" });
+                    return Ok(new { Token = token,});
+                 
                 return Unauthorized(new { Message = "Usuario não autenticado!" });
             }
             catch (Exception ex)

@@ -20,7 +20,7 @@ namespace app.Controllers
         }
 
         //GET: Consultas
-
+        [Authorize]
         [Route("getAllConsultas")]
         [HttpGet]
         public async Task<IActionResult> GetAll(ConsultaDTO dto)
@@ -37,6 +37,7 @@ namespace app.Controllers
         }
 
         //Post: Consulta
+        [Authorize]
         [Route("insertConsulta")]
         [HttpPost]
         public async Task<IActionResult> Insert([FromBody] ConsultaRequest consulta)
@@ -55,8 +56,10 @@ namespace app.Controllers
             }
         }
 
-        // PATCH: Consulta
 
+
+        // PATCH: Consulta
+        [Authorize]
         [Route("updateConsulta")]
         [HttpPatch]
         public async Task<IActionResult> Update([FromBody] ConsultaRequest consulta)
@@ -76,7 +79,7 @@ namespace app.Controllers
         }
 
         //Delete: Consulta
-
+        [Authorize]
         [Route("deleteConsulta")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] long id)
