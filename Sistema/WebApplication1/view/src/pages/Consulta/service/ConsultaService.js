@@ -29,12 +29,13 @@ export class ConsultaService {
     }
 
     static async createConsulta(consulta, token) {
-     console.log("consulta---> ", consulta)
-       return await api.post('/insertConsulta', consulta, {
-           headers: {
-             Authorization: `Bearer ${JSON.parse(token)}`
-        }
-     });
+        console.log("create ", consulta);
+
+        return await api.post('/insertConsulta', consulta, {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(token)}`
+            }
+        });
     }
 
     static async updateConsulta(consulta, token) {

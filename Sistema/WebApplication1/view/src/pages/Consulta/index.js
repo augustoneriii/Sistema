@@ -23,16 +23,15 @@ export default function Consulta() {
 
     let emptyConsulta = {
         id: null,
+        atendida: false,
         data: '',
         hora: '',
-        paciente: '',
-        profissional: '',
-        user: '',
-        atendida: false,
-        status: '',
-        tipo: '',
         observacoes: '',
-        
+        pacienteId: null,
+        profissionalId: null,
+        status: '',
+        tipo: ''
+
     };
 
     const [consultas, setConsultas] = useState([]);
@@ -65,7 +64,7 @@ export default function Consulta() {
         const currentToken = localStorage.getItem('token') || '';
         ConsultaService.getPacientes(currentToken)
             .then(response => {
-                setPacientes(response.data.pacientes); // Acesso à array de pacientes
+                setPacientes(response.data); // Acesso à array de pacientes
             })
             .catch(error => {
                 console.error("Erro ao buscar pacientes:", error);
@@ -121,6 +120,19 @@ export default function Consulta() {
             let _consultas = [...consultas];
             let _consulta = { ...consulta };
 
+            let postConsulta = {
+                PacienteId: _consulta.paciente.id,
+                ProfissionalId: _consulta.profissional.id,
+                Data: _consulta.data,
+                Hora: _consulta.hora,
+                Status: _consulta.status,
+                Tipo: _consulta.tipo,
+                Observacoes: _consulta.observacoes,
+                Atendida: false
+            };
+
+            console.log("consulta", postConsulta);
+
             const currentToken = localStorage.getItem('token') || '';
             if (consulta.id) {
                 const index = findIndexById(consulta.id);
@@ -129,9 +141,9 @@ export default function Consulta() {
                 ConsultaService.updateConsulta(_consulta, currentToken);
             } else {
                 console.log("create consulta", _consulta);
-                _consultas.push(_consulta);
+                _consultas.push(postConsulta);
                 toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Criado', life: 3000 });
-                ConsultaService.createConsulta(_consulta, currentToken);
+                ConsultaService.createConsulta(postConsulta, currentToken);
             }
 
             setConsultas(_consultas);
@@ -196,11 +208,23 @@ export default function Consulta() {
     };
 
     const onInputChange = (e, name) => {
-        const val = (e.target && e.target.value) || '';
+        let val;
+        if (name === 'atendida') {
+            // Checkbox retorna um boolean diretamente, então use e.checked para ele
+            val = e.checked;
+        } else if (e.value !== undefined) {
+            // Para Dropdown e componentes que usam e.value
+            val = e.value;
+        } else {
+            // Para componentes de entrada padrão que usam e.target.value
+            val = e.target.value;
+        }
+
         let _consulta = { ...consulta };
-        _consulta[`${name}`] = val;
+        _consulta[name] = val;
         setConsulta(_consulta);
     };
+
 
     const leftToolbarTemplate = () => {
         return (
@@ -294,10 +318,10 @@ export default function Consulta() {
                         sortField="NomeProfissional" paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         expandableRowGroups expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)} sortMode="single" rowGroupHeaderTemplate={headerTemplate}
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} consultas" globalFilter={globalFilter} header={header}>
-                        <Column style={{ width: '14.28%' }} field="NomeProfissional" header="Profissional" sortable></Column>
-                        <Column style={{ width: '14.28%' }} field="NomePaciente" header="Paciente" sortable></Column>
-                        <Column style={{ width: '14.28%' }} field="DataConsulta" header="Data" body={(rowData) => formatDate(rowData.DataConsulta)} sortable></Column>
-                        <Column style={{ width: '14.28%' }} field="HoraConsulta" header="Hora" sortable></Column>
+                        <Column style={{ width: '14.28%' }} field="profissionais.nome" header="Profissional" sortable></Column>
+                        <Column style={{ width: '14.28%' }} field="pacientes.nome" header="Paciente" sortable></Column>
+                        <Column style={{ width: '14.28%' }} field="data" header="Data" body={(rowData) => formatDate(rowData.data)} sortable></Column>
+                        <Column style={{ width: '14.28%' }} field="hora" header="Hora" sortable></Column>
                         <Column style={{ width: '14.28%' }} field="status" header="Status" sortable></Column>
                         <Column style={{ width: '14.28%' }} field="tipo" header="Tipo" sortable></Column>
                         <Column style={{ width: '14.28%' }} header="Ações" body={actionBodyTemplate}></Column>
