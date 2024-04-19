@@ -158,11 +158,11 @@ namespace app.DAO
             objUpdate.Append($" \"Sexo\" = '{dto.Sexo}', ");
             objUpdate.Append($" \"Email\" = '{dto.Email}', ");
             objUpdate.Append($" \"Conselho\" = '{dto.Conselho}', ");
-            objUpdate.Append($" \"ProfissaoId\" = {dto.ProfissaoId}, ");
-            objUpdate.Append($" \"ConvenioId\" = {dto.ProfissaoId}, ");
+            objUpdate.Append($" \"ProfissaoId\" = '{dto.ProfissaoId}', ");
+            objUpdate.Append($" \"ConvenioId\" = '{dto.ConvenioId}', ");
             objUpdate.Append($" \"Observacoes\" = '{dto.Observacoes}', ");
             objUpdate.Append($" \"Image\" = '{dto.Image}' ");
-            objUpdate.Append($" WHERE \"Id\" = {dto.Id} ");
+            objUpdate.Append($" WHERE \"Id\" = '{dto.Id}' ");
 
             var id = _context.ExecuteNonQuery(objUpdate.ToString());
 

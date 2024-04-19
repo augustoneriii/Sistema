@@ -7,23 +7,27 @@ import { Column } from 'primereact/column';
 import { PacienteService } from './service/PacienteService.js';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
+import { InputTextarea } from 'primereact/inputtextarea';
 import { Toolbar } from 'primereact/toolbar';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 
+
 export default function Paciente() {
     const { pacienteVisible, setPacienteVisible } = useContext(SidebarContext);
 
     let emptyPaciente = {
-        IdPaciente: null,
-        NomePaciente: '',
+        Id: null,
+        nome: '',
         cpf: '',
         rg: '',
-        TelefonePaciente: '',
+        telefone: '',
         endereco: '',
-        EmailPaciente: '',
+        email: '',
+        nascimento: '',
+        sexo: '',
         IdConvenio: null,
         NomeConvenio: '',
         tipoSanguineo: '',
@@ -107,21 +111,41 @@ export default function Paciente() {
     const savePaciente = () => {
         setSubmitted(true);
 
-        if (paciente.nome.trim()) {
+        if (paciente.nome && paciente.nome.trim()) {
             let _pacientes = [...pacientes];
             let _paciente = { ...paciente };
 
+            let postPaciente = {
+                IdPaciente: _paciente.IdPaciente,
+                Nome: _paciente.nome,
+                Cpf: _paciente.cpf,
+                Rg: _paciente.rg,
+                Telefone: _paciente.telefone,
+                Endereco: _paciente.endereco,
+                Email: _paciente.email,
+                Nascimento: _paciente.nascimento, // Certifique-se de que a data de nascimento está sendo incluída
+                Sexo: _paciente.sexo,
+                IdConvenio: _paciente.IdConvenio,
+                TipoSanguineo: _paciente.tipoSanguineo,
+                Alergias: _paciente.alergias,
+                Medicamentos: _paciente.medicamentos,
+                Cirurgias: _paciente.cirurgias,
+                Historico: _paciente.historico
+            };
+
+            console.log("object", postPaciente)
+
             const currentToken = localStorage.getItem('token') || '';
-            if (paciente.id) {
-                const index = findIndexById(paciente.id);
+            if (paciente.IdPaciente) {
+                const index = findIndexById(paciente.IdPaciente);
                 _pacientes[index] = _paciente;
                 toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Atualizado', life: 3000 });
                 PacienteService.updatePaciente(_paciente, currentToken);
             } else {
-                _paciente.id = createId();
+                _paciente.IdPaciente = createId();
                 _pacientes.push(_paciente);
                 toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Criado', life: 3000 });
-                PacienteService.createPaciente(_paciente, currentToken);
+                PacienteService.createPaciente(postPaciente, currentToken);
             }
 
             setPacientes(_pacientes);
@@ -143,12 +167,12 @@ export default function Paciente() {
     const deletePaciente = () => {
         const currentToken = localStorage.getItem('token') || '';
 
-        if (paciente && paciente.id) {
+        if (paciente && paciente.IdPaciente) {
 
-            PacienteService.deletePaciente(paciente.id, currentToken)
+            PacienteService.deletePaciente(paciente.IdPaciente, currentToken)
                 .then(() => {
                     toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Deletado', life: 3000 });
-                    setPacientes(pacientes.filter(val => val.id !== paciente.id));
+                    setPacientes(pacientes.filter(val => val.id !== paciente.IdPaciente));
                     setDeletePacienteDialog(false);
                     setPaciente(emptyPaciente);
                 })
@@ -176,10 +200,36 @@ export default function Paciente() {
     };
 
     const onInputChange = (e, name) => {
-        const val = (e.target && e.target.value) || '';
+        let val = (e.target && e.target.value) || '';
         let _paciente = { ...paciente };
-        _paciente[`${name}`] = val;
+
+        // Se o campo for 'nascimento', faça uma verificação mais robusta no formato da data
+        if (name === 'nascimento') {
+            // Certifique-se de que val seja uma string
+            val = val.toString().trim();
+
+            // Verifique se a string segue o formato dd/mm/aaaa
+            const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
+            if (val.match(datePattern)) {
+                // Se o valor estiver no formato correto, crie um objeto Date
+                const [day, month, year] = val.split('/');
+                _paciente[name] = new Date(year, month - 1, day); // Mês começa do zero
+            } else {
+                // Se o formato não estiver correto, defina como null
+                _paciente[name] = null;
+            }
+        } else {
+            _paciente[name] = val;
+        }
+
         setPaciente(_paciente);
+    };
+
+    const formatDate = (dateStr) => {
+        if (!dateStr) return '';
+        const date = new Date(dateStr);
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+        return date.toLocaleDateString('pt-BR', options);
     };
 
     const leftToolbarTemplate = () => {
@@ -240,11 +290,19 @@ export default function Paciente() {
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pacientes" globalFilter={globalFilter} header={header}>
                     <Column selectionMode="multiple" style={{ width: '3rem' }}></Column>
-                    <Column field="IdPaciente" header="Id" sortable></Column>
-                    <Column field="NomePaciente" header="Nome" sortable></Column>
+                    <Column field="id" header="Id" sortable></Column>
+                    <Column field="nome" header="Nome" sortable></Column>
                     <Column field="cpf" header="CPF" sortable></Column>
-                    <Column field="TelefonePaciente" header="Telefone" sortable></Column>
-                    <Column field="EmailPaciente" header="E-mail" sortable></Column>
+                    <Column field="telefone" header="Telefone" sortable></Column>
+                    <Column field="endereco" header="Endereço" sortable></Column>
+                    <Column field="nascimento" header="Nascimento" sortable></Column>
+                    <Column field="sexo" header="Sexo" sortable></Column>
+                    <Column field="email" header="E-mail" sortable></Column>
+                    <Column field="tipoSanguineo" header="Tipo Sanguíneo" sortable></Column>
+                    <Column field="alergias" header="Alergias" sortable></Column>
+                    <Column field="medicamentos" header="Medicamentos" sortable></Column>
+                    <Column field="cirurgias" header="Cirurgias" sortable></Column>
+                    <Column field="historico" header="Histórico" sortable></Column>
                     <Column body={actionBodyTemplate}></Column>
                 </DataTable>
             </div>
@@ -256,7 +314,7 @@ export default function Paciente() {
                 </div>
                 <div className="field ">
                     <label htmlFor="nome">Nome</label>
-                    <InputText id="nome" value={paciente.NomePaciente} onChange={(e) => onInputChange(e, 'NomePaciente')} />
+                    <InputText id="nome" value={paciente.nome} onChange={(e) => onInputChange(e, 'nome')} />
                     {submitted && !paciente.nome && <small className="p-error">Nome é obrigatório.</small>}
                 </div>
 
@@ -268,14 +326,15 @@ export default function Paciente() {
                     </div>
 
                     <div className="field col">
+                        <label htmlFor="telefone">Telefone</label>
+                        <InputText id="telefone" value={paciente.telefone} onChange={(e) => onInputChange(e, 'telefone')} />
+                    </div>
+
+                    <div className="field col">
                         <label htmlFor="rg">RG</label>
                         <InputText id="rg" value={paciente.rg} onChange={(e) => onInputChange(e, 'rg')} />
                     </div>
 
-                    <div className="field col">
-                        <label htmlFor="telefone">Telefone</label>
-                        <InputText id="telefone" value={paciente.telefone} onChange={(e) => onInputChange(e, 'telefone')} />
-                    </div>
                 </div>
 
                 <div className="field">
@@ -287,19 +346,24 @@ export default function Paciente() {
 
                     <div className="field col">
                         <label htmlFor="nascimento">Nascimento</label>
-                        <Calendar id="nascimento" value={paciente.nascimento} onChange={(e) => onInputChange(e, 'nascimento')} showIcon />
+                        <Calendar
+                            id="nascimento"
+                            value={formatDate(paciente.nascimento)}
+                            onChange={(e) => onInputChange(e, 'nascimento')}
+                            showIcon
+                            dateFormat="dd/mm/yy"
+                        />
                     </div>
 
                     <div className="field col">
                         <label htmlFor="sexo">Sexo</label>
                         <Dropdown id="sexo" value={paciente.sexo} options={sexoOptions} onChange={(e) => onInputChange(e, 'sexo')} placeholder="Selecione" />
                     </div>
-
                 </div>
 
                 <div className='grid'>
                     <div className="field col">
-                        <label htmlFor="tipoSanguineo">Tipo Sanguineo</label>
+                        <label htmlFor="tipoSanguineo">Tipo Sanguíneo</label>
                         <Dropdown id="tipoSanguineo" value={paciente.tipoSanguineo} options={tipoSanguineoOptions} onChange={(e) => onInputChange(e, 'tipoSanguineo')} placeholder="Selecione" />
                     </div>
 
@@ -307,6 +371,26 @@ export default function Paciente() {
                         <label htmlFor="convenio">Convenio</label>
                         <Dropdown id="convenio" value={paciente.IdConvenio} options={dropdownConvenios} onChange={(e) => onInputChange(e, 'IdConvenio')} placeholder="Selecione um convenio" />
                     </div>
+                </div>
+
+                <div className="field">
+                    <label htmlFor="alergias">Alergias</label>
+                    <InputTextarea id="alergias" value={paciente.alergias} onChange={(e) => onInputChange(e, 'alergias')} rows={2} cols={30} />
+                </div>
+
+                <div className="field">
+                    <label htmlFor="medicamentos">Medicamentos</label>
+                    <InputTextarea id="medicamentos" value={paciente.medicamentos} onChange={(e) => onInputChange(e, 'medicamentos')} rows={2} cols={30} />
+                </div>
+
+                <div className="field">
+                    <label htmlFor="cirurgias">Cigurgias</label>
+                    <InputTextarea id="cirurgias" value={paciente.cirurgias} onChange={(e) => onInputChange(e, 'cirurgias')} rows={2} cols={30} />
+                </div>
+
+                <div className="field">
+                    <label htmlFor="historico">Histórico</label>
+                    <InputTextarea id="historico" value={paciente.historico} onChange={(e) => onInputChange(e, 'historico')} rows={2} cols={30} />
                 </div>
 
             </Dialog>

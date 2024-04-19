@@ -30,7 +30,7 @@ export default function Profissional() {
         observacoes: "",
         image: "",
         profissaoId: null,
-        convenioId: null
+        convenioId: null,
     };
 
     const { profissionalVisible, setProfissionalVisible } = useContext(SidebarContext);
@@ -122,33 +122,40 @@ export default function Profissional() {
         setDeleteProfissionalDialog(false);
     };
 
-    const saveProfissional = () => {
-        setSubmitted(true);
-    
-        if (profissional.nome.trim()) {
-            let _profissionais = [...profissionais];
-            let _profissional = { ...profissional, conselho: conselho }; // atualiza o conselho com o valor digitado
-    
-            const currentToken = localStorage.getItem('token') || '';
-            if (profissional.id) {
-                const index = findIndexById(profissional.id);
-                _profissionais[index] = _profissional;
-                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissional Atualizado', life: 3000 });
-                ProfissionalService.updateProfissional(_profissional, currentToken);
-            } else {
-                _profissionais.push(_profissional);
-                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissional Criado', life: 3000 });
-                ProfissionalService.createProfissional(_profissional, currentToken);
+        const saveProfissional = () => {
+            setSubmitted(true);
+
+            if (profissional.nome.trim()) {
+                let _profissionais = [...profissionais];
+                let _profissional = { ...profissional, conselho: conselho }; // atualiza o conselho com o valor digitado
+
+                let postProfissional= {
+                    Nascimento: _profissional.nascimento
+                };
+
+                console.log("object", postProfissional)
+
+                const currentToken = localStorage.getItem('token') || '';
+                if (profissional.id) {
+                    const index = findIndexById(profissional.id);
+                    _profissionais[index] = _profissional;
+                    toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissional Atualizado', life: 3000 });
+                    ProfissionalService.updateProfissional(_profissional, currentToken);
+                } else {
+                    _profissionais.push(_profissional);
+                    toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissional Criado', life: 3000 });
+                    ProfissionalService.saveProfissional(_profissional, currentToken);
+                }
+
+                setProfissionais(_profissionais);
+                setProfissionalDialog(false);
+                setProfissional(emptyProfissional);
             }
-    
-            setProfissionais(_profissionais);
-            setProfissionalDialog(false);
-            setProfissional(emptyProfissional);
-        }
-    };
+        };
 
     const editProfissional = (profissional) => {
         setProfissional({ ...profissional });
+        setConselho(profissional.conselho || ''); // Garante que o conselho seja preenchido mesmo que seja nulo
         setProfissionalDialog(true);
     };
 
@@ -161,13 +168,20 @@ export default function Profissional() {
         const currentToken = localStorage.getItem('token') || '';
 
         if (profissional && profissional.id) {
+            console.log("Profissional antes da exclusão:", profissional);
 
             ProfissionalService.deleteProfissional(profissional.id, currentToken)
                 .then(() => {
                     toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissional Deletado', life: 3000 });
-                    setProfissionais(profissionais.filter(val => val.id !== profissional.id));
+
+                    // Filtra o profissional excluído e atualiza o estado profissionais
+                    const updatedProfissionais = profissionais.filter(val => val.id !== profissional.id);
+                    console.log("Profissionais atualizados:", updatedProfissionais);
+                    setProfissionais(updatedProfissionais);
+
                     setDeleteProfissionalDialog(false);
                     setProfissional(emptyProfissional);
+                    ProfissionalService.getProfissoes(currentToken);
                 })
                 .catch(error => {
                     console.error("Erro ao deletar profissional:", error);
@@ -233,6 +247,9 @@ export default function Profissional() {
             _profissional.conselho = '';
         }
 
+        // Atualiza o nome da profissão no estado do profissional
+        _profissional.profissao = selectedProfissao ? selectedProfissao.nome : '';
+
         setProfissional(_profissional);
     };
 
@@ -280,12 +297,12 @@ export default function Profissional() {
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} profissionais" globalFilter={globalFilter} header={header}>
                         <Column selectionMode="multiple" style={{ width: '3rem' }}></Column>
-                        <Column field="NomeProfissional" header="Nome" sortable></Column>
+                        <Column field="nome" header="Nome" sortable></Column>
                         <Column field="cpf" header="CPF" sortable></Column>
                         <Column field="telefone" header="Telefone" sortable></Column>
-                        <Column field="EmailProfissional" header="E-mail" sortable></Column>
-                        <Column field="NomeProfissao" header="Profissão" sortable></Column>
-                        <Column field="ConselhoProfissional" header="Conselho" sortable></Column>
+                        <Column field="email" header="E-mail" sortable></Column>
+                        <Column field="profissao" header="Profissão" sortable></Column>
+                        <Column field="conselho" header="Conselho" sortable></Column>
                         <Column body={actionBodyTemplate}></Column>
                     </DataTable>
                 </div>
@@ -386,4 +403,4 @@ export default function Profissional() {
             </Modal>
         </>
     );
-}
+} 
