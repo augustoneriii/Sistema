@@ -6,7 +6,10 @@ import Profissao from '../pages/CadastrosBasicos/Profissao';
 import Paciente from '../pages/Paciente';
 import Consulta from '../pages/Consulta';
 import Profissional from '../pages/Profissional';
-import { SidebarContext } from '../context/SideBarContext'; 
+import Usuarios from '../pages/CadastrosBasicos/Usuarios';
+import Perfil from '../pages/CadastrosBasicos/Perfil';
+import { SidebarContext } from '../context/SideBarContext';
+
 
 function AuthenticatedComponents() {
     const [token, setToken] = useState(null);
@@ -16,8 +19,10 @@ function AuthenticatedComponents() {
         profissaoVisible,
         pacienteVisible,
         consultaVisible,
-        profissionalVisible
-    } = useContext(SidebarContext); 
+        profissionalVisible,
+        usuarioVisible,
+        perfilVisible
+    } = useContext(SidebarContext);
 
     useEffect(() => {
         const tokenFromStorage = localStorage.getItem('token');
@@ -36,6 +41,8 @@ function AuthenticatedComponents() {
             {consultaVisible && <Consulta />}
             {profissaoVisible && <Profissao />}
             {pacienteVisible && <Paciente />}
+            {usuarioVisible && <Usuarios />}
+            {perfilVisible && <Perfil /> }
         </>
     ) : null;
 }

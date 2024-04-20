@@ -47,6 +47,9 @@ function SideBar() {
                 ))}
             </ul>
             <hr />
+            <Link to="#" className="nav-link link-dark ml-3" onClick={() => handleAction('setUsuarioVisible', true)}> <i className="pi pi-users"></i> {isExpanded ? 'Usuários' : ''}</Link>"
+            <Link to="#" className="nav-link link-dark ml-3" onClick={() => handleAction('setPerfilVisible', true)}> <i className="pi pi-user"></i> {isExpanded ? 'Perfil' : ''}</Link>"
+            <hr />
             <div className='d-flex justify-content-center mb-5'>
                 <Button onClick={toggleSidebar} icon="pi pi-bars" className='border-circle bg-dark border border-secondary' aria-label="Filter" />
             </div>
