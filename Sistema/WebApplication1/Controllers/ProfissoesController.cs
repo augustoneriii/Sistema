@@ -106,7 +106,7 @@ namespace app.Controllers
         }
 
         // DELETE: Profissoes
-        [Route("deleteProfissoes")]
+        /*[Route("deleteProfissoes")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] int id)
         {
@@ -130,6 +130,6 @@ namespace app.Controllers
                 _context.Rollback();
                 return BadRequest(ex.Message);
             }
-        }
+        }*/
     }
 }

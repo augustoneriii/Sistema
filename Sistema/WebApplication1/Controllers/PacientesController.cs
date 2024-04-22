@@ -110,7 +110,7 @@ namespace app.Controllers
             }
         }
 
-        [Route("deletePacientes")]
+        /*[Route("deletePacientes")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] long id)
         {
@@ -134,7 +134,7 @@ namespace app.Controllers
                 _context.Rollback();
                 return BadRequest(ex.Message);
             }
-        }
+        }*/
 
     }
 }

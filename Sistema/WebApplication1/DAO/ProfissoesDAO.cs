@@ -18,7 +18,7 @@ namespace app.DAO
         public async Task<List<ProfissoesDTO>> GetAll(ProfissoesDTO dto)
         {
             var objSelect = new StringBuilder();
-            objSelect.Append("SELECT \"Id\", \"Nome\", \"ConselhoProfissional\", \"CreatedAt\", \"UpdatedAt\"");
+            objSelect.Append("SELECT \"Id\", \"Nome\", \"ConselhoProfissional\", \"CreatedAt\", \"UpdatedAt\", \"Ativo\"");
             objSelect.Append("FROM \"Sistema\".\"Profissoes\"                      ");
             objSelect.Append("WHERE 1 = 1                                               ");
 
@@ -50,7 +50,8 @@ namespace app.DAO
                     Nome = row["Nome"].ToString(),
                     ConselhoProfissional = row["ConselhoProfissional"].ToString(),
                     CreatedAt = DateTime.Parse(row["CreatedAt"].ToString()),
-                    UpdatedAt = DateTime.Parse(row["UpdatedAt"].ToString())
+                    UpdatedAt = DateTime.Parse(row["UpdatedAt"].ToString()),
+                    Ativo = Convert.ToInt32(row["Ativo"])
                 });
             }
             return lstProfissoes;
@@ -61,9 +62,9 @@ namespace app.DAO
         {
             var objInsert = new StringBuilder();
             objInsert.Append("INSERT INTO \"Sistema\".\"Profissoes\" ");
-            objInsert.Append("(\"Nome\", \"ConselhoProfissional\") ");
+            objInsert.Append("(\"Nome\", \"ConselhoProfissional\", \"Ativo\") ");
             objInsert.Append("VALUES ");
-            objInsert.Append($"('{profissoes.Nome}', '{profissoes.ConselhoProfissional}') ");
+            objInsert.Append($"('{profissoes.Nome}', '{profissoes.ConselhoProfissional}', 1) ");
 
             var id = _context.ExecuteNonQuery(objInsert.ToString());
 
@@ -79,7 +80,8 @@ namespace app.DAO
             objUpdate.Append("SET ");
             objUpdate.Append($"\"Nome\" = '{profissoes.Nome}', ");
             objUpdate.Append($"\"ConselhoProfissional\" = '{profissoes.ConselhoProfissional}', ");
-            objUpdate.Append($"\"UpdatedAt\" = CURRENT_TIMESTAMP ");
+            objUpdate.Append($"\"UpdatedAt\" = CURRENT_TIMESTAMP, ");
+            objUpdate.Append($"\"Ativo\" = '{profissoes.Ativo}' ");
             objUpdate.Append($"WHERE \"Id\" = {profissoes.Id}; ");
 
             _context.ExecuteNonQuery(objUpdate.ToString());
@@ -87,14 +89,14 @@ namespace app.DAO
         }
 
         //delete
-        public async Task Delete(long id)
+        /*public async Task Delete(long id)
         {
             var objDelete = new StringBuilder();
             objDelete.Append("DELETE FROM \"Sistema\".\"Profissoes\" ");
             objDelete.Append($"WHERE \"Id\" = {id} ");
 
             _context.ExecuteNonQuery(objDelete.ToString());
-        }
+        }*/
 
     }
 }

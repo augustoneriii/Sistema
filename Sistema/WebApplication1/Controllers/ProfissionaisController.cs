@@ -111,7 +111,7 @@ namespace app.Controllers
         }
 
         // DELETE: Profissionais
-        [Route("deleteProfissionais")]
+        /*[Route("deleteProfissionais")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] long id)
         {
@@ -135,6 +135,6 @@ namespace app.Controllers
                 _context.Rollback();
                 return BadRequest(ex.Message);
             }
-        }
+        }*/
     }
 }

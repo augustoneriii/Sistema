@@ -13,6 +13,7 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
+import { Checkbox } from 'primereact/checkbox';
 
 
 export default function Paciente() {
@@ -26,7 +27,7 @@ export default function Paciente() {
         telefone: '',
         endereco: '',
         email: '',
-        nascimento: '',
+        //nascimento: null,
         sexo: '',
         IdConvenio: null,
         NomeConvenio: '',
@@ -34,19 +35,21 @@ export default function Paciente() {
         alergias: '',
         medicamentos: '',
         cirurgias: '',
-        historico: ''
+        historico: '',
+        ativo: null
     };
 
     const [pacientes, setPacientes] = useState([]);
     const [pacienteDialog, setPacienteDialog] = useState(false);
     const [convenios, setConvenios] = useState([]);
-    const [deletePacienteDialog, setDeletePacienteDialog] = useState(false);
+    //const [deletePacienteDialog, setDeletePacienteDialog] = useState(false);
     const [paciente, setPaciente] = useState(emptyPaciente);
     const [selectedPacientes, setSelectedPacientes] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
+    const [checked, setChecked] = useState(false); // Estado para controlar o valor do checkbox
 
     useEffect(() => {
         const currentToken = localStorage.getItem('token') || '';
@@ -57,7 +60,12 @@ export default function Paciente() {
             .catch(error => {
                 console.error("Erro ao buscar pacientes:", error);
             });
-    }, []);
+        if (paciente.ativo === 1) {
+            setChecked(true); // Marca o checkbox se o campo "ativo" for igual a 1
+        } else {
+            setChecked(false);
+        }
+    }, [paciente.ativo]);
 
     useEffect(() => {
         const currentToken = localStorage.getItem('token') || '';
@@ -104,9 +112,9 @@ export default function Paciente() {
         setPacienteDialog(false);
     };
 
-    const hideDeletePacienteDialog = () => {
+    /*const hideDeletePacienteDialog = () => {
         setDeletePacienteDialog(false);
-    };
+    };*/
 
     const savePaciente = () => {
         setSubmitted(true);
@@ -116,7 +124,7 @@ export default function Paciente() {
             let _paciente = { ...paciente };
 
             let postPaciente = {
-                IdPaciente: _paciente.IdPaciente,
+                Id: _paciente.Id,
                 Nome: _paciente.nome,
                 Cpf: _paciente.cpf,
                 Rg: _paciente.rg,
@@ -130,22 +138,25 @@ export default function Paciente() {
                 Alergias: _paciente.alergias,
                 Medicamentos: _paciente.medicamentos,
                 Cirurgias: _paciente.cirurgias,
-                Historico: _paciente.historico
+                Historico: _paciente.historico,
+                Ativo: _paciente.ativo
             };
 
-            console.log("object", postPaciente)
+            console.log("Valor de Nascimento:", _paciente.nascimento); // Verifica o valor de Nascimento antes de enviar
+
+            _paciente.ativo = checked ? 1 : 0; // Atualiza o campo "ativo" com base no estado do checkbox
 
             const currentToken = localStorage.getItem('token') || '';
-            if (paciente.IdPaciente) {
-                const index = findIndexById(paciente.IdPaciente);
+            if (paciente.Id) {
+                const index = findIndexById(paciente.Id);
                 _pacientes[index] = _paciente;
                 toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Atualizado', life: 3000 });
                 PacienteService.updatePaciente(_paciente, currentToken);
             } else {
-                _paciente.IdPaciente = createId();
+                _paciente.Id = createId();
                 _pacientes.push(_paciente);
                 toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Criado', life: 3000 });
-                PacienteService.createPaciente(postPaciente, currentToken);
+                PacienteService.createPaciente(_paciente, currentToken);
             }
 
             setPacientes(_pacientes);
@@ -159,7 +170,7 @@ export default function Paciente() {
         setPacienteDialog(true);
     };
 
-    const confirmDeletePaciente = (paciente) => {
+    /*const confirmDeletePaciente = (paciente) => {
         setPaciente(paciente);
         setDeletePacienteDialog(true);
     };
@@ -167,27 +178,35 @@ export default function Paciente() {
     const deletePaciente = () => {
         const currentToken = localStorage.getItem('token') || '';
 
-        if (paciente && paciente.IdPaciente) {
-
-            PacienteService.deletePaciente(paciente.IdPaciente, currentToken)
+        if (paciente && paciente.Id) {
+            PacienteService.deletePaciente(paciente.Id, currentToken)
                 .then(() => {
                     toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Deletado', life: 3000 });
-                    setPacientes(pacientes.filter(val => val.id !== paciente.IdPaciente));
+                    setPacientes(pacientes.filter(val => val.Id !== paciente.Id)); // Corrigido para usar 'Id'
                     setDeletePacienteDialog(false);
                     setPaciente(emptyPaciente);
                 })
                 .catch(error => {
-                    console.error("Erro ao deletar paciente:", error);
+                    toast.current.show({ severity: 'warning', summary: 'Erro', detail: 'Pacientes que possuem consulta marcada não podem ser deletados', life: 3000 });
                 });
         } else {
-            console.error("Erro: id do paciente é undefined");
+            toast.current.show({ severity: 'warning', summary: 'Erro', detail: 'O Id do Paciente não foi definido', life: 3000 });
         }
     };
+    <Button icon="pi pi-trash" className="border-round p-button-rounded p-button-danger" onClick={() => confirmDeletePaciente(rowData)} />
 
-    const findIndexById = (id) => {
+    <Dialog visible={deletePacienteDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deletePacienteDialogFooter} onHide={hideDeletePacienteDialog}>
+                <div className="confirmation-content">
+                    <i className="pi pi-exclamation-triangle mr-2" style={{ fontSize: '2rem' }} />
+                    {paciente && <span>Tem certeza que deseja excluir o paciente <b>{paciente.nome}</b>?</span>}
+                </div>
+            </Dialog>
+    */
+
+    const findIndexById = (Id) => {
         let index = -1;
         for (let i = 0; i < pacientes.length; i++) {
-            if (pacientes[i].id === id) {
+            if (pacientes[i].Id === Id) {
                 index = i;
                 break;
             }
@@ -200,29 +219,15 @@ export default function Paciente() {
     };
 
     const onInputChange = (e, name) => {
-        let val = (e.target && e.target.value) || '';
+        const val = (e.target && e.target.value) || '';
         let _paciente = { ...paciente };
-
-        // Se o campo for 'nascimento', faça uma verificação mais robusta no formato da data
-        if (name === 'nascimento') {
-            // Certifique-se de que val seja uma string
-            val = val.toString().trim();
-
-            // Verifique se a string segue o formato dd/mm/aaaa
-            const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;
-            if (val.match(datePattern)) {
-                // Se o valor estiver no formato correto, crie um objeto Date
-                const [day, month, year] = val.split('/');
-                _paciente[name] = new Date(year, month - 1, day); // Mês começa do zero
-            } else {
-                // Se o formato não estiver correto, defina como null
-                _paciente[name] = null;
-            }
-        } else {
-            _paciente[name] = val;
-        }
-
+        _paciente[`${name}`] = val;
         setPaciente(_paciente);
+    };
+
+
+    const onCheckboxChange = (e) => {
+        setChecked(e.checked); // Atualiza o estado do checkbox
     };
 
     const formatDate = (dateStr) => {
@@ -244,7 +249,6 @@ export default function Paciente() {
         return (
             <React.Fragment>
                 <Button icon="pi pi-pencil" className="border-round p-button-rounded p-button-secondary mr-2" onClick={() => editPaciente(rowData)} />
-                <Button icon="pi pi-trash" className="border-round p-button-rounded p-button-danger" onClick={() => confirmDeletePaciente(rowData)} />
             </React.Fragment>
         );
     };
@@ -266,12 +270,12 @@ export default function Paciente() {
         </React.Fragment>
     );
 
-    const deletePacienteDialogFooter = (
+    /*const deletePacienteDialogFooter = (
         <React.Fragment>
             <Button label="Não" icon="pi pi-times" className="border-round p-button-text" onClick={hideDeletePacienteDialog} />
             <Button label="Sim" icon="pi pi-check" className="border-round p-button-text" onClick={deletePaciente} />
         </React.Fragment>
-    );
+    );*/
 
     const headerTela = (
         <h1>
@@ -303,6 +307,8 @@ export default function Paciente() {
                     <Column field="medicamentos" header="Medicamentos" sortable></Column>
                     <Column field="cirurgias" header="Cirurgias" sortable></Column>
                     <Column field="historico" header="Histórico" sortable></Column>
+                    <Column field="ativo" header="Ativo" sortable></Column>
+                    
                     <Column body={actionBodyTemplate}></Column>
                 </DataTable>
             </div>
@@ -342,24 +348,16 @@ export default function Paciente() {
                     <InputText id="endereco" value={paciente.endereco} onChange={(e) => onInputChange(e, 'endereco')} />
                 </div>
 
-                <div className='grid'>
-
-                    <div className="field col">
-                        <label htmlFor="nascimento">Nascimento</label>
-                        <Calendar
-                            id="nascimento"
-                            value={formatDate(paciente.nascimento)}
-                            onChange={(e) => onInputChange(e, 'nascimento')}
-                            showIcon
-                            dateFormat="dd/mm/yy"
-                        />
-                    </div>
+                <div className="field col">
+                    <label htmlFor="nascimento">Nascimento</label>
+                    <Calendar id="nascimento" value={paciente.nascimento} onChange={(e) => onInputChange(e, 'nascimento')} showIcon />
+                </div>
 
                     <div className="field col">
                         <label htmlFor="sexo">Sexo</label>
                         <Dropdown id="sexo" value={paciente.sexo} options={sexoOptions} onChange={(e) => onInputChange(e, 'sexo')} placeholder="Selecione" />
                     </div>
-                </div>
+                
 
                 <div className='grid'>
                     <div className="field col">
@@ -392,14 +390,11 @@ export default function Paciente() {
                     <label htmlFor="historico">Histórico</label>
                     <InputTextarea id="historico" value={paciente.historico} onChange={(e) => onInputChange(e, 'historico')} rows={2} cols={30} />
                 </div>
-
-            </Dialog>
-
-            <Dialog visible={deletePacienteDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deletePacienteDialogFooter} onHide={hideDeletePacienteDialog}>
-                <div className="confirmation-content">
-                    <i className="pi pi-exclamation-triangle mr-2" style={{ fontSize: '2rem' }} />
-                    {paciente && <span>Tem certeza que deseja excluir o paciente <b>{paciente.nome}</b>?</span>}
+                <div className="field col-6">
+                    <label htmlFor="ativo">Ativo</label>
+                    <Checkbox onChange={onCheckboxChange} checked={checked}></Checkbox>
                 </div>
+
             </Dialog>
         </Dialog>
     );

@@ -11,6 +11,7 @@ import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import { Menu } from 'primereact/menu';
 import Modal from '../../../components/Modal/index.js';
+import { Checkbox } from 'primereact/checkbox';
 
 function Profissao() {
     const { profissaoVisible, setProfissaoVisible } = useContext(SidebarContext);
@@ -18,12 +19,13 @@ function Profissao() {
     let emptyProfissao = {
         id: null,
         nome: '',
-        conselhoProfissional: ''
+        conselhoProfissional: '',
+        ativo: null
     };
 
     const [profissoes, setProfissoes] = useState([]);
     const [profissaoDialog, setProfissaoDialog] = useState(false);
-    const [deleteProfissaoDialog, setDeleteProfissaoDialog] = useState(false);
+    //const [deleteProfissaoDialog, setDeleteProfissaoDialog] = useState(false);
     const [profissao, setProfissao] = useState(emptyProfissao);
     const [selectedProfissoes, setSelectedProfissoes] = useState(null);
     const [submitted, setSubmitted] = useState(false);
@@ -32,6 +34,7 @@ function Profissao() {
     const dt = useRef(null);
     const [menuModel, setMenuModel] = useState([]);
     const menuRef = useRef(null);
+    const [checked, setChecked] = useState(true); // Estado para controlar o valor do checkbox
 
     useEffect(() => {
         async function fetchProfissoes() {
@@ -43,8 +46,14 @@ function Profissao() {
                 console.error("Erro ao buscar profissoes:", error);
             }
         }
+
         fetchProfissoes();
-    }, []);
+        if (profissao.ativo === 1) {
+            setChecked(true); // Marca o checkbox se o campo "ativo" for igual a 1
+        } else {
+            setChecked(false);
+        }
+    }, [profissao.ativo]);
 
     const openNew = () => {
         setProfissao(emptyProfissao);
@@ -52,9 +61,9 @@ function Profissao() {
         setProfissaoDialog(true);
     };
 
-    const hideDeleteProfissaoDialog = () => {
+    /*const hideDeleteProfissaoDialog = () => {
         setDeleteProfissaoDialog(false);
-    };
+    };*/
 
     const saveProfissao = () => {
         setSubmitted(true);
@@ -63,6 +72,7 @@ function Profissao() {
             let _profissoes = [...profissoes];
             let _profissao = { ...profissao };
 
+            _profissao.ativo = checked ? 1 : 0; // Atualiza o campo "ativo" com base no estado do checkbox
             const currentToken = localStorage.getItem('token') || '';
             if (profissao.id) {
                 const index = findIndexById(profissao.id);
@@ -100,7 +110,7 @@ function Profissao() {
         setProfissaoDialog(true);
     };
 
-    const confirmDeleteProfissao = (profissao) => {
+    /*const confirmDeleteProfissao = (profissao) => {
         setProfissao(profissao);
         setDeleteProfissaoDialog(true);
     };
@@ -124,7 +134,7 @@ function Profissao() {
             console.error("Erro: ID da profissão é undefined");
             toast.current.show({ severity: 'error', summary: 'Erro', detail: 'ID da profissão é indefinido', life: 3000 });
         }
-    };
+    };*/
     
 
     const findIndexById = (id) => {
@@ -142,6 +152,10 @@ function Profissao() {
         let _profissao = { ...profissao };
         _profissao[`${name}`] = val;
         setProfissao(_profissao);
+    };
+
+    const onCheckboxChange = (e) => {
+        setChecked(e.checked); // Atualiza o estado do checkbox
     };
 
     const leftToolbarTemplate = () => {
@@ -166,7 +180,7 @@ function Profissao() {
 
         let arrayMenu = [
             { label: 'Editar', icon: 'pi pi-pencil', command: () => editProfissao(rowData) },
-            { label: 'Excluir', icon: 'pi pi-trash', command: () => confirmDeleteProfissao(rowData) }
+            //{ label: 'Excluir', icon: 'pi pi-trash', command: () => confirmDeleteProfissao(rowData) }
         ];
 
         arrayMenu.forEach((item) => {
@@ -185,12 +199,19 @@ function Profissao() {
         <h1>Profissoes Médicos</h1>
     );
 
-    const deleteProfissaoDialogFooter = (
+    /*const deleteProfissaoDialogFooter = (
         <React.Fragment>
             <Button label="Não" icon="pi pi-times" className="border-round p-button-text" onClick={hideDeleteProfissaoDialog} />
             <Button label="Sim" icon="pi pi-check" className="border-round p-button-text" onClick={deleteProfissao} />
         </React.Fragment>
     );
+    <Dialog visible={deleteProfissaoDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deleteProfissaoDialogFooter} onHide={hideDeleteProfissaoDialog}>
+                    <div className="confirmation-content">
+                        <i className="pi pi-exclamation-triangle mr-2" style={{ fontSize: '2rem' }} />
+                        {profissao && <span>Tem certeza que deseja excluir o profissao <b>{profissao.nome}</b>?</span>}
+                    </div>
+                </Dialog>
+    */
 
     return (
         <>
@@ -207,6 +228,10 @@ function Profissao() {
                             <label htmlFor="conselhoProfissional">Conselho Profissional</label>
                             <Dropdown className='w-full' id="conselhoProfissional" value={profissao.conselhoProfissional} options={conselhoProfissionalOptions} onChange={(e) => onInputChange(e, 'conselhoProfissional')} placeholder="Selecione um conselho profissional" />
                         </div>
+                        <div className="field col-6">
+                            <label htmlFor="ativo">Ativo</label>
+                            <Checkbox onChange={onCheckboxChange} checked={checked}></Checkbox>
+                        </div>
                         <div className="field col">
                             <Button label="Salvar" icon="pi pi-check" className="border-round p-button-text" onClick={saveProfissao} />
                         </div>
@@ -221,15 +246,11 @@ function Profissao() {
                         <Column body={actionButtonGroupTemplate}></Column>
                         <Column field="nome" header="Nome" sortable></Column>
                         <Column field="conselhoProfissional" header="Conselho Profissional" sortable></Column>
+                        <Column field="ativo" header="Ativo" body={(rowData) => rowData.ativo !== null ? rowData.ativo : ''} sortable></Column>
                     </DataTable>
                 </div>
 
-                <Dialog visible={deleteProfissaoDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deleteProfissaoDialogFooter} onHide={hideDeleteProfissaoDialog}>
-                    <div className="confirmation-content">
-                        <i className="pi pi-exclamation-triangle mr-2" style={{ fontSize: '2rem' }} />
-                        {profissao && <span>Tem certeza que deseja excluir o profissao <b>{profissao.nome}</b>?</span>}
-                    </div>
-                </Dialog>
+                
             </Modal>
         </>
     )

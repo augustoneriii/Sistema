@@ -46,12 +46,12 @@ export class ProfissionalService {
         });
     }
 
-    static async deleteProfissional(id, token) {
+    /*static async deleteProfissional(id, token) {
         console.log("delete ", id);
         return await api.delete(`/deleteProfissionais?id=${id}`, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
-    }
+    }*/
 }

@@ -1,4 +1,5 @@
-﻿using app.DTO;
+﻿using app.DTO.Response;
+using app.DTO.UserDTO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -30,6 +31,14 @@ namespace app.BE
                 UserName = user.UserName,
                 PhoneNumber = user.PhoneNumber
             };
+
+            //check if email already exists
+            var emailExists = await _userManager.FindByEmailAsync(user.Email);
+            if (emailExists != null)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = "Email already exists" });
+            }
+
             var result = await _userManager.CreateAsync(identityUser, user.Password);
 
             if (!result.Succeeded)
@@ -76,7 +85,48 @@ namespace app.BE
             return null;
         }
 
+        public async Task<List<GetAllUserResponse>> GetAllUsers()
+        {
+            var users = _userManager.Users;
+            var usersDTO = new List<GetAllUserResponse>();
+            foreach (var user in users)
+            {
+                usersDTO.Add(new GetAllUserResponse
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber
+                });
+            }
+            return usersDTO;
+        }
 
+        public async  Task<UserChangePasswordDTO> ChangePassword (UserChangePasswordDTO user)
+        {
+            var identityUser = _userManager.FindByEmailAsync(user.Email).Result;
+            if (identityUser == null)
+                return null;
+
+            var result = _userManager.ChangePasswordAsync(identityUser, user.CurrentPassword, user.NewPassword).Result;
+
+            if (result.Succeeded)
+            {
+                return new UserChangePasswordDTO
+                {
+                    Email = identityUser.Email,
+                    CurrentPassword = user.CurrentPassword,
+                    NewPassword = user.NewPassword,
+                    Succeeded = true,
+                    Errors = null
+                };
+            }
+            return new UserChangePasswordDTO
+            {
+                Succeeded = false,
+                Errors = result.Errors
+            };
+        }
 
         public UserValidationResponse CheckUser(string authToken)
         {

@@ -13,6 +13,7 @@ function Modal({ children, header, modal, visible, style, onHide }) {
             onHide={onHide}
             style={style}
             maximizable
+            closeOnEscape
         >
             {children}
         </Dialog>

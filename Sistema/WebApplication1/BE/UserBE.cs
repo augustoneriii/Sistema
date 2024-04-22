@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using app.BE;
 using app.Data;
-using app.DTO;
 using app.DAO;
 using Microsoft.AspNetCore.Authorization;
+using app.DTO.UserDTO;
 
 namespace app.BE
 {

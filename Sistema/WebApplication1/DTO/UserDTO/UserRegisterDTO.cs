@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace app.DTO
+namespace app.DTO.UserDTO
 {
     public class UserRegisterDTO
     {

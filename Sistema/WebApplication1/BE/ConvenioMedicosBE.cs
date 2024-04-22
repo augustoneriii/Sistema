@@ -35,11 +35,11 @@ namespace app.BE
         }
 
         //delete
-        public async Task Delete(long id)
+        /*public async Task Delete(long id)
         {
             var dao = new ConvenioMedicosDAO(_context);
             await dao.Delete(id);
-        }
+        }*/
 
     }
 }

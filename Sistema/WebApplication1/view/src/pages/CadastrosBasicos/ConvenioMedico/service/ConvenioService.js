@@ -27,11 +27,11 @@ export class ConvenioService {
         });
     }
 
-    static async deleteConvenio(id, token) {
+    /*static async deleteConvenio(id, token) {
         return await api.delete(`/deleteConvenioMedicos?id=${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         });
-    }
+    }*/
 }

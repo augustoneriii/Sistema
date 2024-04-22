@@ -15,6 +15,7 @@ import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import Modal from '../../components/Modal/index.js';
 import { SidebarContext } from '../../context/SideBarContext.js';
+import { Checkbox } from 'primereact/checkbox';
 
 export default function Profissional() {
     let emptyProfissional = {
@@ -31,6 +32,7 @@ export default function Profissional() {
         image: "",
         profissaoId: null,
         convenioId: null,
+        ativo: null
     };
 
     const { profissionalVisible, setProfissionalVisible } = useContext(SidebarContext);
@@ -39,7 +41,7 @@ export default function Profissional() {
     const [profissoes, setProfissoes] = useState([]);
     const [convenios, setConvenios] = useState([]);
     const [profissionalDialog, setProfissionalDialog] = useState(false);
-    const [deleteProfissionalDialog, setDeleteProfissionalDialog] = useState(false);
+    //const [deleteProfissionalDialog, setDeleteProfissionalDialog] = useState(false);
     const [profissional, setProfissional] = useState(emptyProfissional);
     const [selectedProfissionais, setSelectedProfissionais] = useState(null);
     const [submitted, setSubmitted] = useState(false);
@@ -48,6 +50,7 @@ export default function Profissional() {
     const [conselho, setConselho] = useState("");
     const toast = useRef(null);
     const dt = useRef(null);
+    const [checked, setChecked] = useState(true); // Estado para controlar o valor do checkbox
 
     useEffect(() => {
         const currentToken = localStorage.getItem('token') || '';
@@ -58,7 +61,12 @@ export default function Profissional() {
             .catch(error => {
                 console.error("Erro ao buscar profissionais:", error);
             });
-    }, []);
+        if (profissional.ativo === 1) {
+            setChecked(true); // Marca o checkbox se o campo "ativo" for igual a 1
+        } else {
+            setChecked(false);
+        }
+    }, [profissional.ativo]);
 
     useEffect(() => {
         if (profissional.conselho) {
@@ -88,6 +96,33 @@ export default function Profissional() {
             });
     }, []);
 
+    useEffect(() => {
+        const currentToken = localStorage.getItem('token') || '';
+        Promise.all([
+            ProfissionalService.getProfissionais(currentToken),
+            ProfissionalService.getProfissoes(currentToken)
+        ]).then(([profissionaisResponse, profissoesResponse]) => {
+            setProfissionais(profissionaisResponse.data);
+            setProfissoes(profissoesResponse.data);
+        }).catch(error => {
+            console.error("Erro ao buscar profissionais e/ou profissões:", error);
+        });
+    }, []);
+
+    
+    const profissaoBodyTemplate = (rowData) => {
+        return rowData.profissoes ? rowData.profissoes.nome : '';
+    };
+   
+      const findProfissaoById = (id) => {
+         console.log("ID da Profissão:", id);
+         console.log("Profissões:", profissoes);
+         return profissoes.find(profissao => profissao.id === id);
+    };
+
+    const convenioBodyTemplate = (rowData) => {
+        return rowData.convenioMedicos && rowData.convenioMedicos.length > 0 ? rowData.convenioMedicos[0].nome : '';
+    };
     const dropdownConvenios = convenios.map(convenio => {
         return {
             label: convenio.nome,
@@ -118,9 +153,9 @@ export default function Profissional() {
         setProfissionalDialog(false);
     };
 
-    const hideDeleteProfissionalDialog = () => {
+    /*const hideDeleteProfissionalDialog = () => {
         setDeleteProfissionalDialog(false);
-    };
+    };*/
 
         const saveProfissional = () => {
             setSubmitted(true);
@@ -129,12 +164,8 @@ export default function Profissional() {
                 let _profissionais = [...profissionais];
                 let _profissional = { ...profissional, conselho: conselho }; // atualiza o conselho com o valor digitado
 
-                let postProfissional= {
-                    Nascimento: _profissional.nascimento
-                };
-
-                console.log("object", postProfissional)
-
+                _profissional.ativo = checked ? 1 : 0; // Atualiza o campo "ativo" com base no estado do checkbox
+                
                 const currentToken = localStorage.getItem('token') || '';
                 if (profissional.id) {
                     const index = findIndexById(profissional.id);
@@ -159,7 +190,7 @@ export default function Profissional() {
         setProfissionalDialog(true);
     };
 
-    const confirmDeleteProfissional = (profissional) => {
+    /*const confirmDeleteProfissional = (profissional) => {
         setProfissional(profissional);
         setDeleteProfissionalDialog(true);
     };
@@ -190,6 +221,22 @@ export default function Profissional() {
             console.error("Erro: id do profissional é undefined");
         }
     };
+    const deleteProfissionalDialogFooter = (
+        <>
+            <Button label="Não" icon="pi pi-times" className="border-round p-button-text" onClick={hideDeleteProfissionalDialog} />
+            <Button label="Sim" icon="pi pi-check" className="border-round p-button-text" onClick={deleteProfissional} />
+        </>
+    );
+
+    <Dialog visible={deleteProfissionalDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deleteProfissionalDialogFooter} onHide={hideDeleteProfissionalDialog}>
+                    <div className="confirmation-content">
+                        <i className="pi pi-exclamation-triangle mr-2" style={{ fontSize: '2rem' }} />
+                        {profissional && <span>Tem certeza que deseja excluir o profissional <b>{profissional.nome}</b>?</span>}
+                    </div>
+                </Dialog>
+
+                <Button icon="pi pi-trash" className="border-round p-button-rounded p-button-danger" onClick={() => confirmDeleteProfissional(rowData)} />
+    */
 
     const findIndexById = (id) => {
         let index = -1;
@@ -217,6 +264,9 @@ export default function Profissional() {
         setProfissional(_profissional);
     };
 
+    const onCheckboxChange = (e) => {
+        setChecked(e.checked); // Atualiza o estado do checkbox
+    };
 
     const leftToolbarTemplate = () => {
         return (
@@ -230,7 +280,7 @@ export default function Profissional() {
         return (
             <>
                 <Button icon="pi pi-pencil" className="border-round p-button-rounded p-button-success mr-2" onClick={() => editProfissional(rowData)} />
-                <Button icon="pi pi-trash" className="border-round p-button-rounded p-button-danger" onClick={() => confirmDeleteProfissional(rowData)} />
+                
             </>
         );
     };
@@ -271,12 +321,7 @@ export default function Profissional() {
         </>
     );
 
-    const deleteProfissionalDialogFooter = (
-        <>
-            <Button label="Não" icon="pi pi-times" className="border-round p-button-text" onClick={hideDeleteProfissionalDialog} />
-            <Button label="Sim" icon="pi pi-check" className="border-round p-button-text" onClick={deleteProfissional} />
-        </>
-    );
+    
 
     return (
         <>
@@ -299,10 +344,13 @@ export default function Profissional() {
                         <Column selectionMode="multiple" style={{ width: '3rem' }}></Column>
                         <Column field="nome" header="Nome" sortable></Column>
                         <Column field="cpf" header="CPF" sortable></Column>
+                        <Column field="rg" header="RG" sortable></Column>
                         <Column field="telefone" header="Telefone" sortable></Column>
                         <Column field="email" header="E-mail" sortable></Column>
-                        <Column field="profissao" header="Profissão" sortable></Column>
+                        <Column header="Profissão" body={profissaoBodyTemplate}></Column>
+                        <Column header="Convenio" body={convenioBodyTemplate}></Column>
                         <Column field="conselho" header="Conselho" sortable></Column>
+                        <Column field="ativo" header="Ativo" sortable></Column>
                         <Column body={actionBodyTemplate}></Column>
                     </DataTable>
                 </div>
@@ -386,6 +434,11 @@ export default function Profissional() {
                                 placeholder="Selecione um convenio"
                             />
                         </div>
+
+                        <div className="field col">
+                            <label htmlFor="ativo">Ativo</label>
+                            <Checkbox onChange={onCheckboxChange} checked={checked}></Checkbox>
+                        </div>
                     </div>
 
                     <div className="field">
@@ -394,12 +447,6 @@ export default function Profissional() {
                     </div>
                 </Dialog>
 
-                <Dialog visible={deleteProfissionalDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deleteProfissionalDialogFooter} onHide={hideDeleteProfissionalDialog}>
-                    <div className="confirmation-content">
-                        <i className="pi pi-exclamation-triangle mr-2" style={{ fontSize: '2rem' }} />
-                        {profissional && <span>Tem certeza que deseja excluir o profissional <b>{profissional.nome}</b>?</span>}
-                    </div>
-                </Dialog>
             </Modal>
         </>
     );

@@ -113,7 +113,7 @@ namespace app.Controllers
         }
 
         // DELETE: ConvenioMedicos
-        [Route("deleteConvenioMedicos")]
+        /*[Route("deleteConvenioMedicos")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] int id)
         {
@@ -137,6 +137,6 @@ namespace app.Controllers
                 _context.Rollback();
                 return BadRequest(ex.Message);
             }
-        }
+        }*/
     }
 }

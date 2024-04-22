@@ -57,11 +57,10 @@ namespace app.DAO
             {
                 objSelect.Append($"AND \"Tipo\" = '{dto.Tipo}' ");
             }
-            if(!string.IsNullOrEmpty(dto.Observacoes)) 
-            {
-                objSelect.Append($"AND \"Observacoes\" = '{dto.Observacoes} ");
-
-            }
+            if (!string.IsNullOrEmpty(dto.Observacoes)) 
+{
+    objSelect.Append($"AND \"Observacoes\" = '{dto.Observacoes}' ");
+}
 
             var dt = _context.ExecuteQuery(objSelect.ToString());
 
@@ -151,9 +150,9 @@ namespace app.DAO
             objUpdate.Append($" \"Status\" = '{dto.Status}', ");
             objUpdate.Append($" \"Tipo\" = '{dto.Tipo}', ");
             objUpdate.Append($" \"Observacoes\" = '{dto.Observacoes}' ");
-            
-         
-            objUpdate.Append($"WHERE \"Id\" = {dto.Id}; ");
+
+
+            objUpdate.Append($"WHERE \"Id\" = '{dto.Id}' ");
 
             var id = _context.ExecuteNonQuery(objUpdate.ToString());
 
@@ -161,13 +160,13 @@ namespace app.DAO
         }
 
         //Delete
-        public async Task Delete(long? id)
+        /*public async Task Delete(long? id)
         {
             var objDelete = new StringBuilder();
             objDelete.Append("DELETE FROM \"Sistema\".\"Consultas\" ");
             objDelete.Append($" WHERE \"Id\" = {id} ");
 
             _context.ExecuteNonQuery(objDelete.ToString());
-        }
+        }*/
     }
 }
