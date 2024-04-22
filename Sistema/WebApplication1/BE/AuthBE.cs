@@ -18,27 +18,20 @@ namespace app.BE
 
         UserManager<IdentityUser> _userManager;
         SignInManager<IdentityUser> _signInManager;
+        RoleManager<IdentityRole> _roleManager;
         private readonly string _key = "uma_chave_muito_secreta_aqui!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
 
         public AuthBE(UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager, AppDbContext context)
+        SignInManager<IdentityUser> signInManager, AppDbContext context, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _roleManager = roleManager;
         }
 
         public async Task<UserRegisterDTO> RegisterNewUser(UserRegisterDTO user)
         {
-
-            //var identityUser = new IdentityUser()
-            //{
-            //    Email = user.Email,
-            //    UserName = user.UserName,
-            //    PhoneNumber = user.PhoneNumber
-            //};
-
-            //check if email already exists
             var dao = new AuthDAO(_context);
 
             var emailExists = await dao.FindByEmail(user.Email);
@@ -50,15 +43,33 @@ namespace app.BE
                 };
             }
 
-            //var result = await _userManager.CreateAsync(identityUser, user.Password);
+            var role = user.RoleName.ToUpper();
+            UserRolesDTO roleExist = await dao.FindByRoleName(role);
 
-            //criptografar senha antes de salvar
+            if (roleExist == null)
+            {
+                return new UserRegisterDTO
+                {
+                    ErrorMessages = "Role not found"
+                };
+            }
             var passwordHash = new PasswordHasher<IdentityUser>();
             var hashed = passwordHash.HashPassword(null, user.Password);
 
             user.Password = hashed;
 
-            return await dao.UserRegister(user);
+            UserRegisterDTO newUser = await dao.UserRegister(user);
+
+            var roleAdd = await dao.InsertAspNetUserRoles(newUser.Id, roleExist.Id);
+            if (roleAdd == false)
+            {
+                return new UserRegisterDTO
+                {
+                    ErrorMessages = "Error adding role"
+                };
+            }
+
+            return newUser;
         }
 
         public async Task<UserValidationResponse> Authenticate(UserLoginDTO user)
@@ -92,13 +103,18 @@ namespace app.BE
 
                 var token = tokenHandler.CreateToken(tokenDescriptor);
 
-                return new UserValidationResponse
+                UserRolesDTO userRoles = await dao.GetAspNetUserRoles(identityUser.Email);
+                if (userRoles != null)
                 {
-                    IsAuthenticated = true,
-                    Token = tokenHandler.WriteToken(token),
-                    UserName = identityUser.UserName,
-                    Email = identityUser.Email
-                };
+                    return new UserValidationResponse
+                    {
+                        IsAuthenticated = true,
+                        Token = tokenHandler.WriteToken(token),
+                        UserName = identityUser.UserName,
+                        Email = identityUser.Email,
+                        IdUserRole = userRoles.Id
+                    };
+                }
             }
             return null;
         }
@@ -146,7 +162,7 @@ namespace app.BE
             };
         }
 
-        public UserValidationResponse CheckUser(string authToken)
+        public async Task<UserValidationResponse> CheckUser(string authToken)
         {
             var result = new UserValidationResponse();
             if (string.IsNullOrEmpty(authToken))
@@ -171,9 +187,19 @@ namespace app.BE
                 var principal = tokenHandler.ValidateToken(authToken, validationParameters, out SecurityToken validatedToken);
                 var identityClaims = (ClaimsIdentity)principal.Identity;
 
+                
+                var dao = new AuthDAO(_context);
+
                 result.IsAuthenticated = true;
                 result.UserName = identityClaims.FindFirst(ClaimTypes.Name)?.Value; // UserName armazenado em ClaimTypes.Name
                 result.Email = identityClaims.FindFirst(ClaimTypes.Email)?.Value; // Certifique-se de que o e-mail está incluído quando o token é emitido
+
+                //return AspNetUserRoles from user
+                UserRolesDTO userRoles = await dao.GetAspNetUserRoles(result.Email);
+                if (userRoles != null)
+                {
+                    result.IdUserRole = userRoles.Id;
+                }
 
                 return result;
             }
@@ -184,5 +210,47 @@ namespace app.BE
             }
         }
 
+        // CreateUserRoles method
+        public async Task<UserRolesDTO> CreateUserRoles(UserRolesDTO userRolesDTO)
+        {
+            string roleName = userRolesDTO.Name.ToUpper();
+            var dao = new AuthDAO(_context);
+
+            var roleExists = await dao.FindByRoleName(roleName);
+            if (roleExists != null)
+            {
+                return new UserRolesDTO
+                {
+                    ErrorMessages = "Role already exists"
+                };
+            }
+
+            var role = new IdentityRole(roleName);
+            var result = await dao.InsertRole(userRolesDTO);
+            if (result != null)
+            {
+
+                return new UserRolesDTO
+                {
+                    Id = role.Id,
+                    Name = role.Name
+                };
+            }
+            else
+            {
+                return new UserRolesDTO
+                {
+                    ErrorMessages = "Error creating role"
+                };
+            }
+        }
+
+        //get all roles
+        public async Task<List<UserRolesDTO>> GetAllRoles()
+        {
+            var dao = new AuthDAO(_context);
+
+            return await dao.GetAllRoles();
+        }
     }
 }

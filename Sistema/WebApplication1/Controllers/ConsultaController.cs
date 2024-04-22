@@ -42,7 +42,7 @@ namespace app.Controllers
         public async Task<IActionResult> GetAll(ConsultaDTO dto)
         {
             var token = ExtractAuthToken();
-            UserValidationResponse userLogado = _auth.CheckUser(token);
+            UserValidationResponse userLogado = await _auth.CheckUser(token);
             if (userLogado == null || !userLogado.IsAuthenticated)
             {
                 return BadRequest(new { Message = "Usuário não autenticado!" });
@@ -60,7 +60,7 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
                 if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
@@ -88,7 +88,7 @@ namespace app.Controllers
             {
                 var token = ExtractAuthToken();
 
-                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
                 if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
@@ -116,7 +116,7 @@ namespace app.Controllers
         //    {
         //        var token = ExtractAuthToken();
 
-        //        UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+        //        UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
         //        if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
         //        {
         //            return BadRequest(new { Message = "Usuário não autenticado!" });

@@ -41,12 +41,17 @@ namespace app.Controllers
         {
             try
             {
-                //var token = ExtractAuthToken();
-                //UserValidationResponse userLogado = authService.CheckUser(token);
-                //if (userLogado == null || !userLogado.IsAuthenticated)
-                //{
-                //    return BadRequest(new { Message = "Usuário não autenticado!" });
-                //}
+                var token = ExtractAuthToken();
+                UserValidationResponse userLogado = await authService.CheckUser(token);
+                if (userLogado == null || !userLogado.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
+
+                if (userLogado.IdUserRole == null || userLogado.IdUserRole != "f3f629")
+                {
+                    return BadRequest(new { Message = "Usuário não tem permissão para cadastrar usuários!" });
+                }
 
                 var response = await authService.RegisterNewUser(user);
 
@@ -86,7 +91,7 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-                UserValidationResponse userLogado = authService.CheckUser(token);
+                UserValidationResponse userLogado = await authService.CheckUser(token);
                 if (userLogado == null || !userLogado.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
@@ -112,7 +117,7 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-                UserValidationResponse userLogado = authService.CheckUser(token);
+                UserValidationResponse userLogado = await authService.CheckUser(token);
                 if (userLogado == null || !userLogado.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
@@ -128,5 +133,56 @@ namespace app.Controllers
             }
         }
 
+
+        [HttpPost]
+        [Route("CreateRoles")]
+        public async Task<IActionResult> CreateRoles([FromBody] UserRolesDTO userRolesDTO)
+        {
+
+            try
+            {
+                var token = ExtractAuthToken();
+                UserValidationResponse userLogado = await authService.CheckUser(token);
+                if (userLogado == null || !userLogado.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
+
+                var response = await authService.CreateUserRoles(userRolesDTO);
+
+                if (response.ErrorMessages != null || !string.IsNullOrEmpty(response.ErrorMessages))
+                    return BadRequest(response.ErrorMessages);
+
+                return Ok(new { Message = "Perfil cadastrado com sucesso!" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //get all roles
+        [HttpGet]
+        [Route("GetAllRoles")]
+        public async Task<IActionResult> GetAllRoles()
+        {
+            try
+            {
+                var token = ExtractAuthToken();
+                UserValidationResponse userLogado = await authService.CheckUser(token);
+                if (userLogado == null || !userLogado.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
+
+                var response = await authService.GetAllRoles();
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

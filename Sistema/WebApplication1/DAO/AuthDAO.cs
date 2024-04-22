@@ -1,5 +1,6 @@
 ﻿using app.Data;
 using app.DTO.UserDTO;
+using System.Data;
 using System.Text;
 
 namespace app.DAO
@@ -17,8 +18,8 @@ namespace app.DAO
         {
             var objInsert = new StringBuilder();
 
-            string genId = Guid.NewGuid().ToString();
-
+            //get 6 caracteres string id
+            string genId = Guid.NewGuid().ToString().Substring(0, 6);
             var PhoneNumberConfirmed = false;
 
             var EmailConfirmed = false;
@@ -53,7 +54,7 @@ namespace app.DAO
             _context.ExecuteNonQuery(objInsert.ToString());
 
             UserRegisterDTO obj = new UserRegisterDTO();
-            obj.Id = dto.Id;
+            obj.Id = genId;
             obj.UserName = dto.UserName;
             obj.Email = dto.Email;
             obj.Cpf = dto.Cpf;
@@ -86,9 +87,118 @@ namespace app.DAO
             return obj;
         }
 
-        //public async Task<UserDTO> AuthLogin (UserLoginDTO loginDTO)
-        //{
+        public async Task<UserRolesDTO> FindByRoleName(string nome)
+        {
+            var objSelect = new StringBuilder();
+            objSelect.Append("SELECT id, name, normalizedname, concurrencystamp\r\n\tFROM \"Sistema\".\"AspNetRoles\"");
+            objSelect.Append($"WHERE normalizedname = '{nome}'");
 
-        //}
+            var result = _context.ExecuteQuery(objSelect.ToString());
+
+            if (result.Rows.Count == 0)
+                return null;
+
+            var row = result.Rows[0];
+
+            UserRolesDTO obj = new UserRolesDTO();
+            obj.Id = row["id"] != DBNull.Value ? row["id"].ToString() : string.Empty;
+            obj.Name = row["name"] != DBNull.Value ? row["name"].ToString() : string.Empty;
+
+            return obj;
+        }
+
+
+        //insert role
+        public async Task<UserRolesDTO> InsertRole(UserRolesDTO dto)
+        {
+            var objInsert = new StringBuilder();
+
+            //gen 6 caracteres string id
+            string genId = Guid.NewGuid().ToString().Substring(0, 6);
+
+            objInsert.Append("INSERT INTO \"Sistema\".\"AspNetRoles\"(");
+            objInsert.Append("id, name, normalizedname, concurrencystamp)");
+            objInsert.Append("VALUES (");
+            objInsert.Append($"'{genId}', ");
+            objInsert.Append($"'{dto.Name}', ");
+            objInsert.Append($"'{dto.Name.ToUpper()}', ");
+            objInsert.Append($"'{Guid.NewGuid().ToString()}'");
+            objInsert.Append(");");
+
+            _context.ExecuteNonQuery(objInsert.ToString());
+
+            UserRolesDTO obj = new UserRolesDTO();
+            obj.Id = dto.Id;
+            obj.Name = dto.Name;
+
+            return obj;
+        }
+
+        //get all roles
+        public async Task<List<UserRolesDTO>> GetAllRoles()
+        {
+            var objSelect = new StringBuilder();
+            objSelect.Append("SELECT id, name, normalizedname, concurrencystamp\r\n\tFROM \"Sistema\".\"AspNetRoles\"");
+
+            var result = _context.ExecuteQuery(objSelect.ToString());
+
+            List<UserRolesDTO> list = new List<UserRolesDTO>();
+
+            foreach (DataRow row in result.Rows)
+            {
+                UserRolesDTO obj = new UserRolesDTO();
+                obj.Id = row["id"] != DBNull.Value ? row["id"].ToString() : string.Empty;
+                obj.Name = row["name"] != DBNull.Value ? row["name"].ToString() : string.Empty;
+
+                list.Add(obj);
+            }
+
+            return list;
+        }
+
+        public async Task<bool> InsertAspNetUserRoles(string userId, string roleId)
+        {
+            try
+            {
+                var objInsert = new StringBuilder();
+                objInsert.Append("INSERT INTO \"Sistema\".\"AspNetUserRoles\"(userid, roleid)\r\n");
+                objInsert.Append("VALUES (\r\n");
+                objInsert.Append($"'{userId}', ");
+                objInsert.Append($"'{roleId}'");
+                objInsert.Append(");");
+
+                _context.ExecuteNonQuery(objInsert.ToString());
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        //select AspNetUserRoles by user email
+        public async Task<UserRolesDTO> GetAspNetUserRoles(string email)
+        {
+            var objSelect = new StringBuilder();
+            objSelect.Append("SELECT \"AspNetRoles\".id, \"AspNetRoles\".name, \"AspNetRoles\".normalizedname, \"AspNetRoles\".concurrencystamp\r\n");
+            objSelect.Append("FROM \"Sistema\".\"AspNetUserRoles\"\r\n");
+            objSelect.Append("LEFT JOIN \"Sistema\".\"AspNetRoles\" ON \"AspNetUserRoles\".roleid = \"AspNetRoles\".id\r\n");
+            objSelect.Append("LEFT JOIN \"Sistema\".\"AspNetUsers\" ON \"AspNetUserRoles\".userid = \"AspNetUsers\".id\r\n");
+            objSelect.Append($"WHERE \"AspNetUsers\".email = '{email}'");
+
+            var result = _context.ExecuteQuery(objSelect.ToString());
+
+            if (result.Rows.Count == 0)
+                return null;
+
+            var row = result.Rows[0];
+
+            UserRolesDTO obj = new UserRolesDTO();
+            obj.Id = row["id"] != DBNull.Value ? row["id"].ToString() : string.Empty;
+            obj.Name = row["name"] != DBNull.Value ? row["name"].ToString() : string.Empty;
+
+            return obj;
+        }
+
     }
 }
