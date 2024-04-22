@@ -26,13 +26,18 @@ function Home() {
         <div className="text-center h-screen w-50 m-auto">
             <h1>Home</h1>
             <h2>Seja bem vindo {user.userName}</h2>
+            <h3>{user.idUserRole}</h3>
             <hr />
-            <FullCalendar
-                plugins={[dayGridPlugin]}
-                initialView="dayGridMonth"
-                events={events}
-                locale={ptLocale}
-            />
+            {user.idUserRole !== "f8abf4" ?
+                null
+                :
+                <FullCalendar
+                    plugins={[dayGridPlugin]}
+                    initialView="dayGridMonth"
+                    events={events}
+                    locale={ptLocale}
+                />
+            }
         </div>
     );
 }

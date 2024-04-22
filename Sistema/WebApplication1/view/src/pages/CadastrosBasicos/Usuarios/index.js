@@ -8,6 +8,7 @@ import UsuarioService from './Service/UsuarioService';
 import { Password } from 'primereact/password';
 import { FloatLabel } from 'primereact/floatlabel';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
+import { Dropdown } from 'primereact/dropdown';
 
 
 
@@ -23,6 +24,8 @@ function Usuarios() {
     const dt = useRef(null);
     const [changePasswordDialog, setChangePasswordDialog] = useState(false);
     const [changePassword, setChangePassword] = useState();
+    const user = JSON.parse(localStorage.getItem('user'));
+
 
 
 
@@ -30,8 +33,10 @@ function Usuarios() {
         id: null,
         userName: "",
         email: "",
+        cpf: "",
         password: "",
         phoneNumber: "",
+        roleName: "",
     };
 
     const emptyChangePassword = {
@@ -121,6 +126,18 @@ function Usuarios() {
         return index;
     };
 
+    const dropDownRoleName = [
+        { label: 'Profissional', value: 'Profissional' },
+        { label: 'Assistente', value: 'Assistente' }
+    ];
+
+    if (user.idUserRole === "f3f629") {
+        dropDownRoleName.unshift({ label: 'Admin', value: 'Admin' });  // Adiciona no início do array
+    }
+
+    console.log("user", user);
+    console.log(user.idUserRole === "f3f629")
+
     const saveUsuario = () => {
         setSubmitted(true);
 
@@ -186,6 +203,12 @@ function Usuarios() {
                         </div>
                         <div className="field col-6">
                             <FloatLabel>
+                                <label htmlFor="cpf">cpf</label>
+                                <InputText className='w-full' id="cpf" value={usuario.cpf} onChange={(e) => onInputChange(e, 'cpf')} />
+                            </FloatLabel>
+                        </div>
+                        <div className="field col-6">
+                            <FloatLabel>
                                 <InputText id="password" type="password" className='w-full' value={usuario.password} onChange={(e) => onInputChange(e, 'password')} />
                                 <label htmlFor="password">password</label>
                             </FloatLabel>
@@ -195,6 +218,17 @@ function Usuarios() {
                             <FloatLabel>
                                 <label htmlFor="phoneNumber">phoneNumber</label>
                                 <InputText className='w-full' id="phoneNumber" value={usuario.phoneNumber} onChange={(e) => onInputChange(e, 'phoneNumber')} />
+                            </FloatLabel>
+                        </div>
+                        <div className="field col-6">
+                            <FloatLabel>
+                                <label htmlFor="roleName">Função</label>
+                                <Dropdown className='w-full'
+                                    id="roleName" value={usuario.roleName}
+                                    options={dropDownRoleName}
+                                    onChange={(e) => onInputChange(e, 'roleName')}
+                                    optionLabel="label"
+                                    placeholder="Selecione a Função" />
                             </FloatLabel>
                         </div>
                         <div className="field col">

@@ -7,7 +7,7 @@ import sidebarItems from './data/SideBarData';
 import { Button } from 'primereact/button';
 import { Context } from '../../context/UserContext';
 
-function SideBar() {
+function SideBar({ idUserRole }) {
     const [isExpanded, setIsExpanded] = useState(true);
     const context = useContext(SidebarContext);
     const { logout } = useContext(Context);
@@ -22,6 +22,8 @@ function SideBar() {
         setIsExpanded(!isExpanded);
     };
 
+    const filteredItems = sidebarItems.filter(item => item.roles.includes(idUserRole));
+
     return (
         <div className={`d-flex flex-column flex-shrink-0 bg-light absolute ${styles.sidebar} ${isExpanded ? styles.expanded : styles.collapsed}`} style={{ height: '100vh' }}>
             <Link to="/home" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
@@ -32,7 +34,7 @@ function SideBar() {
             <Link to="/" className="nav-link link-dark ml-3" onClick={logout}> <i className="pi pi-sign-out"></i> {isExpanded ? 'Logout' : ''}</Link>
             <hr />
             <ul className="nav nav-pills flex-column mb-auto">
-                {sidebarItems.map(item => (
+                {filteredItems.map(item => (
                     <li key={item.text} className="nav-item">
                         {item.action ? (
                             <span style={{ cursor: 'pointer' }} onClick={() => handleAction(item.action, item.actionValue)} className="nav-link link-dark">
@@ -47,14 +49,11 @@ function SideBar() {
                 ))}
             </ul>
             <hr />
-            <Link to="#" className="nav-link link-dark ml-3" onClick={() => handleAction('setUsuarioVisible', true)}> <i className="pi pi-users"></i> {isExpanded ? 'Usuários' : ''}</Link>"
-            <Link to="#" className="nav-link link-dark ml-3" onClick={() => handleAction('setPerfilVisible', true)}> <i className="pi pi-user"></i> {isExpanded ? 'Perfil' : ''}</Link>"
-            <hr />
             <div className='d-flex justify-content-center mb-5'>
                 <Button onClick={toggleSidebar} icon="pi pi-bars" className='border-circle bg-dark border border-secondary' aria-label="Filter" />
             </div>
         </div>
-    )
+    );
 }
 
 export default SideBar;

@@ -10,9 +10,10 @@ import Usuarios from '../pages/CadastrosBasicos/Usuarios';
 import Perfil from '../pages/CadastrosBasicos/Perfil';
 import { SidebarContext } from '../context/SideBarContext';
 
-
 function AuthenticatedComponents() {
     const [token, setToken] = useState(null);
+    const user = JSON.parse(localStorage.getItem('user'));
+
     const navigate = useNavigate();
     const {
         convenioVisible,
@@ -35,14 +36,19 @@ function AuthenticatedComponents() {
 
     return token ? (
         <>
-            <SideBar />
-            {convenioVisible && <ConvenioMedico />}
-            {profissionalVisible && <Profissional />}
-            {consultaVisible && <Consulta />}
-            {profissaoVisible && <Profissao />}
-            {pacienteVisible && <Paciente />}
-            {usuarioVisible && <Usuarios />}
-            {perfilVisible && <Perfil /> }
+            <SideBar idUserRole={user.idUserRole} />
+            {user.idUserRole === "c8fffd" ? (
+                perfilVisible && <Perfil />
+            ) : (
+                <>
+                    {convenioVisible && <ConvenioMedico />}
+                    {profissionalVisible && <Profissional />}
+                    {consultaVisible && <Consulta />}
+                    {profissaoVisible && <Profissao />}
+                    {pacienteVisible && <Paciente />}
+                    {usuarioVisible && <Usuarios />}
+                </>
+            )}
         </>
     ) : null;
 }

@@ -74,6 +74,11 @@ namespace app.Controllers
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
 
+                if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
+                {
+                    return BadRequest(new { Message = "Usuário não autorizado!" });
+                }
+
                 _context.BeginTransaction();
                 var response = await _be.Insert(convenioMedicos);
                 _context.Commit();
@@ -98,6 +103,10 @@ namespace app.Controllers
                 if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
+                if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
+                {
+                    return BadRequest(new { Message = "Usuário não autorizado!" });
                 }
 
                 _context.BeginTransaction();
