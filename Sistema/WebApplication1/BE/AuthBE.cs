@@ -1,62 +1,80 @@
 ﻿using app.DTO.Response;
 using app.DTO.UserDTO;
+using app.DAO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using app.Data;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace app.BE
 {
     public class AuthBE
     {
+        private AppDbContext _context;
+
         UserManager<IdentityUser> _userManager;
         SignInManager<IdentityUser> _signInManager;
         private readonly string _key = "uma_chave_muito_secreta_aqui!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
 
         public AuthBE(UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager)
+        SignInManager<IdentityUser> signInManager, AppDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
-        public async Task<IdentityResult> RegisterNewUser(UserRegisterDTO user)
+        public async Task<UserRegisterDTO> RegisterNewUser(UserRegisterDTO user)
         {
 
-            var identityUser = new IdentityUser()
-            {
-                Email = user.Email,
-                UserName = user.UserName,
-                PhoneNumber = user.PhoneNumber
-            };
+            //var identityUser = new IdentityUser()
+            //{
+            //    Email = user.Email,
+            //    UserName = user.UserName,
+            //    PhoneNumber = user.PhoneNumber
+            //};
 
             //check if email already exists
-            var emailExists = await _userManager.FindByEmailAsync(user.Email);
+            var dao = new AuthDAO(_context);
+
+            var emailExists = await dao.FindByEmail(user.Email);
             if (emailExists != null)
             {
-                return IdentityResult.Failed(new IdentityError { Description = "Email already exists" });
+                return new UserRegisterDTO
+                {
+                    ErrorMessages = "Email already exists"
+                };
             }
 
-            var result = await _userManager.CreateAsync(identityUser, user.Password);
+            //var result = await _userManager.CreateAsync(identityUser, user.Password);
 
-            if (!result.Succeeded)
-            {
-                return result;
-            }
-            return result;
+            //criptografar senha antes de salvar
+            var passwordHash = new PasswordHasher<IdentityUser>();
+            var hashed = passwordHash.HashPassword(null, user.Password);
+
+            user.Password = hashed;
+
+            return await dao.UserRegister(user);
         }
 
         public async Task<UserValidationResponse> Authenticate(UserLoginDTO user)
         {
-            var identityUser = await _userManager.FindByEmailAsync(user.Email);
+            var dao = new AuthDAO(_context);
+
+            var identityUser = await dao.FindByEmail(user.Email);
             if (identityUser == null)
                 return null;
 
-            var result = await _signInManager.PasswordSignInAsync(identityUser.UserName, user.Password, false, true);
+            //decript identityUser.Password
+            var passwordHash = new PasswordHasher<IdentityUser>();
 
-            if (result.Succeeded)
+            var result = passwordHash.VerifyHashedPassword(null, identityUser.Password, user.Password);
+
+            if (result == PasswordVerificationResult.Success)
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var keyBytes = Encoding.ASCII.GetBytes(_key); // Use a chave estática correta aqui
@@ -102,7 +120,7 @@ namespace app.BE
             return usersDTO;
         }
 
-        public async  Task<UserChangePasswordDTO> ChangePassword (UserChangePasswordDTO user)
+        public async Task<UserChangePasswordDTO> ChangePassword(UserChangePasswordDTO user)
         {
             var identityUser = _userManager.FindByEmailAsync(user.Email).Result;
             if (identityUser == null)

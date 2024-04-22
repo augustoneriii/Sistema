@@ -41,19 +41,19 @@ namespace app.Controllers
         {
             try
             {
-                var token = ExtractAuthToken();
-                UserValidationResponse userLogado = authService.CheckUser(token);
-                if (userLogado == null || !userLogado.IsAuthenticated)
-                {
-                    return BadRequest(new { Message = "Usuário não autenticado!" });
-                }
+                //var token = ExtractAuthToken();
+                //UserValidationResponse userLogado = authService.CheckUser(token);
+                //if (userLogado == null || !userLogado.IsAuthenticated)
+                //{
+                //    return BadRequest(new { Message = "Usuário não autenticado!" });
+                //}
 
                 var response = await authService.RegisterNewUser(user);
 
-                if (response.Succeeded == false)
-                    return BadRequest(response.Errors);
+                if (response.ErrorMessages != null || !string.IsNullOrEmpty(response.ErrorMessages))
+                    return BadRequest(response.ErrorMessages);
 
-                return Ok(response);
+                return Ok(new { Message = "Usuário cadastrado com sucesso!" });
             }
             catch (Exception ex)
             {
