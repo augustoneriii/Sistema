@@ -106,30 +106,30 @@ namespace app.Controllers
         }
 
         // DELETE: Profissoes
-        [Route("deleteProfissoes")]
-        [HttpDelete]
-        public async Task<IActionResult> Delete([FromQuery] int id)
-        {
-            try
-            {
-                var token = ExtractAuthToken();
+        //[Route("deleteProfissoes")]
+        //[HttpDelete]
+        //public async Task<IActionResult> Delete([FromQuery] int id)
+        //{
+        //    try
+        //    {
+        //        var token = ExtractAuthToken();
 
-                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
-                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
-                {
-                    return BadRequest(new { Message = "Usuário não autenticado!" });
-                }
+        //        UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+        //        if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+        //        {
+        //            return BadRequest(new { Message = "Usuário não autenticado!" });
+        //        }
 
-                _context.BeginTransaction();
-                await _be.Delete(id);
-                _context.Commit();
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _context.Rollback();
-                return BadRequest(ex.Message);
-            }
-        }
+        //        _context.BeginTransaction();
+        //        await _be.Delete(id);
+        //        _context.Commit();
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _context.Rollback();
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
     }
 }

@@ -135,3 +135,28 @@ CREATE TABLE IF NOT EXISTS "Sistema"."PreAgendamento" (
   "UpdatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   UNIQUE ("Data", "Hora")
 );
+
+
+-- Adicionando a coluna "Ativo" à tabela "ConvenioMedicos"
+ALTER TABLE "Sistema"."ConvenioMedicos"
+ADD COLUMN "Ativo" INTEGER;
+
+-- Adicionando a coluna "Ativo" à tabela "Pacientes"
+ALTER TABLE "Sistema"."Pacientes"
+ADD COLUMN "Ativo" INTEGER;
+
+-- Adicionando a coluna "Ativo" à tabela "Profissoes"
+ALTER TABLE "Sistema"."Profissoes"
+ADD COLUMN "Ativo" INTEGER;
+
+-- Adicionando a coluna "Ativo" à tabela "Profissionais"
+ALTER TABLE "Sistema"."Profissionais"
+ADD COLUMN "Ativo" INTEGER;
+
+-- Adicionando a coluna "Ativo" à tabela "Consultas"
+ALTER TABLE "Sistema"."Consultas"
+ADD COLUMN "Ativo" INTEGER;
+
+-- Adicionando a coluna "Ativo" à tabela "PreAgendamento"
+ALTER TABLE "Sistema"."PreAgendamento"
+ADD COLUMN "Ativo" INTEGER;

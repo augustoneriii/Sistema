@@ -200,14 +200,14 @@ namespace app.DAO
         }
 
         //delete
-        public async Task Delete(long? id)
-        {
-            var objDelete = new StringBuilder();
-            objDelete.Append("DELETE FROM \"Sistema\".\"Pacientes\" ");
-            objDelete.Append($"WHERE \"Id\" = {id} ");
+        //public async Task Delete(long? id)
+        //{
+        //    var objDelete = new StringBuilder();
+        //    objDelete.Append("DELETE FROM \"Sistema\".\"Pacientes\" ");
+        //    objDelete.Append($"WHERE \"Id\" = {id} ");
 
-            _context.ExecuteNonQuery(objDelete.ToString());
-        }
+        //    _context.ExecuteNonQuery(objDelete.ToString());
+        //}
 
     }
 }

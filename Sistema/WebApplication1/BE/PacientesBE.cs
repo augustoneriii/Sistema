@@ -36,11 +36,12 @@ namespace app.BE
         }
 
         //delete
+        /*
         public async Task Delete(long dto)
         {
             var dao = new PacientesDAO(_context);
             await dao.Delete(dto);
-        }
+        }*/
     }
 }
 

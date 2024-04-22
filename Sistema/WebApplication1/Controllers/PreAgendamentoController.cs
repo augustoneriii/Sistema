@@ -75,24 +75,24 @@ namespace app.Controllers
         }
 
         // DELETE: PreAgendamentos
-        [Authorize]
-        [Route("deletePreAgendamentos")]
-        [HttpDelete]
-        public async Task<IActionResult> Delete([FromQuery] long id)
-        {
-            try
-            {
-                _context.BeginTransaction();
-                await _be.Delete(id);
-                _context.Commit();
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _context.Rollback();
-                return BadRequest(ex.Message);
-            }
-        }
+        //[Authorize]
+        //[Route("deletePreAgendamentos")]
+        //[HttpDelete]
+        //public async Task<IActionResult> Delete([FromQuery] long id)
+        //{
+        //    try
+        //    {
+        //        _context.BeginTransaction();
+        //        await _be.Delete(id);
+        //        _context.Commit();
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _context.Rollback();
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
     }
 }
