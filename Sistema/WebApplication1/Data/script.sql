@@ -238,3 +238,9 @@ ADD COLUMN "Ativo" INTEGER;
 -- Adicionando a coluna "Ativo" à tabela "PreAgendamento"
 ALTER TABLE "Sistema"."PreAgendamento"
 ADD COLUMN "Ativo" INTEGER;
+
+
+INSERT INTO "Sistema"."AspNetRoles" (id, name, normalizedname, concurrencystamp) VALUES
+('f3f629', 'admin', 'ADMIN', '76dca6b7-a95b-4aa3-a469-2c8985354936'),
+('c8fffd', 'profissional', 'PROFISSIONAL', '09b023d6-65a4-4268-aaf5-6b5f230aec3e'),
+('f8abf4', 'assistente', 'ASSISTENTE', '626ab808-4453-40dc-9815-6854a0f78923');
