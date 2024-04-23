@@ -123,13 +123,10 @@ CREATE TABLE IF NOT EXISTS "Sistema" . "AgendaProfissional"(
 "Hora" TIME NOT NULL,
 "Ativo" int,
 "DiaSemana" varchar(20),
-"ProfissionalId" BIGINIT,
+"ProfissionalId" BIGINT,
 "CreatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 "UpdatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
- UNIQUE ("Dia", "Hora", "ProfissionalId"),
-
-FOREIGN KEY ("ProfissionalId") REFERENCES "Sistema"."Profissionais"("Id"),
-
+ UNIQUE ("Dia", "Hora", "ProfissionalId")
 );
 -- -----------------------------------------------------
 -- Table "Sistema"."Pacientes"

@@ -34,6 +34,30 @@ const sidebarItems = [
                 action: 'setProfissaoVisible',
                 roles: ["f3f629", "f8abf4"],
                 actionValue: true
+            },
+            {
+                text: 'Usuários',
+                icon: 'pi pi-user',
+                link: '',
+                action: 'setUsuarioVisible',
+                roles: ["f3f629", "f8abf4"],
+                actionValue: true
+            },
+            {
+                text: 'Perfis',
+                icon: 'pi pi-id-card',
+                link: '',
+                action: 'setPerfilVisible',
+                roles: ["f3f629", "f8abf4"],
+                actionValue: true
+            },
+            {
+                text: 'Agenda Profissional',
+                icon: 'pi pi-calendar',
+                link: '',
+                action: 'setAgendaProfissionalVisible',
+                roles: ["f3f629", "f8abf4"],
+                actionValue: true
             }
         ],
         roles: ['c8fffd', 'f3f629', 'f8abf4']
