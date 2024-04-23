@@ -190,6 +190,7 @@ namespace app.BE
                 var dao = new AuthDAO(_context);
 
                 result.IsAuthenticated = true;
+                result.IdUser = identityClaims.FindFirst(ClaimTypes.NameIdentifier)?.Value; // Id armazenado em ClaimTypes.NameIdentifier
                 result.UserName = identityClaims.FindFirst(ClaimTypes.Name)?.Value; // UserName armazenado em ClaimTypes.Name
                 result.Email = identityClaims.FindFirst(ClaimTypes.Email)?.Value; // Certifique-se de que o e-mail está incluído quando o token é emitido
 
