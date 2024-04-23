@@ -8,6 +8,7 @@ import Consulta from '../pages/Consulta';
 import Profissional from '../pages/Profissional';
 import Usuarios from '../pages/CadastrosBasicos/Usuarios';
 import Perfil from '../pages/CadastrosBasicos/Perfil';
+import AgendaProfissional from '../pages/CadastrosBasicos/AgendaProfissional';
 import { SidebarContext } from '../context/SideBarContext';
 
 
@@ -23,7 +24,8 @@ function AuthenticatedComponents() {
         consultaVisible,
         profissionalVisible,
         usuarioVisible,
-        perfilVisible
+        perfilVisible,
+        agendaProfissionalVisible
     } = useContext(SidebarContext);
 
     useEffect(() => {
@@ -41,7 +43,11 @@ function AuthenticatedComponents() {
         <>
             <SideBar idUserRole={user.idUserRole} />
             {user.idUserRole === "c8fffd" ? (
-                perfilVisible && <Perfil />
+                <>
+                    {perfilVisible && <Perfil />}
+                    {agendaProfissionalVisible && <AgendaProfissional />}
+                    {perfilVisible && <Perfil />}
+                </>
             ) : (
                 <>
                     {convenioVisible && <ConvenioMedico />}
@@ -50,6 +56,8 @@ function AuthenticatedComponents() {
                     {profissaoVisible && <Profissao />}
                     {pacienteVisible && <Paciente />}
                     {usuarioVisible && <Usuarios />}
+                    {agendaProfissionalVisible && <AgendaProfissional />}
+                    {perfilVisible && <Perfil />}
                 </>
             )}
         </>

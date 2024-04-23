@@ -44,6 +44,11 @@ namespace app.DAO
             {
                 objSelect.Append($"AND \"DiaSemana\" = '{dto.DiaSemana}'");
             }
+            if( dto.Profissionais.Id > 0)
+            {
+                objSelect.Append($"AND \"ProfissionalId\" = '{dto.Profissionais.Id}'");
+            }
+
 
             var dt = _context.ExecuteQuery(objSelect.ToString());
 
