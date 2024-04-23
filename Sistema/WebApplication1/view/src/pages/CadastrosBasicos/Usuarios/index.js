@@ -1,16 +1,15 @@
-﻿import Modal from "../../../components/Modal/index";
+﻿import React, { useContext, useState, useRef, useEffect } from 'react';
+import Modal from "../../../components/Modal/index";
 import { SidebarContext } from "../../../context/SideBarContext";
-import React, { useContext, useState, useRef, useEffect } from 'react';
 import { Toast } from 'primereact/toast';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-import UsuarioService from './Service/UsuarioService';
 import { Password } from 'primereact/password';
 import { FloatLabel } from 'primereact/floatlabel';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Dropdown } from 'primereact/dropdown';
-
-
+import UsuarioService from './Service/UsuarioService';
+import ChangePassword from '../../Configuracoes/ChangePassword';
 
 function Usuarios() {
     const { usuarioVisible, setUsuarioVisible } = useContext(SidebarContext);
@@ -20,35 +19,14 @@ function Usuarios() {
     const [submitted, setSubmitted] = useState(false);
     const [usuarios, setUsuarios] = useState([]);
     const [usuarioDialog, setUsuarioDialog] = useState(false);
-    const currentToken = localStorage.getItem('token') || '';
-    const dt = useRef(null);
     const [changePasswordDialog, setChangePasswordDialog] = useState(false);
-    const [changePassword, setChangePassword] = useState();
+    const [changePassword, setChangePassword] = useState({ email: "", password: "", confirmPassword: "" });
+
+    
     const user = JSON.parse(localStorage.getItem('user'));
 
-
-
-
-    const emptyUsuario = {
-        id: null,
-        userName: "",
-        email: "",
-        cpf: "",
-        password: "",
-        confirmPassword: "",
-        phoneNumber: "",
-        roleName: "",
-    };
-
-    const emptyChangePassword = {
-        email: "",
-        password: "",
-        confirmPassword: "",
-    }
-
-
     useEffect(() => {
-        async function fetchUsuarios() {
+        const fetchUsuarios = async () => {
             const currentToken = localStorage.getItem('token') || '';
             try {
                 const response = await UsuarioService.getUsuarios(currentToken);
@@ -57,12 +35,17 @@ function Usuarios() {
             } catch (error) {
                 console.error("Erro ao buscar Usuarios:", error);
             }
-        }
+        };
 
         if (usuarioVisible && !dataLoaded) {
             fetchUsuarios();
         }
     }, [usuarioVisible, dataLoaded]);
+
+    const editUsuario = (usuario) => {
+        setUsuario(usuario);
+        setUsuarioDialog(true);
+    };
 
     const itemTemplate = (usuario) => {
         if (!usuario) {
@@ -77,117 +60,57 @@ function Usuarios() {
                         <div className="product-description"><strong>E-mail:</strong> {usuario.email}</div>
                     </div>
                     <div className="flex justify-content-between items-center w-7rem">
-                        <Button icon="pi pi-pencil" severity="info" className="border-round" onClick={() => editUsuario(changePassword)} />
-                        <Button icon="pi pi-key" severity="warning" className="border-round" onClick={() => changeUsuarioPassword(changePassword)} />
+                        <Button icon="pi pi-pencil" severity="info" className="border-round" onClick={() => editUsuario(usuario)} />
+                        <Button icon="pi pi-key" severity="warning" className="border-round" onClick={() => changeUsuarioPassword(usuario)} />
                     </div>
                 </div>
             </div>
         );
     };
 
-    const onInputChange = (e, name) => {
-        const val = (e.target && e.target.value) || '';
-        let _usuario = { ...usuario };
-        _usuario[`${name}`] = val;
-        setUsuario(_usuario);
-    };
-
-    const editUsuario = (usuario) => {
-        setUsuario({ ...usuario });
-        setUsuarioDialog(true);
-    };
-
-    const changeUsuarioPassword = (changePassword) => {
-        setChangePassword({ ...changePassword })
-        setChangePasswordDialog(true)
-    }
-
-    const confirmDeleteUsuario = (usuario) => {
-        setUsuario(usuario);
-        setUsuarioDialog(true);
-    };
-
-    const header = (
-        <h1>Usuario</h1>
-    );
-
-    const onHideModal = () => {
-        setUsuarioVisible(false);
-        setDataLoaded(false); // Reseta o carregamento de dados para false quando o modal é fechado
-    };
-
-    const findIndexById = (id) => {
-        let index = -1;
-        for (let i = 0; i < usuarios.length; i++) {
-            if (usuarios[i].id === id) {
-                index = i;
-                break;
-            }
-        }
-        return index;
+    const changeUsuarioPassword = (usuario) => {
+        setChangePassword({ email: usuario.email, password: "", confirmPassword: "" });
+        setChangePasswordDialog(true);
     };
 
     const dropDownRoleName = [
-        { label: 'Profissional', value: 'Profissional' },
-        { label: 'Assistente', value: 'Assistente' }
+        { label: 'Administrador', value: 'ADMIN' },
+        { label: 'Assistentes', value: 'ASSISTENTE' },
+        { label: 'Profissional', value: 'PROFISSIONAL' },
     ];
 
-    if (user.idUserRole === "f3f629") {
-        dropDownRoleName.unshift({ label: 'Admin', value: 'Admin' });  // Adiciona no início do array
+    const onInputChange = (e, name) => {
+        const val = (e.target && e.target.value) || '';
+        const _usuario = { ...usuario };
+        _usuario[`${name}`] = val;
+        setUsuario(_usuario);
     }
-
-    console.log("user", user);
-    console.log(user.idUserRole === "f3f629")
 
     const saveUsuario = () => {
         setSubmitted(true);
-
         if (usuario.userName.trim()) {
-            let _usuarios = [...usuarios];
-            let _usuario = { ...usuario };
-
+            const _usuarios = [...usuarios];
+            const _usuario = { ...usuario };
             const currentToken = localStorage.getItem('token') || '';
             if (usuario.id) {
-                const index = findIndexById(usuario.id);
+                const index = _usuarios.findIndex(u => u.id === usuario.id);
                 _usuarios[index] = _usuario;
-                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Usuario Atualizado', life: 3000 });
                 UsuarioService.updateUsuario(_usuario, currentToken);
             } else {
                 _usuarios.push(_usuario);
-                console.log("usuario", _usuario);
                 UsuarioService.createUsuario(_usuario, currentToken);
-                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Usuario Criado', life: 3000 });
             }
-
+            toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Usuario Atualizado', life: 3000 });
             setUsuarios(_usuarios);
             setUsuarioDialog(false);
-            setUsuario(emptyUsuario);
+            setUsuario({});
         }
     };
-
-    const saveNewPassword = () => {
-        setSubmitted(true);
-
-        if (usuario.password.trim()) {
-            let _changePassword = { ...changePassword };
-
-            const currentToken = localStorage.getItem('token') || '';
-            if (usuario.email) {
-                UsuarioService.changePassword(_changePassword, currentToken);
-                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Senha Atualizada', life: 3000 });
-            } else {
-
-            }
-
-            setChangePasswordDialog(false);
-            setChangePassword(emptyChangePassword);
-        }
-    }
 
     return (
         <>
             <Toast ref={toast} />
-            <Modal header={header} modal={false} visible={usuarioVisible} style={{ width: '50vw', height: '80vh' }} onHide={() => onHideModal()}>
+            <Modal header={<h1>Usuario</h1>} modal={false} visible={usuarioVisible} style={{ width: '50vw', height: '80vh' }} onHide={() => { setUsuarioVisible(false); setDataLoaded(false); }}>
                 <div className="card">
                     <div className="grid">
                         <div className="field col-6">
@@ -244,37 +167,9 @@ function Usuarios() {
                     </div>
                 </div>
                 <DataView value={usuarios} itemTemplate={itemTemplate} />
-
-
-                <Modal header="Change Password" modal={false} visible={changePasswordDialog} style={{ width: '37vw', height: '55vh' }} onHide={() => setChangePasswordDialog(false)}>
-                    <div className="card">
-                        <div className="grid">
-                            <div className="field col-12">
-                                <FloatLabel>
-                                    <label htmlFor="password">Email</label>
-                                    <InputText className='w-full' id="password" disabled value={usuario.email} onChange={(e) => onInputChange(e, 'password')} />
-                                </FloatLabel>
-                            </div>
-                            <div className="field col-12">
-                                <FloatLabel>
-                                    <label htmlFor="password">password</label>
-                                    <InputText className='w-full' id="password" value={usuario.password} onChange={(e) => onInputChange(e, 'password')} />
-                                </FloatLabel>
-                            </div>
-                            <div className="field col-12">
-                                <FloatLabel>
-                                    <label htmlFor="confirmPassword">confirmPassword</label>
-                                    <InputText className='w-full' id="confirmPassword" value={usuario.confirmPassword} onChange={(e) => onInputChange(e, 'confirmPassword')} />
-                                </FloatLabel>
-                            </div>
-                            <div className="field col">
-                                <Button label="Alterar" icon="pi pi-check" className="border-round p-button-text" onClick={saveNewPassword} />
-                            </div>
-                        </div>
-                    </div>
-
-                </Modal>
             </Modal>
+
+            <ChangePassword changePassword={changePassword} setChangePassword={setChangePassword} changePasswordDialog={changePasswordDialog} setChangePasswordDialog={setChangePasswordDialog} />
         </>
     );
 }

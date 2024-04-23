@@ -36,14 +36,6 @@ const sidebarItems = [
                 actionValue: true
             },
             {
-                text: 'Usuários',
-                icon: 'pi pi-user',
-                link: '',
-                action: 'setUsuarioVisible',
-                roles: ["f3f629", "f8abf4"],
-                actionValue: true
-            },
-            {
                 text: 'Perfis',
                 icon: 'pi pi-id-card',
                 link: '',
@@ -76,6 +68,22 @@ const sidebarItems = [
             }
         ],
         roles: ['c8fffd', 'f3f629', 'f8abf4']
+    },
+    {
+        text: 'Configurações',
+        icon: 'pi pi-fw pi-cog',
+        items: [
+            {
+                text: 'Usuários',
+                icon: 'pi pi-user',
+                link: '',
+                action: 'setUsuarioVisible',
+                roles: ["f3f629", "f8abf4"],
+                actionValue: true
+            }
+        ],
+        roles: ['f3f629', 'f8abf4']
+
     }
 ];
 

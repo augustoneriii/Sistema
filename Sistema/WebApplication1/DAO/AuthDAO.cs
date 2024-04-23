@@ -226,5 +226,23 @@ namespace app.DAO
             return obj;
         }
 
+
+        //change password method
+        public async Task<UserChangePasswordDTO> ChangePassword(UserChangePasswordDTO dto)
+        {
+            var objUpdate = new StringBuilder();
+            objUpdate.Append("UPDATE \"Sistema\".\"AspNetUsers\" ");
+            objUpdate.Append($"SET passwordhash = '{dto.NewPassword}' ");
+            objUpdate.Append($"WHERE email = '{dto.Email}'");
+
+            _context.ExecuteNonQuery(objUpdate.ToString());
+
+            UserChangePasswordDTO obj = new UserChangePasswordDTO();
+            obj.Email = dto.Email;
+            obj.NewPassword = dto.NewPassword;
+            obj.Succeeded = true;
+
+            return obj;
+        }
     }
 }

@@ -81,13 +81,13 @@ export default function Paciente() {
     const dropdownConvenios = convenios.map(convenio => {
         return {
             label: convenio.nome,
-            value: convenio.nome
+            value: convenio.id
         };
     });
 
     const sexoOptions = [
-        { label: 'Masculino', value: 'Masculino' },
-        { label: 'Feminino', value: 'Feminino' },
+        { label: 'Masculino', value: 'm' },
+        { label: 'Feminino', value: 'f' },
     ]
 
     const tipoSanguineoOptions = [
@@ -123,42 +123,24 @@ export default function Paciente() {
             let _pacientes = [...pacientes];
             let _paciente = { ...paciente };
 
-            let postPaciente = {
-                Id: _paciente.Id,
-                Nome: _paciente.nome,
-                Cpf: _paciente.cpf,
-                Rg: _paciente.rg,
-                Telefone: _paciente.telefone,
-                Endereco: _paciente.endereco,
-                Email: _paciente.email,
-                Nascimento: _paciente.nascimento,
-                Sexo: _paciente.sexo,
-                IdConvenio: _paciente.IdConvenio,
-                TipoSanguineo: _paciente.tipoSanguineo,
-                Alergias: _paciente.alergias,
-                Medicamentos: _paciente.medicamentos,
-                Cirurgias: _paciente.cirurgias,
-                Historico: _paciente.historico,
-                Ativo: _paciente.ativo
-            };
-
             console.log("Valor de Nascimento:", _paciente.nascimento);
 
             _paciente.ativo = checked ? 1 : 0;
 
             const currentToken = localStorage.getItem('token') || '';
-            if (paciente.Id) {
-                const index = findIndexById(paciente.Id);
+
+            console.log("Paciente:", paciente.id);
+            if (paciente.id) {
+                const index = findIndexById(paciente.id);
                 _pacientes[index] = _paciente;
                 toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Atualizado', life: 3000 });
                 PacienteService.updatePaciente(_paciente, currentToken);
             } else {
-                _paciente.Id = createId();
-                _pacientes.push(_paciente);
                 toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Criado', life: 3000 });
                 PacienteService.createPaciente(_paciente, currentToken);
             }
 
+            PacienteService.getPacientes(currentToken)
             setPacientes(_pacientes);
             setPacienteDialog(false);
             setPaciente(emptyPaciente);
@@ -214,17 +196,12 @@ export default function Paciente() {
         return index;
     };
 
-    const createId = () => {
-        return Math.random().toString(36).substr(2, 9);
-    };
-
     const onInputChange = (e, name) => {
         const val = (e.target && e.target.value) || '';
         let _paciente = { ...paciente };
-        _paciente[`${name}`] = val;
+        _paciente[name] = val;
         setPaciente(_paciente);
     };
-
 
     const onCheckboxChange = (e) => {
         setChecked(e.checked); // Atualiza o estado do checkbox

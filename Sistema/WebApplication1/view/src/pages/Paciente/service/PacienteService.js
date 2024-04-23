@@ -19,16 +19,21 @@ export class PacienteService {
     }
 
     static async createPaciente(paciente, token) {
-        return await api.post('/insertPacientes', paciente, {
+        return await api.post('/insertPacientes', {
+            ...paciente,
+            ConvenioId: paciente.IdConvenio // Garantir que este campo esteja correto
+        }, {
             headers: {
-                Authorization: `Bearer ${JSON.parse(token)}`
+                Authorization: `Bearer ${token}`
             }
         });
     }
 
+
+
     static async updatePaciente(paciente, token) {
-        console.log("update ",paciente);
-        return await api.put(`/pacientes/update/${paciente.id}`, paciente, {
+        console.log("update ", paciente);
+        return await api.patch(`/updatePacientes`, paciente, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
