@@ -28,13 +28,13 @@ export class PacienteService {
 
     static async updatePaciente(paciente, token) {
         console.log("update ",paciente);
-        return await api.put(`/updatePacientes`, paciente, {
+        return await api.put(`/pacientes/update/${paciente.id}`, paciente, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
     }
-
+    /*
     static async deletePaciente(id, token) {
         console.log("delete ",id);
         return await api.delete(`/deletePacientes?id=${id}`, {
@@ -42,5 +42,5 @@ export class PacienteService {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
-    }
+    }*/
 }

@@ -137,7 +137,7 @@ export default function Consulta() {
                 const index = findIndexById(consulta.id);
                 _consultas[index] = _consulta;
                 toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Atualizado', life: 3000 });
-                ConsultaService.updateConsulta(_consulta, currentToken);
+                ConsultaService.updateConsulta(postConsulta, currentToken);
             } else {
                 console.log("create consulta", _consulta);
                 _consultas.push(postConsulta);
@@ -161,7 +161,7 @@ export default function Consulta() {
     };
 
 
-    const confirmDeleteConsulta = (consulta) => {
+    /*const confirmDeleteConsulta = (consulta) => {
         setConsulta(consulta);
         setDeleteConsultaDialog(true);
     };
@@ -184,7 +184,7 @@ export default function Consulta() {
         } else {
             console.error("Erro: id do consulta é undefined");
         }
-    };
+    };*/
 
 
     const exportCSV = (selectionOnly) => {
@@ -224,6 +224,12 @@ export default function Consulta() {
         setConsulta(_consulta);
     };
 
+    const formatTime = (timeStr) => {
+        if (!timeStr) return '';
+        const time = new Date(timeStr);
+        return time instanceof Date && !isNaN(time) ? time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+    };
+
 
     const leftToolbarTemplate = () => {
         return (
@@ -237,7 +243,7 @@ export default function Consulta() {
         return (
             <React.Fragment>
                 <Button icon="pi pi-pencil" className="border-round p-button-rounded p-button-secondary mr-2" onClick={() => editConsulta(rowData)} />
-                <Button icon="pi pi-trash" className="border-round p-button-rounded p-button-danger" onClick={() => confirmDeleteConsulta(rowData)} />
+                
             </React.Fragment>
         );
     };
@@ -291,12 +297,20 @@ export default function Consulta() {
         </React.Fragment>
     );
 
-    const deleteConsultaDialogFooter = (
+    /*const deleteConsultaDialogFooter = (
         <React.Fragment>
             <Button label="Não" icon="pi pi-times" className="border-round p-button-text" onClick={hideDeleteConsultaDialog} />
             <Button label="Sim" icon="pi pi-check" className="border-round p-button-text" onClick={deleteConsulta} />
         </React.Fragment>
     );
+    <Dialog visible={deleteConsultaDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deleteConsultaDialogFooter} onHide={hideDeleteConsultaDialog}>
+                    <div className="confirmation-content">
+                        <i className="pi pi-exclamation-triangle mr-2" style={{ fontSize: '2rem' }} />
+                        {consulta && <span>Tem certeza que deseja excluir a consulta de <b>{consulta.NomePaciente}</b> com o profissional <b>{consulta.NomeProfissional}</b>?</span>}
+                    </div>
+                </Dialog>
+    <Button icon="pi pi-trash" className="border-round p-button-rounded p-button-danger" onClick={() => confirmDeleteConsulta(rowData)} />
+    */
 
     return (
         <>
@@ -379,12 +393,7 @@ export default function Consulta() {
                     </div>
                 </Dialog>
 
-                <Dialog visible={deleteConsultaDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deleteConsultaDialogFooter} onHide={hideDeleteConsultaDialog}>
-                    <div className="confirmation-content">
-                        <i className="pi pi-exclamation-triangle mr-2" style={{ fontSize: '2rem' }} />
-                        {consulta && <span>Tem certeza que deseja excluir a consulta de <b>{consulta.NomePaciente}</b> com o profissional <b>{consulta.NomeProfissional}</b>?</span>}
-                    </div>
-                </Dialog>
+                
 
             </Modal>
         </>

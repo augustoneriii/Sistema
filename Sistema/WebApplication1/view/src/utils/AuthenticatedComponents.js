@@ -11,6 +11,7 @@ import Perfil from '../pages/CadastrosBasicos/Perfil';
 import AgendaProfissional from '../pages/CadastrosBasicos/AgendaProfissional';
 import { SidebarContext } from '../context/SideBarContext';
 
+
 function AuthenticatedComponents() {
     const [token, setToken] = useState(null);
     const [user, setUser] = useState({ idUserRole: '' });

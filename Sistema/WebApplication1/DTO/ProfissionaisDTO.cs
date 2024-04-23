@@ -16,5 +16,6 @@
         public string? Image { get; set; }
         public List<ConvenioMedicosDTO>? ConvenioMedicos { get; set; }
         public ProfissoesDTO? Profissoes { get; set; }
+        public int Ativo { get; set; }
     }
 }

@@ -71,10 +71,10 @@ namespace app.Controllers
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
 
-                if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
+                /*if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
                 {
                     return BadRequest(new { Message = "Usuário não autorizado!" });
-                }
+                }*/
 
                 _context.BeginTransaction();
                 var response = await _be.Insert(pacientes);
@@ -103,10 +103,10 @@ namespace app.Controllers
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
 
-                if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
+                /*if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
                 {
                     return BadRequest(new { Message = "Usuário não autorizado!" });
-                }
+                }*/
 
                 _context.BeginTransaction();
                 var response = await _be.Update(pacientes);

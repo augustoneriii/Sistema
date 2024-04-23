@@ -10,6 +10,8 @@ import { Toast } from 'primereact/toast';
 import { Dialog } from 'primereact/dialog';
 import Modal from '../../../components/Modal/index.js';
 import { Menu } from 'primereact/menu';
+import { Checkbox } from 'primereact/checkbox';
+import { FloatLabel } from 'primereact/floatlabel';
 
 function ConvenioMedico() {
     const { convenioVisible, setConvenioVisible } = useContext(SidebarContext);
@@ -20,12 +22,13 @@ function ConvenioMedico() {
         nome: '',
         telefone: '',
         email: '',
-        site: ''
+        site: '',
+        ativo: null
     };
 
     const [convenios, setConvenios] = useState([]);
     const [convenioDialog, setConvenioDialog] = useState(false);
-    const [deleteConvenioDialog, setDeleteConvenioDialog] = useState(false);
+    //const [deleteConvenioDialog, setDeleteConvenioDialog] = useState(false);
     const [convenio, setConvenio] = useState(emptyConvenio);
     const [selectedConvenios, setSelectedConvenios] = useState(null);
     const [submitted, setSubmitted] = useState(false);
@@ -34,6 +37,8 @@ function ConvenioMedico() {
     const menuRef = useRef(null);
     const [menuModel, setMenuModel] = useState([]);
     const [dataLoaded, setDataLoaded] = useState(false);
+    const [checked, setChecked] = useState(true); // Estado para controlar o valor do checkbox
+    const [activeConvenios, setActiveConvenios] = useState([]); // Estado para armazenar os convenios ativos
 
 
 
@@ -55,7 +60,17 @@ function ConvenioMedico() {
         if (convenioVisible && !dataLoaded) {
             fetchConvenios();
         }
-    }, [convenioVisible, dataLoaded]);
+        if (convenio.ativo === 1) {
+            setChecked(true); // Marca o checkbox se o campo "ativo" for igual a 1
+        } else {
+            setChecked(false);
+        }
+        if (convenios.length > 0) {
+            const filteredConvenios = convenios.filter(convenio => convenio.ativo === 1); // Filtra os convenios ativos
+            setActiveConvenios(filteredConvenios); // Atualiza o estado com os convenios ativos
+        }
+
+    }, [convenioVisible, dataLoaded, convenio.ativo, convenios]);
 
 
     const onHideModal = () => {
@@ -70,9 +85,9 @@ function ConvenioMedico() {
         setConvenioDialog(true);
     };
 
-    const hideDeleteConvenioDialog = () => {
+    /*const hideDeleteConvenioDialog = () => {
         setDeleteConvenioDialog(false);
-    };
+    };*/
 
     const saveConvenio = () => {
         setSubmitted(true);
@@ -81,16 +96,18 @@ function ConvenioMedico() {
             let _convenios = [...convenios];
             let _convenio = { ...convenio };
 
+
+            _convenio.ativo = checked ? 1 : 0; // Atualiza o campo "ativo" com base no estado do checkbox
             const currentToken = localStorage.getItem('token') || '';
             if (convenio.id) {
                 const index = findIndexById(convenio.id);
                 _convenios[index] = _convenio;
                 toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Convenio Atualizado', life: 3000 });
-                ConvenioService.updateConvenio(_convenio);
+                ConvenioService.updateConvenio(_convenio, currentToken);
             } else {
                 _convenios.push(_convenio);
                 console.log("convenio", _convenio);
-                ConvenioService.createConvenio(_convenio);
+                ConvenioService.createConvenio(_convenio, currentToken);
                 toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Convenio Criado', life: 3000 });
             }
 
@@ -106,6 +123,7 @@ function ConvenioMedico() {
         setConvenioDialog(true);
     };
 
+    /*
     const confirmDeleteConvenio = (convenio) => {
         setConvenio(convenio);
         setDeleteConvenioDialog(true);
@@ -130,7 +148,7 @@ function ConvenioMedico() {
         } else {
             console.error("Erro: id do convenio é undefined");
         }
-    };
+    };*/
 
     const findIndexById = (id) => {
         let index = -1;
@@ -149,6 +167,10 @@ function ConvenioMedico() {
         let _convenio = { ...convenio };
         _convenio[`${name}`] = val;
         setConvenio(_convenio);
+    };
+
+    const onCheckboxChange = (e) => {
+        setChecked(e.checked); // Atualiza o estado do checkbox
     };
 
     const leftToolbarTemplate = () => {
@@ -173,7 +195,7 @@ function ConvenioMedico() {
 
         let arrayMenu = [
             { label: 'Editar', icon: 'pi pi-pencil', command: () => editConvenio(rowData) },
-            { label: 'Excluir', icon: 'pi pi-trash', command: () => confirmDeleteConvenio(rowData) }
+            //{ label: 'Excluir', icon: 'pi pi-trash', command: () => confirmDeleteConvenio(rowData) }
         ];
 
         arrayMenu.forEach((item) => {
@@ -191,12 +213,19 @@ function ConvenioMedico() {
         <h1>Convenios Médicos</h1>
     );
 
-    const deleteConvenioDialogFooter = (
+    /*const deleteConvenioDialogFooter = (
         <React.Fragment>
             <Button label="Não" icon="pi pi-times" className="border-round p-button-text" onClick={hideDeleteConvenioDialog} />
             <Button label="Sim" icon="pi pi-check" className="border-round p-button-text" onClick={deleteConvenio} />
         </React.Fragment>
     );
+    <Dialog visible={deleteConvenioDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deleteConvenioDialogFooter} onHide={hideDeleteConvenioDialog}>
+                    <div className="confirmation-content">
+                        <i className="pi pi-exclamation-triangle mr-2" style={{ fontSize: '2rem' }} />
+                        {convenio && <span>Tem certeza que deseja excluir o convenio <b>{convenio.nome}</b>?</span>}
+                    </div>
+                </Dialog>
+    */
 
     return (
         <>
@@ -205,30 +234,50 @@ function ConvenioMedico() {
             <Modal header={header} modal={false} visible={convenioVisible} style={{ width: '80vw', height: '80vh' }} onHide={() => onHideModal()}>
                 <div className='card'>
                     <div className='grid'>
+                        
                         <div className="field col-6">
+                            <FloatLabel>
                             <label htmlFor="nome">Nome</label>
                             <InputText className='w-full' id="nome" value={convenio.nome} onChange={(e) => onInputChange(e, 'nome')} />
+                            </FloatLabel>
                         </div>
+                     
                         <div className="field col-6">
+                            <FloatLabel>
                             <label htmlFor="telefone">Telefone</label>
                             <InputText className='w-full' id="telefone" value={convenio.telefone} onChange={(e) => onInputChange(e, 'telefone')} />
+                            </FloatLabel>
                         </div>
+                        
                         <div className="field col-6">
+                            <FloatLabel>
                             <label htmlFor="email">E-Mail</label>
                             <InputText className='w-full' id="email" value={convenio.email} onChange={(e) => onInputChange(e, 'email')} />
+                            </FloatLabel>
                         </div>
+     
                         <div className="field col-6">
+                        <FloatLabel>
                             <label htmlFor="site">Site</label>
                             <InputText className='w-full' id="site" value={convenio.site} onChange={(e) => onInputChange(e, 'site')} />
+                        </FloatLabel>
                         </div>
+                        
+
+                 
+                        <div className="field col-6">
+                            <label htmlFor="ativo">Ativo</label>
+                            <Checkbox onChange={onCheckboxChange} checked={checked}></Checkbox>
+                        </div>
+                       
                         <div className="field col">
                             <Button label="Salvar" icon="pi pi-check" className="border-round p-button-text" onClick={saveConvenio} />
                         </div>
                     </div>
                 </div>
-
+                    
                 <div className="card">
-                    <DataTable ref={dt} value={convenios} selection={selectedConvenios} onSelectionChange={e => setSelectedConvenios(e.value)}
+                    <DataTable ref={dt} value={activeConvenios} selection={selectedConvenios} onSelectionChange={e => setSelectedConvenios(e.value)}
                         dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} scrollable scrollHeight="200px"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} convenios" globalFilter={globalFilter}>
@@ -237,15 +286,10 @@ function ConvenioMedico() {
                         <Column field="telefone" header="Telefone" sortable></Column>
                         <Column field="email" header="E-Mail" sortable></Column>
                         <Column field="site" header="Site" sortable></Column>
+                        <Column field="ativo" header="ativo" sortable></Column>
                     </DataTable>
                 </div>
-
-                <Dialog visible={deleteConvenioDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deleteConvenioDialogFooter} onHide={hideDeleteConvenioDialog}>
-                    <div className="confirmation-content">
-                        <i className="pi pi-exclamation-triangle mr-2" style={{ fontSize: '2rem' }} />
-                        {convenio && <span>Tem certeza que deseja excluir o convenio <b>{convenio.nome}</b>?</span>}
-                    </div>
-                </Dialog>
+                          
             </Modal>
         </>
     )

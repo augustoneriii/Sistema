@@ -29,12 +29,12 @@ export class ProfissaoService {
         });
     }
 
-    static async  deleteProfissao(id, token) {
+    /*static async  deleteProfissao(id, token) {
         console.log("delete ",id);
         return await api.delete(`/deleteProfissoes?id=${id}`, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
-    }
+    }*/
 }

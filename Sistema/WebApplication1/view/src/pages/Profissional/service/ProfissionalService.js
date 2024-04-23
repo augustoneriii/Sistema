@@ -26,7 +26,7 @@ export class ProfissionalService {
         });
     }
 
-    static async createProfissional(profissional, token) {
+    static async saveProfissional(profissional, token) {
         console.log("create ", profissional);
 
         return await api.post('/insertProfissionais', profissional, {
@@ -39,19 +39,19 @@ export class ProfissionalService {
 
     static async updateProfissional(profissional, token) {
         console.log("update ", profissional);
-        return await api.put(`/updateProfissionais`, profissional, {
+        return await api.patch(`/updateProfissionais`, profissional, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
     }
 
-    static async deleteProfissional(id, token) {
+    /*static async deleteProfissional(id, token) {
         console.log("delete ", id);
         return await api.delete(`/deleteProfissionais?id=${id}`, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
-    }
+    }*/
 }

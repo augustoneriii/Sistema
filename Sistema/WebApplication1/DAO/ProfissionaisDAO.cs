@@ -32,6 +32,8 @@ namespace app.DAO
             objSelect.Append("	     , \"ConvenioId\"                                                           ");
             objSelect.Append("	     , \"Observacoes\"                                                          ");
             objSelect.Append("	     , \"Image\"                                                                ");
+            objSelect.Append("	     , \"Image\"                                                                ");
+            objSelect.Append("	     , \"Sistema\".\"Profissionais\".\"Ativo\" AS \"Ativo\"                     ");
             objSelect.Append("	     , \"Sistema\".\"Profissoes\".\"Nome\" AS \"NomeProfissao\"                 ");
             objSelect.Append("	     , \"Sistema\".\"Profissoes\".\"ConselhoProfissional\"                      ");
             objSelect.Append("	     , \"Sistema\".\"ConvenioMedicos\".\"Nome\" AS \"NomeConvenio\"             ");
@@ -83,6 +85,7 @@ namespace app.DAO
                     Conselho = row["Conselho"].ToString(),
                     Observacoes = row["Observacoes"].ToString(),
                     Image = row["Image"].ToString(),
+                    Ativo = Convert.ToInt32(row["Ativo"]),
                     Profissoes = new ProfissoesDTO
                     {
                         Id = Convert.ToInt32(row["ProfissaoId"] != DBNull.Value ? Convert.ToInt32(row["ProfissaoId"]) : 0),
@@ -123,6 +126,7 @@ namespace app.DAO
             objInsert.Append(", \"ConvenioId\"                           ");
             objInsert.Append(", \"Observacoes\"                          ");
             objInsert.Append(", \"Image\"                                ");
+            objInsert.Append(", \"Ativo\"                                ");
             objInsert.Append(") VALUES (                                 ");
             objInsert.Append($" '{dto.Nome}',                            ");
             objInsert.Append($" '{dto.Cpf}',                             ");
@@ -133,10 +137,11 @@ namespace app.DAO
             objInsert.Append($" '{dto.Sexo}',                            ");
             objInsert.Append($" '{dto.Email}',                           ");
             objInsert.Append($" '{dto.Conselho}',                        ");
-            objInsert.Append($"  {dto.ProfissaoId},                      ");
-            objInsert.Append($"  {dto.ConvenioId},                       ");
+            objInsert.Append($"  '{dto.ProfissaoId}',                      ");
+            objInsert.Append($"  '{dto.ConvenioId}',                       ");
             objInsert.Append($" '{dto.Observacoes}',                     ");
-            objInsert.Append($" '{dto.Image}'                            ");
+            objInsert.Append($" '{dto.Image}',                            ");
+            objInsert.Append($" 1                            ");
             objInsert.Append(") RETURNING \"Id\";                        ");
 
             var id = _context.ExecuteNonQuery(objInsert.ToString());
@@ -158,11 +163,12 @@ namespace app.DAO
             objUpdate.Append($" \"Sexo\" = '{dto.Sexo}', ");
             objUpdate.Append($" \"Email\" = '{dto.Email}', ");
             objUpdate.Append($" \"Conselho\" = '{dto.Conselho}', ");
-            objUpdate.Append($" \"ProfissaoId\" = {dto.ProfissaoId}, ");
-            objUpdate.Append($" \"ConvenioId\" = {dto.ProfissaoId}, ");
+            objUpdate.Append($" \"ProfissaoId\" = '{dto.ProfissaoId}', ");
+            objUpdate.Append($" \"ConvenioId\" = '{dto.ConvenioId}', ");
             objUpdate.Append($" \"Observacoes\" = '{dto.Observacoes}', ");
-            objUpdate.Append($" \"Image\" = '{dto.Image}' ");
-            objUpdate.Append($" WHERE \"Id\" = {dto.Id} ");
+            objUpdate.Append($" \"Image\" = '{dto.Image}', ");
+            objUpdate.Append($" \"Ativo\" = '{dto.Ativo}' ");
+            objUpdate.Append($" WHERE \"Id\" = '{dto.Id}' ");
 
             var id = _context.ExecuteNonQuery(objUpdate.ToString());
 
