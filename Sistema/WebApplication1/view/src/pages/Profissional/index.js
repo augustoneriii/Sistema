@@ -17,6 +17,8 @@ import Modal from '../../components/Modal/index.js';
 import { SidebarContext } from '../../context/SideBarContext.js';
 import { Checkbox } from 'primereact/checkbox';
 import { FloatLabel } from 'primereact/floatlabel';
+import { Commom } from '../../utils/Commom.js';
+
 export default function Profissional() {
     let emptyProfissional = {
         id: null,
@@ -277,6 +279,12 @@ export default function Profissional() {
             _profissional.convenioId = val;
         } else if (name === 'profissao') {
             _profissional.profissaoId = val;
+        } else if (name === 'telefone') {
+            _profissional.telefone = Commom.formatPhone(val)
+        } else if (name === 'cpf') {
+            _profissional.cpf = Commom.formatCpf(val)
+        } else if (name === "rg") {
+            _profissional.rg = Commom.formatRg(val)
         } else {
             _profissional[name] = val;
         }
@@ -394,7 +402,7 @@ export default function Profissional() {
                         <div className="field col mt-3">
                             <FloatLabel>
                             <label htmlFor="cpf">CPF</label>
-                            <InputText id="cpf" value={profissional.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={classNames({ 'p-invalid': submitted && !profissional.cpf })} />
+                                <InputText id="cpf" value={profissional.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={classNames({ 'p-invalid': submitted && !profissional.cpf })} maxLength={14} />
                             {submitted && !profissional.cpf && <small className="p-error">CPF é obrigatório.</small>}
                             </FloatLabel>
                         </div>
@@ -402,14 +410,14 @@ export default function Profissional() {
                         <div className="field col mt-3">
                             <FloatLabel>
                             <label htmlFor="rg">RG</label>
-                            <InputText id="rg" value={profissional.rg} onChange={(e) => onInputChange(e, 'rg')} />
+                                <InputText id="rg" value={profissional.rg} onChange={(e) => onInputChange(e, 'rg')} maxLength={9} />
                             </FloatLabel>
                         </div>
 
                         <div className="field col mt-3">
                             <FloatLabel>
                             <label htmlFor="telefone">Telefone</label>
-                            <InputText id="telefone" value={profissional.telefone} onChange={(e) => onInputChange(e, 'telefone')} />
+                               <InputText className='w-full' id="telefone" value={profissional.telefone} onChange={(e) => onInputChange(e, 'telefone')} maxLength={14} />
                             </FloatLabel>
                         </div>
                     </div>
@@ -463,7 +471,7 @@ export default function Profissional() {
                                 value={profissional.convenioId}
                                 options={dropdownConvenios}
                                 onChange={(e) => onInputChange(e, 'convenio')}
-                                placeholder="Selecione um convenio"
+                                placeholder="Selecione um convênio"
                             />
                         </div>
 

@@ -128,7 +128,7 @@ function Usuarios() {
                         <div className="field col-6">
                             <FloatLabel>
                                 <label htmlFor="cpf">cpf</label>
-                                <InputText className='w-full' id="cpf" value={usuario.cpf} onChange={(e) => onInputChange(e, 'cpf')} />
+                                <InputText className='w-full' id="cpf" value={usuario.cpf} onChange={(e) => onInputChange(e, 'cpf')} maxLength={14} />
                             </FloatLabel>
                         </div>
                         <div className="field col-6">
@@ -147,11 +147,11 @@ function Usuarios() {
                         <div className="field col-6">
                             <FloatLabel>
                                 <label htmlFor="phoneNumber">phoneNumber</label>
-                                <InputText className='w-full' id="phoneNumber" value={usuario.phoneNumber} onChange={(e) => onInputChange(e, 'phoneNumber')} />
+                                <InputText className='w-full' id="phoneNumber" value={usuario.phoneNumber} onChange={(e) => onInputChange(e, 'phoneNumber')} maxLength={14} />
                             </FloatLabel>
                         </div>
                         <div className="field col-6">
-                            <FloatLabel>
+                         
                                 <label htmlFor="roleName">Função</label>
                                 <Dropdown className='w-full'
                                     id="roleName" value={usuario.roleName}
@@ -159,7 +159,7 @@ function Usuarios() {
                                     onChange={(e) => onInputChange(e, 'roleName')}
                                     optionLabel="label"
                                     placeholder="Selecione a Função" />
-                            </FloatLabel>
+                            
                         </div>
                         <div className="field col">
                             <Button label="Salvar" icon="pi pi-check" className="border-round p-button-text" onClick={saveUsuario} />
