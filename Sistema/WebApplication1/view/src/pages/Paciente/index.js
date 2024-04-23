@@ -14,7 +14,7 @@ import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import { Checkbox } from 'primereact/checkbox';
-import  Modal  from '../../components/Modal/index.js'
+import Modal from '../../components/Modal/index.js'
 
 export default function Paciente() {
     const { pacienteVisible, setPacienteVisible } = useContext(SidebarContext);
@@ -127,6 +127,9 @@ export default function Paciente() {
 
             _paciente.ativo = checked ? 1 : 0;
 
+
+            delete _paciente.convenio;
+
             const currentToken = localStorage.getItem('token') || '';
 
             console.log("Paciente:", paciente.id);
@@ -136,7 +139,7 @@ export default function Paciente() {
                 toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Atualizado', life: 3000 });
                 PacienteService.updatePaciente(_paciente, currentToken);
             } else {
-                toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Criado', life: 3000 });
+                toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Criado', life: 3000 });;
                 PacienteService.createPaciente(_paciente, currentToken);
             }
 
@@ -275,7 +278,6 @@ export default function Paciente() {
                     dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} scrollable scrollHeight="200px"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pacientes" globalFilter={globalFilter} header={header}>
-                    <Column selectionMode="multiple" style={{ width: '3rem' }}></Column>
                     <Column field="id" header="Id" sortable></Column>
                     <Column field="nome" header="Nome" sortable></Column>
                     <Column field="cpf" header="CPF" sortable></Column>
@@ -284,13 +286,8 @@ export default function Paciente() {
                     <Column field="nascimento" header="Nascimento" body={(rowData) => formatDate(rowData.nascimento)} sortable></Column>
                     <Column field="sexo" header="Sexo" sortable></Column>
                     <Column field="email" header="E-mail" sortable></Column>
-                    <Column field="tipoSanguineo" header="Tipo Sanguíneo" sortable></Column>
-                    <Column field="alergias" header="Alergias" sortable></Column>
-                    <Column field="medicamentos" header="Medicamentos" sortable></Column>
-                    <Column field="cirurgias" header="Cirurgias" sortable></Column>
-                    <Column field="historico" header="Histórico" sortable></Column>
                     <Column field="ativo" header="Ativo" sortable></Column>
-                    
+
                     <Column body={actionBodyTemplate}></Column>
                 </DataTable>
             </div>
@@ -336,11 +333,11 @@ export default function Paciente() {
 
                 </div>
 
-                    <div className="field col">
-                        <label htmlFor="sexo">Sexo</label>
-                        <Dropdown id="sexo" value={paciente.sexo} options={sexoOptions} onChange={(e) => onInputChange(e, 'sexo')} placeholder="Selecione" />
-                    </div>
-                
+                <div className="field col">
+                    <label htmlFor="sexo">Sexo</label>
+                    <Dropdown id="sexo" value={paciente.sexo} options={sexoOptions} onChange={(e) => onInputChange(e, 'sexo')} placeholder="Selecione" />
+                </div>
+
 
                 <div className='grid'>
                     <div className="field col">

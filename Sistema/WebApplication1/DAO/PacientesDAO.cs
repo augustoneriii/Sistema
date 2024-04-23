@@ -37,7 +37,7 @@ namespace app.DAO
             objSelect.Append("	       \"Sistema\".\"Pacientes\".\"Ativo\" AS \"Ativo\"");
             objSelect.Append("FROM     \"Sistema\".\"Pacientes\" ");
             objSelect.Append("LEFT JOIN \"Sistema\".\"ConvenioMedicos\" ON \"Sistema\".\"Pacientes\".\"ConvenioId\" = \"ConvenioMedicos\".\"Id\" ");
-            
+
             objSelect.Append("WHERE    1 = 1 ");
 
             //
@@ -178,28 +178,30 @@ namespace app.DAO
         {
             var objUpdate = new StringBuilder();
             objUpdate.Append("UPDATE \"Sistema\".\"Pacientes\" SET ");
-            objUpdate.Append($" \"Nome\" = '{dto.Nome}'");
-            objUpdate.Append($", \"Cpf\" = '{dto.Cpf}'");
-            objUpdate.Append($", \"Rg\" = '{dto.Rg}'");
-            objUpdate.Append($", \"Telefone\" = '{dto.Telefone}'");
-            objUpdate.Append($", \"Endereco\" = '{dto.Endereco}'");
-            objUpdate.Append($", \"Nascimento\" = '{dto.Nascimento}'");
-            objUpdate.Append($", \"Sexo\" = '{dto.Sexo}'");
-            objUpdate.Append($", \"Email\" = '{dto.Email}'");
-            objUpdate.Append($", \"ConvenioId\" = {dto.ConvenioId}");
-            objUpdate.Append($", \"TipoSanguineo\" = '{dto.TipoSanguineo}'");
-            objUpdate.Append($", \"Alergias\" = '{dto.Alergias}'");
-            objUpdate.Append($", \"Medicamentos\" = '{dto.Medicamentos}'");
-            objUpdate.Append($", \"Cirurgias\" = '{dto.Cirurgias}'");
-            objUpdate.Append($", \"Historico\" = '{dto.Historico}'");
-            objUpdate.Append($", \"Ativo\" = '{dto.Ativo}' ");
+            objUpdate.Append($"\"Nome\" = '{dto.Nome}', ");
+            objUpdate.Append($"\"Cpf\" = '{dto.Cpf}', ");
+            objUpdate.Append($"\"Rg\" = '{dto.Rg}', ");
+            objUpdate.Append($"\"Telefone\" = '{dto.Telefone}', ");
+            objUpdate.Append($"\"Endereco\" = '{dto.Endereco}', ");
+            objUpdate.Append($"\"Nascimento\" = '{dto.Nascimento:yyyy-MM-dd}', ");
+            objUpdate.Append($"\"Sexo\" = '{dto.Sexo}', ");
+            objUpdate.Append($"\"Email\" = '{dto.Email}', ");
+            objUpdate.Append($"\"ConvenioId\" = '{dto.ConvenioId}', ");
+            objUpdate.Append($"\"TipoSanguineo\" = '{dto.TipoSanguineo}', ");
+            objUpdate.Append($"\"Alergias\" = '{dto.Alergias}', ");
+            objUpdate.Append($"\"Medicamentos\" = '{dto.Medicamentos}', ");
+            objUpdate.Append($"\"Cirurgias\" = '{dto.Cirurgias}', ");
+            objUpdate.Append($"\"Historico\" = '{dto.Historico}', ");
+            objUpdate.Append($"\"Ativo\" = {dto.Ativo} ");
+            
 
-            objUpdate.Append($"WHERE \"Id\" = {dto.Id}");
+            objUpdate.Append($"WHERE \"Id\" = {dto.Id};");
 
             var id = _context.ExecuteNonQuery(objUpdate.ToString());
-
             return id;
+
         }
+
 
 
         //delete

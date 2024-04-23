@@ -13,7 +13,7 @@ const sidebarItems = [
             },
             {
                 text: 'Profissionais',
-                icon: 'pi pi-user-edit',
+                icon: 'pi pi-users',
                 link: '',
                 action: 'setProfissionalVisible',
                 roles: ["f3f629", "f8abf4"],
@@ -35,22 +35,6 @@ const sidebarItems = [
                 roles: ["f3f629", "f8abf4"],
                 actionValue: true
             },
-            {
-                text: 'Perfis',
-                icon: 'pi pi-id-card',
-                link: '',
-                action: 'setPerfilVisible',
-                roles: ["f3f629", "f8abf4"],
-                actionValue: true
-            },
-            {
-                text: 'Agenda Profissional',
-                icon: 'pi pi-calendar',
-                link: '',
-                action: 'setAgendaProfissionalVisible',
-                roles: ["f3f629", "f8abf4"],
-                actionValue: true
-            }
         ],
         roles: ['c8fffd', 'f3f629', 'f8abf4']
     },
@@ -65,7 +49,15 @@ const sidebarItems = [
                 action: 'setConsultaVisible',
                 roles: ["f3f629", "f8abf4"],
                 actionValue: true
-            }
+            },
+            {
+                text: 'Agenda Profissional',
+                icon: 'pi pi-calendar',
+                link: '',
+                action: 'setAgendaProfissionalVisible',
+                roles: ["f3f629", "f8abf4"],
+                actionValue: true
+            },
         ],
         roles: ['c8fffd', 'f3f629', 'f8abf4']
     },
@@ -84,6 +76,21 @@ const sidebarItems = [
         ],
         roles: ['f3f629', 'f8abf4']
 
+    },
+    {
+        text: 'Perfil',
+        icon: 'pi pi-id-card',
+        items: [
+            {
+                text: 'Alterar Perfil',
+                icon: 'pi pi-user-edit',
+                link: '',
+                action: 'setPerfilVisible',
+                roles: ["f3f629", "f8abf4", "c8fffd"],
+                actionValue: true
+            },
+        ],
+        roles: ['f3f629', 'f8abf4', "c8fffd"]
     }
 ];
 
