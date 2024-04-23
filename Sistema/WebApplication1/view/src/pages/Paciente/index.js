@@ -1,20 +1,20 @@
 
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import { SidebarContext } from '../../context/SideBarContext.js';
-import { classNames } from 'primereact/utils';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import { PacienteService } from './service/PacienteService.js';
-import { Toast } from 'primereact/toast';
-import { Button } from 'primereact/button';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { Toolbar } from 'primereact/toolbar';
-import { Dialog } from 'primereact/dialog';
-import { InputText } from 'primereact/inputtext';
-import { Calendar } from 'primereact/calendar';
-import { Dropdown } from 'primereact/dropdown';
-import { Checkbox } from 'primereact/checkbox';
-import  Modal  from '../../components/Modal/index.js'
+    import React, { useState, useEffect, useRef, useContext } from 'react';
+    import { SidebarContext } from '../../context/SideBarContext.js';
+    import { classNames } from 'primereact/utils';
+    import { DataTable } from 'primereact/datatable';
+    import { Column } from 'primereact/column';
+    import { PacienteService } from './service/PacienteService.js';
+    import { Toast } from 'primereact/toast';
+    import { Button } from 'primereact/button';
+    import { InputTextarea } from 'primereact/inputtextarea';
+    import { Toolbar } from 'primereact/toolbar';
+    import { Dialog } from 'primereact/dialog';
+    import { InputText } from 'primereact/inputtext';
+    import { Calendar } from 'primereact/calendar';
+    import { Dropdown } from 'primereact/dropdown';
+    import { Checkbox } from 'primereact/checkbox';
+    import  Modal  from '../../components/Modal/index.js'
 
 export default function Paciente() {
     const { pacienteVisible, setPacienteVisible } = useContext(SidebarContext);

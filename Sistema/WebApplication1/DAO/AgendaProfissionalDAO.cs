@@ -25,55 +25,58 @@ namespace app.DAO
             objSelect.Append("\"Sistema\" . \"AgendaProfissional\" . \"DiaSemana\", ");
             objSelect.Append("\"Sistema\" . \"AgendaProfissional\" . \"ProfissionalId\",");
             objSelect.Append("\"Profissionais\".\"Nome\" AS \"NomeProfissionais\", ");
+            objSelect.Append("\"Sistema\".\"AgendaProfissional\".\"Ativo\" AS \"Ativo\",                     ");
             objSelect.Append("\"Profissionais\".\"Email\" AS \"EmailProfissionais\" ");
 
             objSelect.Append("FROM \"Sistema\".\"AgendaProfissional\" ");
 
             objSelect.Append("LEFT JOIN \"Sistema\".\"Profissionais\" ON \"Sistema\".\"AgendaProfissional\".\"ProfissionalId\" = \"Profissionais\".\"Id\" ");
 
-
-
             objSelect.Append("WHERE 1 = 1");
 
-            if (dto.Id > 0)
+            if (dto != null)
             {
-                objSelect.Append($"AND \"Id\" = '{dto.Id}'");
-
+                if (dto.Id > 0)
+                {
+                    objSelect.Append($"AND \"Id\" = '{dto.Id}'");
+                }
+                if (!string.IsNullOrEmpty(dto.DiaSemana))
+                {
+                    objSelect.Append($"AND \"DiaSemana\" = '{dto.DiaSemana}'");
+                }
+                if (dto.Profissionais != null && dto.Profissionais.Id > 0)
+                {
+                    objSelect.Append($"AND \"ProfissionalId\" = '{dto.Profissionais.Id}'");
+                }
             }
-            if (!string.IsNullOrEmpty(dto.DiaSemana))
-            {
-                objSelect.Append($"AND \"DiaSemana\" = '{dto.DiaSemana}'");
-            }
-            if( dto.Profissionais.Id > 0)
-            {
-                objSelect.Append($"AND \"ProfissionalId\" = '{dto.Profissionais.Id}'");
-            }
-
 
             var dt = _context.ExecuteQuery(objSelect.ToString());
 
             var lstAgendas = new List<AgendaProfissionalDTO>();
 
-            foreach(DataRow row in dt.Rows)
+            if (dt != null && dt.Rows.Count > 0)
             {
-                lstAgendas.Add(new AgendaProfissionalDTO()
+                foreach (DataRow row in dt.Rows)
                 {
-                    Id = Convert.ToInt32(row["id"]),
-                    Dia = Convert.ToDateTime(row["Dia"]),
-                    Hora = Convert.ToDateTime(row["Hora"]),
-                    DiaSemana = row["DiaSemana"].ToString(),
-                    Profissionais = new ProfissionaisDTO
+                    var agenda = new AgendaProfissionalDTO();
+                    agenda.Id = Convert.ToInt32(row["Id"]);
+                    agenda.Dia = Convert.ToDateTime(row["Dia"]);
+                    agenda.Hora = Convert.ToDateTime(row["Hora"]);
+                    agenda.DiaSemana = row["DiaSemana"].ToString();
+                    agenda.Ativo = Convert.ToInt32(row["Ativo"]);
+                    agenda.Profissionais = new ProfissionaisDTO
                     {
-                        Id = Convert.ToInt32(row["ProfissionalId"] != DBNull.Value ? Convert.ToInt32(row["ProfissionalId"]) : 0),
-
-                        Nome = row["NomeProfissionais"] != DBNull.Value ? row["NomeProfissionais"].ToString() : string.Empty,
-                        Email = row["EmailProfissionais"] != DBNull.Value ? row["EmailProfissionais"].ToString() : string.Empty,
-
-                    }
-                }); ;
+                        Id = Convert.ToInt32(row["ProfissionalId"]),
+                        Nome = row["NomeProfissionais"].ToString(),
+                        Email = row["EmailProfissionais"].ToString()
+                    };
+                    lstAgendas.Add(agenda);
+                }
             }
+
             return lstAgendas;
         }
+
 
         //insert
         public async Task<int> Insert(AgendaProfissionalRequest dto)
@@ -85,6 +88,8 @@ namespace app.DAO
             objInsert.Append(" \"Hora\", ");
             objInsert.Append(" \"DiaSemana\", ");
             objInsert.Append(" \"ProfissionalId\" ");
+            objInsert.Append(", \"Ativo\"         ");
+
 
             objInsert.Append(") VALUES (");
 
@@ -93,6 +98,7 @@ namespace app.DAO
 
             objInsert.Append($" '{dto.DiaSemana}', ");
             objInsert.Append($" '{dto.ProfissionalId}' ");
+            objInsert.Append($" 1                            ");
 
             objInsert.Append(" ); ");
 
@@ -109,8 +115,8 @@ namespace app.DAO
             objUpdate.Append($" \"Dia\" = '{dto.Dia}', ");
             objUpdate.Append($" \"Hora\" = TO_TIMESTAMP('{dto.Hora}', 'HH24:MI:SS'), "); // Usando TO_TIMESTAMP para converter hora
             objUpdate.Append($" \"DiaSemana\" = '{dto.DiaSemana}', ");
-            objUpdate.Append($" \"ProfissionalId\" = '{dto.ProfissionalId}' ");
-
+            objUpdate.Append($" \"ProfissionalId\" = '{dto.ProfissionalId}', ");
+            objUpdate.Append($" \"Ativo\" = '{dto.Ativo}' ");
             objUpdate.Append($"WHERE \"Id\" = {dto.Id}; ");
 
             var id = _context.ExecuteNonQuery(objUpdate.ToString());
