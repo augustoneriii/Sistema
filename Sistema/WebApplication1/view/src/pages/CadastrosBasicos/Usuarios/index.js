@@ -9,7 +9,7 @@ import { Password } from 'primereact/password';
 import { FloatLabel } from 'primereact/floatlabel';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Dropdown } from 'primereact/dropdown';
-
+import { Commom } from '../../../utils/Commom.js';
 
 
 function Usuarios() {
@@ -88,7 +88,15 @@ function Usuarios() {
     const onInputChange = (e, name) => {
         const val = (e.target && e.target.value) || '';
         let _usuario = { ...usuario };
-        _usuario[`${name}`] = val;
+
+        if (name === 'cpf') {
+            _usuario[`${name}`] = Commom.formatCpf(val);
+        } else if (name === 'phoneNumber') {
+            _usuario[`${name}`] = Commom.formatPhone(val);
+        } else {
+            _usuario[`${name}`] = val;
+        }
+        
         setUsuario(_usuario);
     };
 
@@ -205,7 +213,7 @@ function Usuarios() {
                         <div className="field col-6">
                             <FloatLabel>
                                 <label htmlFor="cpf">cpf</label>
-                                <InputText className='w-full' id="cpf" value={usuario.cpf} onChange={(e) => onInputChange(e, 'cpf')} />
+                                <InputText className='w-full' id="cpf" value={usuario.cpf} onChange={(e) => onInputChange(e, 'cpf')} maxLength={14} />
                             </FloatLabel>
                         </div>
                         <div className="field col-6">
@@ -224,11 +232,11 @@ function Usuarios() {
                         <div className="field col-6">
                             <FloatLabel>
                                 <label htmlFor="phoneNumber">phoneNumber</label>
-                                <InputText className='w-full' id="phoneNumber" value={usuario.phoneNumber} onChange={(e) => onInputChange(e, 'phoneNumber')} />
+                                <InputText className='w-full' id="phoneNumber" value={usuario.phoneNumber} onChange={(e) => onInputChange(e, 'phoneNumber')} maxLength={14} />
                             </FloatLabel>
                         </div>
                         <div className="field col-6">
-                            <FloatLabel>
+                         
                                 <label htmlFor="roleName">Função</label>
                                 <Dropdown className='w-full'
                                     id="roleName" value={usuario.roleName}
@@ -236,7 +244,7 @@ function Usuarios() {
                                     onChange={(e) => onInputChange(e, 'roleName')}
                                     optionLabel="label"
                                     placeholder="Selecione a Função" />
-                            </FloatLabel>
+                            
                         </div>
                         <div className="field col">
                             <Button label="Salvar" icon="pi pi-check" className="border-round p-button-text" onClick={saveUsuario} />
