@@ -18,7 +18,7 @@ namespace app.DAO
         public async Task<List<ConvenioMedicosDTO>> GetAll(ConvenioMedicosDTO dto)
         {
             var objSelect = new StringBuilder();
-            objSelect.Append("SELECT \"Id\", \"Nome\", \"Telefone\", \"Email\", \"Site\"");
+            objSelect.Append("SELECT \"Id\", \"Nome\", \"Telefone\", \"Email\", \"Site\", \"Ativo\"");
             objSelect.Append("FROM \"Sistema\".\"ConvenioMedicos\"                      ");
             objSelect.Append("WHERE 1 = 1                                               ");
 
@@ -55,7 +55,8 @@ namespace app.DAO
                     Nome = row["Nome"].ToString(),
                     Telefone = row["Telefone"].ToString(),
                     Email = row["Email"].ToString(),
-                    Site = row["Site"].ToString()
+                    Site = row["Site"].ToString(),
+                    Ativo = Convert.ToInt32(row["Ativo"])
                 });
             }
             return lstConvenioMedicos;
@@ -66,9 +67,9 @@ namespace app.DAO
         {
             var objInsert = new StringBuilder();
             objInsert.Append("INSERT INTO \"Sistema\".\"ConvenioMedicos\" ");
-            objInsert.Append("(\"Nome\", \"Telefone\", \"Email\", \"Site\") ");
+            objInsert.Append("(\"Nome\", \"Telefone\", \"Email\", \"Site\",\"Ativo\") ");
             objInsert.Append("VALUES ");
-            objInsert.Append($"('{convenioMedicos.Nome}', '{convenioMedicos.Telefone}', '{convenioMedicos.Email}', '{convenioMedicos.Site}') ");
+            objInsert.Append($"('{convenioMedicos.Nome}', '{convenioMedicos.Telefone}', '{convenioMedicos.Email}', '{convenioMedicos.Site}', 1) ");
 
             var id = _context.ExecuteNonQuery(objInsert.ToString());
             
@@ -85,7 +86,8 @@ namespace app.DAO
             objUpdate.Append($"\"Nome\" = '{convenioMedicos.Nome}', ");
             objUpdate.Append($"\"Telefone\" = '{convenioMedicos.Telefone}', ");
             objUpdate.Append($"\"Email\" = '{convenioMedicos.Email}', ");
-            objUpdate.Append($"\"Site\" = '{convenioMedicos.Site}' ");
+            objUpdate.Append($"\"Site\" = '{convenioMedicos.Site}', ");
+            objUpdate.Append($"\"Ativo\" = '{convenioMedicos.Ativo}' ");
             objUpdate.Append($"WHERE \"Id\" = {convenioMedicos.Id} ");
 
             _context.ExecuteNonQuery(objUpdate.ToString());

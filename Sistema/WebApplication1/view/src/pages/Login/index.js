@@ -11,7 +11,7 @@ import { Context } from '../../context/UserContext'
 import { useNavigate } from 'react-router-dom'
 
 import Logo from '../../assets/img/logoSysclin.png'
-
+import { FloatLabel } from 'primereact/floatlabel';
 function Login() {
 
     const [user, setUser] = useState({})
@@ -40,12 +40,19 @@ function Login() {
                 </div>
                 <div>
                     <form onSubmit={handleSubmit}>
-                        <label htmlFor="email" className="block text-900 font-medium mb-2">Email</label>
-                        <InputText id="email" name='email' onChange={handleChange} type="text" placeholder="Email address" className="w-full mb-3" />
+                        <FloatLabel>
+                        <label htmlFor="email" className="block text-500 font-medium mb-3">Email</label>
+                        <InputText id="email" name='email' onChange={handleChange} type="text" placeholder="Email address" className="w-full mb-4" />
+                        </FloatLabel>
 
-                        <label htmlFor="password" className="block text-900 font-medium mb-2">Password</label>
-                        <InputText id="password" name='password' type="password" onChange={handleChange} placeholder="Password" className="w-full mb-3" />
-
+                        <div classname="mt-5">
+                            <FloatLabel>
+                                <label htmlFor="password" className="block text-500 font-medium mb-2">Password</label>
+                                <InputText id="password" name='password' type="password" onChange={handleChange} placeholder="Password" className="w-full mb-3 mt-2" />
+                            </FloatLabel>
+                         </div>
+                        
+                        
                         <div className="flex align-items-center justify-content-between mb-6">
                             <div className="flex align-items-center">
                             </div>

@@ -213,6 +213,7 @@ function Usuarios() {
                                 <InputText id="password" type="password" className='w-full' value={usuario.password} onChange={(e) => onInputChange(e, 'password')} />
                                 <label htmlFor="password">password</label>
                             </FloatLabel>
+
                         </div>
                         <div className="field col-6">
                             <FloatLabel>
@@ -271,6 +272,7 @@ function Usuarios() {
                             </div>
                         </div>
                     </div>
+
                 </Modal>
             </Modal>
         </>

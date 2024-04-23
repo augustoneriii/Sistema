@@ -52,7 +52,7 @@ namespace app.Controllers
                 {
                     return BadRequest(new { Message = "Usuário não tem permissão para cadastrar usuários!" });
                 }
-
+                
                 var response = await authService.RegisterNewUser(user);
 
                 if (response.ErrorMessages != null || !string.IsNullOrEmpty(response.ErrorMessages))
@@ -117,6 +117,8 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
+
+
                 UserValidationResponse userLogado = await authService.CheckUser(token);
                 if (userLogado == null || !userLogado.IsAuthenticated)
                 {
@@ -132,7 +134,6 @@ namespace app.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
 
         [HttpPost]
         [Route("CreateRoles")]

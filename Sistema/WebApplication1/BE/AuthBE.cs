@@ -186,7 +186,7 @@ namespace app.BE
                 var principal = tokenHandler.ValidateToken(authToken, validationParameters, out SecurityToken validatedToken);
                 var identityClaims = (ClaimsIdentity)principal.Identity;
 
-                
+
                 var dao = new AuthDAO(_context);
 
                 result.IsAuthenticated = true;

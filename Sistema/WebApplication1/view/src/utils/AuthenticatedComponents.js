@@ -10,6 +10,7 @@ import Usuarios from '../pages/CadastrosBasicos/Usuarios';
 import Perfil from '../pages/CadastrosBasicos/Perfil';
 import { SidebarContext } from '../context/SideBarContext';
 
+
 function AuthenticatedComponents() {
     const [token, setToken] = useState(null);
     const [user, setUser] = useState({ idUserRole: '' });

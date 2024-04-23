@@ -7,6 +7,7 @@
         public string Telefone { get; set; }
         public string Email { get; set; }
         public string Site { get; set; }
+        public int Ativo { get; set; }
 
     }
 }

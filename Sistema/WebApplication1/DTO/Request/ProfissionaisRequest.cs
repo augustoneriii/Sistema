@@ -16,5 +16,6 @@
         public string? Image { get; set; }
         public long? ProfissaoId { get; set; }
         public long? ConvenioId { get; set; }
+        public int? Ativo { get;  set; }
     }
 }
