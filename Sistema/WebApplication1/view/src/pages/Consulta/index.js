@@ -335,7 +335,7 @@ export default function Consulta() {
                         <Column style={{ width: '14.28%' }} field="pacientes.nome" header="Paciente" sortable></Column>
                         <Column style={{ width: '14.28%' }} field="data" header="Data" body={(rowData) => formatDate(rowData.data)} sortable></Column>
 
-                        <Column style={{ width: '14.28%' }} field="hora" header="Hora" body={(rowData) => formatTime(rowData.hora)} sortable></Column>
+                        <Column style={{ width: '14.28%' }} field="hora" header="Hora" body={(rowData) => formatDate(rowData.hora)} sortable></Column>
                         <Column style={{ width: '14.28%' }} field="status" header="Status" sortable></Column>
                         <Column style={{ width: '14.28%' }} field="tipo" header="Tipo" sortable></Column>
                         <Column style={{ width: '14.28%' }} header="Ações" body={actionBodyTemplate}></Column>

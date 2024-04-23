@@ -41,11 +41,16 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-                UserValidationResponse userLogado = _auth.CheckUser(token);
+                UserValidationResponse userLogado = await _auth.CheckUser(token);
                 if (userLogado == null || !userLogado.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
+                /*if (userLogado.IdUserRole != null || userLogado.IdUserRole == "c8fffd")
+                {
+                    return BadRequest(new { Message = "Usuário não autorizado!" });
+                }*/
+
                 var response = await _be.GetAll(dto);
                 return Ok(response);
             }
@@ -64,11 +69,16 @@ namespace app.Controllers
             {
                 var token = ExtractAuthToken();
 
-                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
                 if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
+
+                /*if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
+                {
+                    return BadRequest(new { Message = "Usuário não autorizado!" });
+                }*/
 
                 _context.BeginTransaction();
                 var response = await _be.Insert(profissionais);
@@ -92,11 +102,16 @@ namespace app.Controllers
                 var token = ExtractAuthToken();
 
 
-                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
                 if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
+
+                //if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
+                //{
+                //    return BadRequest(new { Message = "Usuário não autorizado!" });
+                //}
 
                 _context.BeginTransaction();
                 var response = await _be.Update(profissionais);
@@ -111,30 +126,30 @@ namespace app.Controllers
         }
 
         // DELETE: Profissionais
-        /*[Route("deleteProfissionais")]
-        [HttpDelete]
-        public async Task<IActionResult> Delete([FromQuery] long id)
-        {
-            try
-            {
-                var token = ExtractAuthToken();
+        //[Route("deleteProfissionais")]
+        //[HttpDelete]
+        //public async Task<IActionResult> Delete([FromQuery] long id)
+        //{
+        //    try
+        //    {
+        //        var token = ExtractAuthToken();
 
-                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
-                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
-                {
-                    return BadRequest(new { Message = "Usuário não autenticado!" });
-                }
+        //        UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
+        //        if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+        //        {
+        //            return BadRequest(new { Message = "Usuário não autenticado!" });
+        //        }
 
-                _context.BeginTransaction();
-                await _be.Delete(id);
-                _context.Commit();
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _context.Rollback();
-                return BadRequest(ex.Message);
-            }
-        }*/
+        //        _context.BeginTransaction();
+        //        await _be.Delete(id);
+        //        _context.Commit();
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _context.Rollback();
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
     }
 }

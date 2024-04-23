@@ -137,8 +137,8 @@ namespace app.DAO
             objInsert.Append($" '{dto.Sexo}',                            ");
             objInsert.Append($" '{dto.Email}',                           ");
             objInsert.Append($" '{dto.Conselho}',                        ");
-            objInsert.Append($"  {dto.ProfissaoId},                      ");
-            objInsert.Append($"  {dto.ConvenioId},                       ");
+            objInsert.Append($"  '{dto.ProfissaoId}',                      ");
+            objInsert.Append($"  '{dto.ConvenioId}',                       ");
             objInsert.Append($" '{dto.Observacoes}',                     ");
             objInsert.Append($" '{dto.Image}',                            ");
             objInsert.Append($" 1                            ");
@@ -176,13 +176,13 @@ namespace app.DAO
         }
 
         //delete
-        /*public async Task Delete(long? id)
-        {
-            var objDelete = new StringBuilder();
-            objDelete.Append("DELETE FROM \"Sistema\".\"Profissionais\" ");
-            objDelete.Append($" WHERE \"Id\" = {id} ");
+        //public async Task Delete(long? id)
+        //{
+        //    var objDelete = new StringBuilder();
+        //    objDelete.Append("DELETE FROM \"Sistema\".\"Profissionais\" ");
+        //    objDelete.Append($" WHERE \"Id\" = {id} ");
 
-            _context.ExecuteNonQuery(objDelete.ToString());
-        }*/
+        //    _context.ExecuteNonQuery(objDelete.ToString());
+        //}
     }
 }

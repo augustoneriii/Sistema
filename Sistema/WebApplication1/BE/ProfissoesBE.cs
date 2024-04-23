@@ -35,10 +35,10 @@ namespace app.BE
         }
 
         //delete
-        /*public async Task Delete(long id)
-        {
-            var dao = new ProfissoesDAO(_context);
-            await dao.Delete(id);
-        }*/
+        //public async Task Delete(long id)
+        //{
+        //    var dao = new ProfissoesDAO(_context);
+        //    await dao.Delete(id);
+        //}
     }
 }

@@ -41,7 +41,7 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
                 if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
@@ -65,11 +65,16 @@ namespace app.Controllers
             {
                 var token = ExtractAuthToken();
 
-                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
                 if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
+
+                /*if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
+                {
+                    return BadRequest(new { Message = "Usuário não autorizado!" });
+                }*/
 
                 _context.BeginTransaction();
                 var response = await _be.Insert(pacientes);
@@ -92,11 +97,16 @@ namespace app.Controllers
             {
                 var token = ExtractAuthToken();
 
-                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
                 if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
+
+                /*if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
+                {
+                    return BadRequest(new { Message = "Usuário não autorizado!" });
+                }*/
 
                 _context.BeginTransaction();
                 var response = await _be.Update(pacientes);
@@ -110,31 +120,31 @@ namespace app.Controllers
             }
         }
 
-        /*[Route("deletePacientes")]
-        [HttpDelete]
-        public async Task<IActionResult> Delete([FromQuery] long id)
-        {
-            try
-            {
-                var token = ExtractAuthToken();
+        //[Route("deletePacientes")]
+        //[HttpDelete]
+        ////public async Task<IActionResult> Delete([FromQuery] long id)
+        ////{
+        ////    try
+        ////    {
+        ////        var token = ExtractAuthToken();
 
-                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
-                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
-                {
-                    return BadRequest(new { Message = "Usuário não autenticado!" });
-                }
+        ////        UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
+        ////        if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+        ////        {
+        ////            return BadRequest(new { Message = "Usuário não autenticado!" });
+        ////        }
 
-                _context.BeginTransaction();
-                await _be.Delete(id);
-                _context.Commit();
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _context.Rollback();
-                return BadRequest(ex.Message);
-            }
-        }*/
+        ////        _context.BeginTransaction();
+        ////        await _be.Delete(id);
+        ////        _context.Commit();
+        ////        return Ok();
+        ////    }
+        ////    catch (Exception ex)
+        ////    {
+        ////        _context.Rollback();
+        ////        return BadRequest(ex.Message);
+        ////    }
+        ////}
 
     }
 }

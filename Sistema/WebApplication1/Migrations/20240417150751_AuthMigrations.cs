@@ -12,6 +12,8 @@ namespace app.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("CREATE SCHEMA IF NOT EXISTS sistema");
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -35,6 +37,7 @@ namespace app.Migrations
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Cpf = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
                     PasswordHash = table.Column<string>(type: "text", nullable: true),
                     SecurityStamp = table.Column<string>(type: "text", nullable: true),
@@ -50,6 +53,16 @@ namespace app.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+    name: "DadoPessoal",
+    columns: table => new
+    {
+        Id = table.Column<Guid>(type: "text", nullable: false),
+        Nome = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+        Cpf = table.Column<string>(type: "character varying(11)", maxLength: 11, nullable: false)
+    });
+
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",

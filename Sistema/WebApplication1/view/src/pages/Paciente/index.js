@@ -14,7 +14,7 @@ import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import { Checkbox } from 'primereact/checkbox';
-
+import  Modal  from '../../components/Modal/index.js'
 
 export default function Paciente() {
     const { pacienteVisible, setPacienteVisible } = useContext(SidebarContext);
@@ -284,7 +284,7 @@ export default function Paciente() {
     );
 
     return (
-        <Dialog modal={false} header={headerTela} visible={pacienteVisible} style={{ width: '70vw' }} onHide={() => setPacienteVisible(false)}>
+        <Modal modal={false} header={headerTela} visible={pacienteVisible} style={{ width: '70vw' }} onHide={() => setPacienteVisible(false)}>
             <Toast ref={toast} />
 
             <div className="card">
@@ -350,7 +350,7 @@ export default function Paciente() {
 
                 <div className="field col">
                     <label htmlFor="nascimento">Nascimento</label>
-                    <Calendar id="nascimento" value={paciente.nascimento} onChange={(e) => onInputChange(e, 'nascimento')} showIcon />
+                    <Calendar id="nascimento" value={paciente.nascimento.toLocaleDateString()} onChange={(e) => onInputChange(e, 'nascimento')} showIcon />
                 </div>
 
                     <div className="field col">
@@ -396,6 +396,6 @@ export default function Paciente() {
                 </div>
 
             </Dialog>
-        </Dialog>
+        </Modal>
     );
 }

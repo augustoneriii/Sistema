@@ -44,7 +44,7 @@ namespace app.Controllers
             {
                 var token = ExtractAuthToken();
 
-                UserValidationResponse userLogado = _auth.CheckUser(token);
+                UserValidationResponse userLogado = await _auth.CheckUser(token);
                 if (userLogado == null || !userLogado.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
@@ -68,11 +68,16 @@ namespace app.Controllers
             {
                 var token = ExtractAuthToken();
 
-                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
                 if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
+
+                /*if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
+                {
+                    return BadRequest(new { Message = "Usuário não autorizado!" });
+                }*/
 
                 _context.BeginTransaction();
                 var response = await _be.Insert(convenioMedicos);
@@ -94,11 +99,15 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
+                UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
                 if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
+                /*if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
+                {
+                    return BadRequest(new { Message = "Usuário não autorizado!" });
+                }*/
 
                 _context.BeginTransaction();
                 var response = await _be.Update(convenioMedicos);
@@ -113,30 +122,30 @@ namespace app.Controllers
         }
 
         // DELETE: ConvenioMedicos
-        /*[Route("deleteConvenioMedicos")]
-        [HttpDelete]
-        public async Task<IActionResult> Delete([FromQuery] int id)
-        {
-            try
-            {
-                var token = ExtractAuthToken();
+        //[Route("deleteConvenioMedicos")]
+        //[HttpDelete]
+        //public async Task<IActionResult> Delete([FromQuery] int id)
+        //{
+        //    try
+        //    {
+        //        var token = ExtractAuthToken();
 
-                UserValidationResponse userValidationResponse = _auth.CheckUser(token);
-                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
-                {
-                    return BadRequest(new { Message = "Usuário não autenticado!" });
-                }
+        //        UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
+        //        if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+        //        {
+        //            return BadRequest(new { Message = "Usuário não autenticado!" });
+        //        }
 
-                _context.BeginTransaction();
-                await _be.Delete(id);
-                _context.Commit();
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _context.Rollback();
-                return BadRequest(ex.Message);
-            }
-        }*/
+        //        _context.BeginTransaction();
+        //        await _be.Delete(id);
+        //        _context.Commit();
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _context.Rollback();
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
     }
 }

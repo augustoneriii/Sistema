@@ -11,6 +11,8 @@ import { Dialog } from 'primereact/dialog';
 import Modal from '../../../components/Modal/index.js';
 import { Menu } from 'primereact/menu';
 import { Checkbox } from 'primereact/checkbox';
+import { FloatLabel } from 'primereact/floatlabel';
+
 function ConvenioMedico() {
     const { convenioVisible, setConvenioVisible } = useContext(SidebarContext);
     // const [convenioVisible, setConvenioVisible] = useState(true);
@@ -101,11 +103,11 @@ function ConvenioMedico() {
                 const index = findIndexById(convenio.id);
                 _convenios[index] = _convenio;
                 toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Convenio Atualizado', life: 3000 });
-                ConvenioService.updateConvenio(_convenio);
+                ConvenioService.updateConvenio(_convenio, currentToken);
             } else {
                 _convenios.push(_convenio);
                 console.log("convenio", _convenio);
-                ConvenioService.createConvenio(_convenio);
+                ConvenioService.createConvenio(_convenio, currentToken);
                 toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Convenio Criado', life: 3000 });
             }
 
@@ -232,26 +234,42 @@ function ConvenioMedico() {
             <Modal header={header} modal={false} visible={convenioVisible} style={{ width: '80vw', height: '80vh' }} onHide={() => onHideModal()}>
                 <div className='card'>
                     <div className='grid'>
+                        
                         <div className="field col-6">
+                            <FloatLabel>
                             <label htmlFor="nome">Nome</label>
                             <InputText className='w-full' id="nome" value={convenio.nome} onChange={(e) => onInputChange(e, 'nome')} />
+                            </FloatLabel>
                         </div>
+                     
                         <div className="field col-6">
+                            <FloatLabel>
                             <label htmlFor="telefone">Telefone</label>
                             <InputText className='w-full' id="telefone" value={convenio.telefone} onChange={(e) => onInputChange(e, 'telefone')} />
+                            </FloatLabel>
                         </div>
+                        
                         <div className="field col-6">
+                            <FloatLabel>
                             <label htmlFor="email">E-Mail</label>
                             <InputText className='w-full' id="email" value={convenio.email} onChange={(e) => onInputChange(e, 'email')} />
+                            </FloatLabel>
                         </div>
+     
                         <div className="field col-6">
+                        <FloatLabel>
                             <label htmlFor="site">Site</label>
                             <InputText className='w-full' id="site" value={convenio.site} onChange={(e) => onInputChange(e, 'site')} />
+                        </FloatLabel>
                         </div>
+                        
+
+                 
                         <div className="field col-6">
                             <label htmlFor="ativo">Ativo</label>
                             <Checkbox onChange={onCheckboxChange} checked={checked}></Checkbox>
                         </div>
+                       
                         <div className="field col">
                             <Button label="Salvar" icon="pi pi-check" className="border-round p-button-text" onClick={saveConvenio} />
                         </div>

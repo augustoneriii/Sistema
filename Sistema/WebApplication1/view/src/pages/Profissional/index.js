@@ -16,7 +16,7 @@ import { Dropdown } from 'primereact/dropdown';
 import Modal from '../../components/Modal/index.js';
 import { SidebarContext } from '../../context/SideBarContext.js';
 import { Checkbox } from 'primereact/checkbox';
-
+import { FloatLabel } from 'primereact/floatlabel';
 export default function Profissional() {
     let emptyProfissional = {
         id: null,
@@ -113,6 +113,10 @@ export default function Profissional() {
     const profissaoBodyTemplate = (rowData) => {
         return rowData.profissoes ? rowData.profissoes.nome : '';
     };
+
+    const conselhoBodyTemplate = (rowData) => {
+        return rowData.profissoes ? rowData.profissoes.conselhoProfissional : '';
+    };
    
       const findProfissaoById = (id) => {
          console.log("ID da Profissão:", id);
@@ -162,7 +166,23 @@ export default function Profissional() {
 
             if (profissional.nome.trim()) {
                 let _profissionais = [...profissionais];
-                let _profissional = { ...profissional, conselho: conselho }; // atualiza o conselho com o valor digitado
+                let _profissional = {
+                    id: profissional.id,
+                    nome: profissional.nome,
+                    cpf: profissional.cpf,
+                    rg: profissional.rg,
+                    telefone: profissional.telefone,
+                    email: profissional.email,
+                    endereco: profissional.endereco,
+                    conselho: profissional.profissao.nome,
+                    nascimento: profissional.nascimento,
+                    sexo: profissional.sexo,
+                    observacoes: profissional.observacoes,
+                   // image: "string",
+                    profissaoId: profissional.profissaoId,
+                    convenioId: profissional.convenioId 
+                }
+                //let _profissional = { ...profissional, conselho: conselho }; // atualiza o conselho com o valor digitado
 
                 _profissional.ativo = checked ? 1 : 0; // Atualiza o campo "ativo" com base no estado do checkbox
                 
@@ -349,44 +369,56 @@ export default function Profissional() {
                         <Column field="email" header="E-mail" sortable></Column>
                         <Column header="Profissão" body={profissaoBodyTemplate}></Column>
                         <Column header="Convenio" body={convenioBodyTemplate}></Column>
-                        <Column field="conselho" header="Conselho" sortable></Column>
+                        <Column header="Conselho" body={conselhoBodyTemplate}></Column>
                         <Column field="ativo" header="Ativo" sortable></Column>
                         <Column body={actionBodyTemplate}></Column>
                     </DataTable>
                 </div>
 
                 <Dialog visible={profissionalDialog} style={{ width: '850px', margin: 'auto' }} header="Detalhes do Profissional" modal className="p-fluid" footer={profissionalDialogFooter} onHide={hideDialog}>
-                    <div className="field">
-                        <label htmlFor="email">E-Mail</label>
+                    <div className="field mt-4">
+                        <FloatLabel>
+                        <label htmlFor="email">E-mail</label>
                         <InputText id="email" value={profissional.email} onChange={(e) => onInputChange(e, 'email')} />
+                        </FloatLabel>
                     </div>
-                    <div className="field ">
+                    <div className="field mt-4">
+                        <FloatLabel>
                         <label htmlFor="nome">Nome</label>
                         <InputText id="nome" value={profissional.nome} onChange={(e) => onInputChange(e, 'nome')} required autoFocus className={classNames({ 'p-invalid': submitted && !profissional.nome })} />
                         {submitted && !profissional.nome && <small className="p-error">Nome é obrigatório.</small>}
+                        </FloatLabel>
                     </div>
 
                     <div className='grid'>
-                        <div className="field col">
+                        <div className="field col mt-3">
+                            <FloatLabel>
                             <label htmlFor="cpf">CPF</label>
                             <InputText id="cpf" value={profissional.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={classNames({ 'p-invalid': submitted && !profissional.cpf })} />
                             {submitted && !profissional.cpf && <small className="p-error">CPF é obrigatório.</small>}
+                            </FloatLabel>
                         </div>
 
-                        <div className="field col">
+                        <div className="field col mt-3">
+                            <FloatLabel>
                             <label htmlFor="rg">RG</label>
                             <InputText id="rg" value={profissional.rg} onChange={(e) => onInputChange(e, 'rg')} />
+                            </FloatLabel>
                         </div>
 
-                        <div className="field col">
+                        <div className="field col mt-3">
+                            <FloatLabel>
                             <label htmlFor="telefone">Telefone</label>
                             <InputText id="telefone" value={profissional.telefone} onChange={(e) => onInputChange(e, 'telefone')} />
+                            </FloatLabel>
                         </div>
                     </div>
 
-                    <div className="field">
+                    <div className="field mt-3">
+                        <FloatLabel>
                         <label htmlFor="endereco">Endereço</label>
                         <InputText id="endereco" value={profissional.endereco} onChange={(e) => onInputChange(e, 'endereco')} />
+                        </FloatLabel>
                     </div>
 
                     <div className='grid'>
@@ -425,7 +457,7 @@ export default function Profissional() {
                         </div>
 
                         <div className="field col">
-                            <label htmlFor="convenio">Convenio</label>
+                            <label htmlFor="convenio">Convênio</label>
                             <Dropdown
                                 id="convenio"
                                 value={profissional.convenioId}
@@ -441,9 +473,12 @@ export default function Profissional() {
                         </div>
                     </div>
 
-                    <div className="field">
+                    <div className="field mt-3">
+                        <FloatLabel>
                         <label htmlFor="observacoes">Observações</label>
                         <InputTextarea id="observacoes" value={profissional.observacoes} onChange={(e) => onInputChange(e, 'observacoes')} rows={4} cols={30} />
+                        </FloatLabel>
+
                     </div>
                 </Dialog>
 

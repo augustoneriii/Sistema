@@ -1,21 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using app.BE;
+﻿using app.BE;
 using app.Data;
 using app.DTO;
-using Microsoft.AspNetCore.Authorization;
 using app.DTO.Request;
-
+using Microsoft.AspNetCore.Mvc;
 
 namespace app.Controllers
 {
-    public class ConsultaController : Controller
+    public class AgendaProfissionalController : Controller
     {
-        private ConsultaBE _be;
+        private AgendaProfissionalBE _be;
         private AppDbContext _context;
         private AuthBE _auth;
 
 
-        public ConsultaController(ConsultaBE be, AppDbContext context, AuthBE auth)
+        public AgendaProfissionalController(AgendaProfissionalBE be, AppDbContext context, AuthBE auth)
         {
             _be = be;
             _context = context;
@@ -35,11 +33,9 @@ namespace app.Controllers
             return null;
         }
 
-
-
         [HttpGet]
-        [Route("getAllConsultas")]
-        public async Task<IActionResult> GetAll(ConsultaDTO dto)
+        [Route("getAllAgendas")]
+        public async Task<IActionResult> GetAll(AgendaProfissionalDTO dto)
         {
             var token = ExtractAuthToken();
             UserValidationResponse userLogado = await _auth.CheckUser(token);
@@ -52,10 +48,10 @@ namespace app.Controllers
             return Ok(response);
         }
 
-        //Post: Consulta
-        [Route("insertConsulta")]
+        //Post: AgendaProfissional
+        [Route("insertAgenda")]
         [HttpPost]
-        public async Task<IActionResult> Insert([FromBody] ConsultaRequest consulta)
+        public async Task<IActionResult> Insert([FromBody] AgendaProfissionalRequest consulta)
         {
             try
             {
@@ -66,15 +62,10 @@ namespace app.Controllers
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
 
-                /*if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
-                {
-                    return BadRequest(new { Message = "Usuário não autorizado!" });
-                }*/
-
                 _context.BeginTransaction();
                 var response = await _be.Insert(consulta);
                 _context.Commit();
-                return Ok(new { Message = "Consulta cadastrada com sucesso!" });
+                return Ok(new { Message = "Agenda cadastrada com sucesso!" });
             }
             catch (Exception ex)
             {
@@ -82,12 +73,11 @@ namespace app.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        // PATCH: AgendaProfissional
 
-        // PATCH: Consulta
-
-        [Route("updateConsulta")]
+        [Route("updateAgenda")]
         [HttpPatch]
-        public async Task<IActionResult> Update([FromBody] ConsultaRequest consulta)
+        public async Task<IActionResult> Update([FromBody] AgendaProfissionalRequest consulta)
         {
             try
             {
@@ -98,10 +88,6 @@ namespace app.Controllers
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
-                //if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
-                //{
-                //    return BadRequest(new { Message = "Usuário não autorizado!" });
-                //}
 
                 _context.BeginTransaction();
                 var response = await _be.Update(consulta);
@@ -113,11 +99,12 @@ namespace app.Controllers
                 _context.Rollback();
                 return BadRequest(ex.Message);
             }
+
         }
 
         //Delete: Consulta
 
-        //[Route("deleteConsulta")]
+        //[Route("deleteAgenda")]
         //[HttpDelete]
         //public async Task<IActionResult> Delete([FromQuery] long id)
         //{
@@ -142,6 +129,5 @@ namespace app.Controllers
         //        return BadRequest(ex.Message);
         //    }
         //}
-
     }
 }

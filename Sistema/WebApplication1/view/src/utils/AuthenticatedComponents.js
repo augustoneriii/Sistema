@@ -13,6 +13,8 @@ import { SidebarContext } from '../context/SideBarContext';
 
 function AuthenticatedComponents() {
     const [token, setToken] = useState(null);
+    const [user, setUser] = useState({ idUserRole: '' });
+
     const navigate = useNavigate();
     const {
         convenioVisible,
@@ -25,8 +27,10 @@ function AuthenticatedComponents() {
     } = useContext(SidebarContext);
 
     useEffect(() => {
+        const userFromStorage = JSON.parse(localStorage.getItem('user'));
         const tokenFromStorage = localStorage.getItem('token');
         setToken(tokenFromStorage);
+        setUser(userFromStorage);
 
         if (!tokenFromStorage) {
             navigate('/');
@@ -35,14 +39,19 @@ function AuthenticatedComponents() {
 
     return token ? (
         <>
-            <SideBar />
-            {convenioVisible && <ConvenioMedico />}
-            {profissionalVisible && <Profissional />}
-            {consultaVisible && <Consulta />}
-            {profissaoVisible && <Profissao />}
-            {pacienteVisible && <Paciente />}
-            {usuarioVisible && <Usuarios />}
-            {perfilVisible && <Perfil /> }
+            <SideBar idUserRole={user.idUserRole} />
+            {user.idUserRole === "c8fffd" ? (
+                perfilVisible && <Perfil />
+            ) : (
+                <>
+                    {convenioVisible && <ConvenioMedico />}
+                    {profissionalVisible && <Profissional />}
+                    {consultaVisible && <Consulta />}
+                    {profissaoVisible && <Profissao />}
+                    {pacienteVisible && <Paciente />}
+                    {usuarioVisible && <Usuarios />}
+                </>
+            )}
         </>
     ) : null;
 }

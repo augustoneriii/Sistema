@@ -12,7 +12,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { Menu } from 'primereact/menu';
 import Modal from '../../../components/Modal/index.js';
 import { Checkbox } from 'primereact/checkbox';
-
+import { FloatLabel } from 'primereact/floatlabel';
 function Profissao() {
     const { profissaoVisible, setProfissaoVisible } = useContext(SidebarContext);
 
@@ -220,13 +220,17 @@ function Profissao() {
             <Modal header={header} modal={false} visible={profissaoVisible} style={{ width: '30vw' }} onHide={() => setProfissaoVisible(false)}>
                 <div className='card'>
                     <div className='grid'>
-                        <div className="field col-6">
+                        <div className="field col-6 mt-5">
+                            <FloatLabel>
                             <label htmlFor="nome">Nome</label>
                             <InputText className='w-full' id="nome" value={profissao.nome} onChange={(e) => onInputChange(e, 'nome')} />
+                            </FloatLabel>
                         </div>
                         <div className="field col-6">
+                           
                             <label htmlFor="conselhoProfissional">Conselho Profissional</label>
                             <Dropdown className='w-full' id="conselhoProfissional" value={profissao.conselhoProfissional} options={conselhoProfissionalOptions} onChange={(e) => onInputChange(e, 'conselhoProfissional')} placeholder="Selecione um conselho profissional" />
+                            
                         </div>
                         <div className="field col-6">
                             <label htmlFor="ativo">Ativo</label>

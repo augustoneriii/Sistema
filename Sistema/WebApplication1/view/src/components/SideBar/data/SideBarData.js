@@ -1,50 +1,58 @@
 const sidebarItems = [
     {
-      text: 'Home',
-      icon: 'pi pi-home',
-      link: '/home',
+        text: 'Cadastros Básicos',
+        icon: 'pi pi-fw pi-plus',
+        items: [
+            {
+                text: 'Pacientes',
+                icon: 'pi pi-users',
+                link: '',
+                action: 'setPacienteVisible',
+                roles: ["f3f629", "f8abf4"],
+                actionValue: true
+            },
+            {
+                text: 'Profissionais',
+                icon: 'pi pi-user-edit',
+                link: '',
+                action: 'setProfissionalVisible',
+                roles: ["f3f629", "f8abf4"],
+                actionValue: true
+            },
+            {
+                text: 'Convênios Médicos',
+                icon: 'pi pi-table',
+                link: '',
+                action: 'setConvenioVisible',
+                roles: ["f3f629", "f8abf4"],
+                actionValue: true
+            },
+            {
+                text: 'Profissões',
+                icon: 'pi pi-briefcase',
+                link: '',
+                action: 'setProfissaoVisible',
+                roles: ["f3f629", "f8abf4"],
+                actionValue: true
+            }
+        ],
+        roles: ['c8fffd', 'f3f629', 'f8abf4']
     },
     {
-      text: 'Dashboard',
-      icon: 'pi pi-chart-bar',
-      link: '#',
-    },
-    {
-      text: 'Consultas',
-      icon: 'pi pi-calendar',
-      link: '',
-      action: 'setConsultaVisible',
-      actionValue: true
-    },
-    {
-      text: 'Pacientes',
-      icon: 'pi pi-users',
-      link: '',
-      action: 'setPacienteVisible', 
-      actionValue: true
-    },
-    {
-      text: 'Profissionais',
-      icon: 'pi pi-user-edit',
-      link: '',
-      action: 'setProfissionalVisible',
-      actionValue: true
-    },
-    {
-      text: 'Convênios Médicos',
-      icon: 'pi pi-table',
-      link: '',
-      action: 'setConvenioVisible',
-      actionValue: true
-    },
-    {
-      text: 'Profissões',
-      icon: 'pi pi-briefcase',
-      link: '',
-      action: 'setProfissaoVisible',
-      actionValue: true
-    },
-  ];
-  
-  export default sidebarItems;
-  
+        text: 'Agendamento',
+        icon: 'pi pi-fw pi-calendar',
+        items: [
+            {
+                text: 'Consultas',
+                icon: 'pi pi-calendar',
+                link: '',
+                action: 'setConsultaVisible',
+                roles: ["f3f629", "f8abf4"],
+                actionValue: true
+            }
+        ],
+        roles: ['c8fffd', 'f3f629', 'f8abf4']
+    }
+];
+
+export default sidebarItems;

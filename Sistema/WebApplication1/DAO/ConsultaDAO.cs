@@ -159,14 +159,14 @@ namespace app.DAO
             return id;
         }
 
-        //Delete
-        /*public async Task Delete(long? id)
-        {
-            var objDelete = new StringBuilder();
-            objDelete.Append("DELETE FROM \"Sistema\".\"Consultas\" ");
-            objDelete.Append($" WHERE \"Id\" = {id} ");
+        ////Delete
+        //public async Task Delete(long? id)
+        //{
+        //    var objDelete = new StringBuilder();
+        //    objDelete.Append("DELETE FROM \"Sistema\".\"Consultas\" ");
+        //    objDelete.Append($" WHERE \"Id\" = {id} ");
 
-            _context.ExecuteNonQuery(objDelete.ToString());
-        }*/
+        //    _context.ExecuteNonQuery(objDelete.ToString());
+        //}
     }
 }
