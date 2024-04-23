@@ -119,7 +119,7 @@ export default function Paciente() {
     const savePaciente = () => {
         setSubmitted(true);
 
-        if (paciente.nome && paciente.nome.trim()) {
+        if (paciente.nome && paciente.nome.trim()) { // Correção aqui
             let _pacientes = [...pacientes];
             let _paciente = { ...paciente };
 
@@ -131,7 +131,7 @@ export default function Paciente() {
                 Telefone: _paciente.telefone,
                 Endereco: _paciente.endereco,
                 Email: _paciente.email,
-                Nascimento: _paciente.nascimento, // Certifique-se de que a data de nascimento está sendo incluída
+                Nascimento: _paciente.nascimento,
                 Sexo: _paciente.sexo,
                 IdConvenio: _paciente.IdConvenio,
                 TipoSanguineo: _paciente.tipoSanguineo,
@@ -142,9 +142,9 @@ export default function Paciente() {
                 Ativo: _paciente.ativo
             };
 
-            console.log("Valor de Nascimento:", _paciente.nascimento); // Verifica o valor de Nascimento antes de enviar
+            console.log("Valor de Nascimento:", _paciente.nascimento);
 
-            _paciente.ativo = checked ? 1 : 0; // Atualiza o campo "ativo" com base no estado do checkbox
+            _paciente.ativo = checked ? 1 : 0;
 
             const currentToken = localStorage.getItem('token') || '';
             if (paciente.Id) {
@@ -233,9 +233,14 @@ export default function Paciente() {
     const formatDate = (dateStr) => {
         if (!dateStr) return '';
         const date = new Date(dateStr);
-        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-        return date.toLocaleDateString('pt-BR', options);
+        if (!isNaN(date.getTime())) { // Check if the date is valid
+            const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+            return date.toLocaleDateString('pt-BR', options);
+        } else {
+            return ''; // Return an empty string if the date is invalid
+        }
     };
+
 
     const leftToolbarTemplate = () => {
         return (
@@ -299,7 +304,7 @@ export default function Paciente() {
                     <Column field="cpf" header="CPF" sortable></Column>
                     <Column field="telefone" header="Telefone" sortable></Column>
                     <Column field="endereco" header="Endereço" sortable></Column>
-                    <Column field="nascimento" header="Nascimento" sortable></Column>
+                    <Column field="nascimento" header="Nascimento" body={(rowData) => formatDate(rowData.nascimento)} sortable></Column>
                     <Column field="sexo" header="Sexo" sortable></Column>
                     <Column field="email" header="E-mail" sortable></Column>
                     <Column field="tipoSanguineo" header="Tipo Sanguíneo" sortable></Column>
@@ -350,7 +355,8 @@ export default function Paciente() {
 
                 <div className="field col">
                     <label htmlFor="nascimento">Nascimento</label>
-                    <Calendar id="nascimento" value={paciente.nascimento.toLocaleDateString()} onChange={(e) => onInputChange(e, 'nascimento')} showIcon />
+                    <Calendar id="nascimento" value={paciente.nascimento} onChange={(e) => onInputChange(e, 'nascimento')} showIcon />
+
                 </div>
 
                     <div className="field col">
@@ -382,7 +388,7 @@ export default function Paciente() {
                 </div>
 
                 <div className="field">
-                    <label htmlFor="cirurgias">Cigurgias</label>
+                    <label htmlFor="cirurgias">Cirurgias</label>
                     <InputTextarea id="cirurgias" value={paciente.cirurgias} onChange={(e) => onInputChange(e, 'cirurgias')} rows={2} cols={30} />
                 </div>
 
