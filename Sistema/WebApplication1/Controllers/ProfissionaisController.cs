@@ -42,10 +42,10 @@ namespace app.Controllers
             {
                 var token = ExtractAuthToken();
                 UserValidationResponse userLogado = await _auth.CheckUser(token);
-                if (userLogado == null || !userLogado.IsAuthenticated)
-                {
-                    return BadRequest(new { Message = "Usuário não autenticado!" });
-                }
+                //if (userLogado == null || !userLogado.IsAuthenticated)
+                //{
+                //    return BadRequest(new { Message = "Usuário não autenticado!" });
+                //}
                 /*if (userLogado.IdUserRole != null || userLogado.IdUserRole == "c8fffd")
                 {
                     return BadRequest(new { Message = "Usuário não autorizado!" });
@@ -70,10 +70,10 @@ namespace app.Controllers
                 var token = ExtractAuthToken();
 
                 UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
-                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
-                {
-                    return BadRequest(new { Message = "Usuário não autenticado!" });
-                }
+                //if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+                //{
+                //    return BadRequest(new { Message = "Usuário não autenticado!" });
+                //}
 
                 /*if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
                 {

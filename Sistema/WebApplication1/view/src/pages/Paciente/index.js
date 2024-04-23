@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { SidebarContext } from '../../context/SideBarContext.js';
 import { classNames } from 'primereact/utils';
@@ -122,7 +121,6 @@ export default function Paciente() {
         if (paciente.nome && paciente.nome.trim()) { // Correção aqui
             let _pacientes = [...pacientes];
             let _paciente = { ...paciente };
-
             console.log("Valor de Nascimento:", _paciente.nascimento);
 
             _paciente.ativo = checked ? 1 : 0;
