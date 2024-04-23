@@ -1,20 +1,19 @@
-
-    import React, { useState, useEffect, useRef, useContext } from 'react';
-    import { SidebarContext } from '../../context/SideBarContext.js';
-    import { classNames } from 'primereact/utils';
-    import { DataTable } from 'primereact/datatable';
-    import { Column } from 'primereact/column';
-    import { PacienteService } from './service/PacienteService.js';
-    import { Toast } from 'primereact/toast';
-    import { Button } from 'primereact/button';
-    import { InputTextarea } from 'primereact/inputtextarea';
-    import { Toolbar } from 'primereact/toolbar';
-    import { Dialog } from 'primereact/dialog';
-    import { InputText } from 'primereact/inputtext';
-    import { Calendar } from 'primereact/calendar';
-    import { Dropdown } from 'primereact/dropdown';
-    import { Checkbox } from 'primereact/checkbox';
-    import  Modal  from '../../components/Modal/index.js'
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { SidebarContext } from '../../context/SideBarContext.js';
+import { classNames } from 'primereact/utils';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { PacienteService } from './service/PacienteService.js';
+import { Toast } from 'primereact/toast';
+import { Button } from 'primereact/button';
+import { InputTextarea } from 'primereact/inputtextarea';
+import { Toolbar } from 'primereact/toolbar';
+import { Dialog } from 'primereact/dialog';
+import { InputText } from 'primereact/inputtext';
+import { Calendar } from 'primereact/calendar';
+import { Dropdown } from 'primereact/dropdown';
+import { Checkbox } from 'primereact/checkbox';
+import Modal from '../../components/Modal/index.js'
 
 export default function Paciente() {
     const { pacienteVisible, setPacienteVisible } = useContext(SidebarContext);
@@ -81,13 +80,13 @@ export default function Paciente() {
     const dropdownConvenios = convenios.map(convenio => {
         return {
             label: convenio.nome,
-            value: convenio.nome
+            value: convenio.id
         };
     });
 
     const sexoOptions = [
-        { label: 'Masculino', value: 'Masculino' },
-        { label: 'Feminino', value: 'Feminino' },
+        { label: 'Masculino', value: 'm' },
+        { label: 'Feminino', value: 'f' },
     ]
 
     const tipoSanguineoOptions = [
@@ -122,43 +121,27 @@ export default function Paciente() {
         if (paciente.nome && paciente.nome.trim()) { // Correção aqui
             let _pacientes = [...pacientes];
             let _paciente = { ...paciente };
-
-            let postPaciente = {
-                Id: _paciente.Id,
-                Nome: _paciente.nome,
-                Cpf: _paciente.cpf,
-                Rg: _paciente.rg,
-                Telefone: _paciente.telefone,
-                Endereco: _paciente.endereco,
-                Email: _paciente.email,
-                Nascimento: _paciente.nascimento,
-                Sexo: _paciente.sexo,
-                IdConvenio: _paciente.IdConvenio,
-                TipoSanguineo: _paciente.tipoSanguineo,
-                Alergias: _paciente.alergias,
-                Medicamentos: _paciente.medicamentos,
-                Cirurgias: _paciente.cirurgias,
-                Historico: _paciente.historico,
-                Ativo: _paciente.ativo
-            };
-
             console.log("Valor de Nascimento:", _paciente.nascimento);
 
             _paciente.ativo = checked ? 1 : 0;
 
+
+            delete _paciente.convenio;
+
             const currentToken = localStorage.getItem('token') || '';
-            if (paciente.Id) {
-                const index = findIndexById(paciente.Id);
+
+            console.log("Paciente:", paciente.id);
+            if (paciente.id) {
+                const index = findIndexById(paciente.id);
                 _pacientes[index] = _paciente;
                 toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Atualizado', life: 3000 });
                 PacienteService.updatePaciente(_paciente, currentToken);
             } else {
-                _paciente.Id = createId();
-                _pacientes.push(_paciente);
-                toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Criado', life: 3000 });
+                toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Criado', life: 3000 });;
                 PacienteService.createPaciente(_paciente, currentToken);
             }
 
+            PacienteService.getPacientes(currentToken)
             setPacientes(_pacientes);
             setPacienteDialog(false);
             setPaciente(emptyPaciente);
@@ -214,17 +197,12 @@ export default function Paciente() {
         return index;
     };
 
-    const createId = () => {
-        return Math.random().toString(36).substr(2, 9);
-    };
-
     const onInputChange = (e, name) => {
         const val = (e.target && e.target.value) || '';
         let _paciente = { ...paciente };
-        _paciente[`${name}`] = val;
+        _paciente[name] = val;
         setPaciente(_paciente);
     };
-
 
     const onCheckboxChange = (e) => {
         setChecked(e.checked); // Atualiza o estado do checkbox
@@ -298,7 +276,6 @@ export default function Paciente() {
                     dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} scrollable scrollHeight="200px"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pacientes" globalFilter={globalFilter} header={header}>
-                    <Column selectionMode="multiple" style={{ width: '3rem' }}></Column>
                     <Column field="id" header="Id" sortable></Column>
                     <Column field="nome" header="Nome" sortable></Column>
                     <Column field="cpf" header="CPF" sortable></Column>
@@ -307,20 +284,15 @@ export default function Paciente() {
                     <Column field="nascimento" header="Nascimento" body={(rowData) => formatDate(rowData.nascimento)} sortable></Column>
                     <Column field="sexo" header="Sexo" sortable></Column>
                     <Column field="email" header="E-mail" sortable></Column>
-                    <Column field="tipoSanguineo" header="Tipo Sanguíneo" sortable></Column>
-                    <Column field="alergias" header="Alergias" sortable></Column>
-                    <Column field="medicamentos" header="Medicamentos" sortable></Column>
-                    <Column field="cirurgias" header="Cirurgias" sortable></Column>
-                    <Column field="historico" header="Histórico" sortable></Column>
                     <Column field="ativo" header="Ativo" sortable></Column>
-                    
+
                     <Column body={actionBodyTemplate}></Column>
                 </DataTable>
             </div>
 
             <Dialog visible={pacienteDialog} style={{ width: '850px', margin: 'auto' }} header="Detalhes do Paciente" modal className="p-fluid" footer={pacienteDialogFooter} onHide={hideDialog}>
                 <div className="field">
-                    <label htmlFor="email">E-Mail</label>
+                    <label htmlFor="email">E-mail</label>
                     <InputText id="email" value={paciente.email} onChange={(e) => onInputChange(e, 'email')} />
                 </div>
                 <div className="field ">
@@ -359,11 +331,11 @@ export default function Paciente() {
 
                 </div>
 
-                    <div className="field col">
-                        <label htmlFor="sexo">Sexo</label>
-                        <Dropdown id="sexo" value={paciente.sexo} options={sexoOptions} onChange={(e) => onInputChange(e, 'sexo')} placeholder="Selecione" />
-                    </div>
-                
+                <div className="field col">
+                    <label htmlFor="sexo">Sexo</label>
+                    <Dropdown id="sexo" value={paciente.sexo} options={sexoOptions} onChange={(e) => onInputChange(e, 'sexo')} placeholder="Selecione" />
+                </div>
+
 
                 <div className='grid'>
                     <div className="field col">

@@ -196,7 +196,7 @@ function Profissao() {
 
 
     const header = (
-        <h1>Profissoes Médicos</h1>
+        <h1>Profissões Médicos</h1>
     );
 
     /*const deleteProfissaoDialogFooter = (

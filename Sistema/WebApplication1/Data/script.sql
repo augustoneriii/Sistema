@@ -144,12 +144,12 @@ CREATE TABLE IF NOT EXISTS "Sistema"."Pacientes" (
   "ConvenioId" BIGINT,
   "TipoSanguineo" VARCHAR(5) NOT NULL,
   "Alergias" TEXT,
+  "Ativo" INTEGER,
   "Medicamentos" TEXT,
   "Cirurgias" TEXT,
   "Historico" TEXT,
   "CreatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  "UpdatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY ("ConvenioId") REFERENCES "Sistema"."ConvenioMedicos"("Id")
+  "UpdatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- -----------------------------------------------------
@@ -183,8 +183,6 @@ CREATE TABLE IF NOT EXISTS "Sistema"."Profissionais" (
   "Image" VARCHAR(255),
   "CreatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   "UpdatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY ("ProfissaoId") REFERENCES "Sistema"."Profissoes"("Id"),
-  FOREIGN KEY ("ConvenioId") REFERENCES "Sistema"."ConvenioMedicos"("Id")
 );
 
 -- -----------------------------------------------------
@@ -204,8 +202,6 @@ CREATE TABLE IF NOT EXISTS "Sistema"."Consultas" (
   "CreatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   "UpdatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   UNIQUE ("Data", "Hora", "ProfissionalId"),
-  FOREIGN KEY ("PacienteId") REFERENCES "Sistema"."Pacientes"("Id"),
-  FOREIGN KEY ("ProfissionalId") REFERENCES "Sistema"."Profissionais"("Id")
   );
 
 
