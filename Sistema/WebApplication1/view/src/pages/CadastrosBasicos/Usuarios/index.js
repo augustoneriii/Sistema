@@ -9,7 +9,7 @@ import { Password } from 'primereact/password';
 import { FloatLabel } from 'primereact/floatlabel';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Dropdown } from 'primereact/dropdown';
-
+import { Commom } from '../../../utils/Commom.js';
 
 
 function Usuarios() {
@@ -88,7 +88,13 @@ function Usuarios() {
     const onInputChange = (e, name) => {
         const val = (e.target && e.target.value) || '';
         let _usuario = { ...usuario };
-        _usuario[`${name}`] = val;
+
+        if (name === 'cpf') {
+            _usuario[`${name}`] = Commom.formatCpf(val);
+        } else {
+            _usuario[`${name}`] = val;
+        }
+        
         setUsuario(_usuario);
     };
 
@@ -205,7 +211,7 @@ function Usuarios() {
                         <div className="field col-6">
                             <FloatLabel>
                                 <label htmlFor="cpf">cpf</label>
-                                <InputText className='w-full' id="cpf" value={usuario.cpf} onChange={(e) => onInputChange(e, 'cpf')} />
+                                <InputText className='w-full' id="cpf" value={usuario.cpf} onChange={(e) => onInputChange(e, 'cpf')} maxLength={14} />
                             </FloatLabel>
                         </div>
                         <div className="field col-6">

@@ -315,7 +315,7 @@ export default function Paciente() {
 
             <Dialog visible={pacienteDialog} style={{ width: '850px', margin: 'auto' }} header="Detalhes do Paciente" modal className="p-fluid" footer={pacienteDialogFooter} onHide={hideDialog}>
                 <div className="field">
-                    <label htmlFor="email">E-Mail</label>
+                    <label htmlFor="email">E-mail</label>
                     <InputText id="email" value={paciente.email} onChange={(e) => onInputChange(e, 'email')} />
                 </div>
                 <div className="field ">

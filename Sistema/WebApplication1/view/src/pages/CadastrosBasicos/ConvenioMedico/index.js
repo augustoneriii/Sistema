@@ -12,7 +12,7 @@ import Modal from '../../../components/Modal/index.js';
 import { Menu } from 'primereact/menu';
 import { Checkbox } from 'primereact/checkbox';
 import { FloatLabel } from 'primereact/floatlabel';
-
+import { Commom } from '../../../utils/Commom.js';
 function ConvenioMedico() {
     const { convenioVisible, setConvenioVisible } = useContext(SidebarContext);
     // const [convenioVisible, setConvenioVisible] = useState(true);
@@ -165,7 +165,14 @@ function ConvenioMedico() {
     const onInputChange = (e, name) => {
         const val = (e.target && e.target.value) || '';
         let _convenio = { ...convenio };
-        _convenio[`${name}`] = val;
+
+        // Verifica se o campo é o telefone e aplica a formatação
+        if (name === 'telefone') {
+            _convenio[`${name}`] = Commom.formatPhone(val);
+        } else {
+            _convenio[`${name}`] = val;
+        }
+
         setConvenio(_convenio);
     };
 
@@ -245,13 +252,13 @@ function ConvenioMedico() {
                         <div className="field col-6">
                             <FloatLabel>
                             <label htmlFor="telefone">Telefone</label>
-                            <InputText className='w-full' id="telefone" value={convenio.telefone} onChange={(e) => onInputChange(e, 'telefone')} />
+                                <InputText className='w-full' id="telefone" value={convenio.telefone} onChange={(e) => onInputChange(e, 'telefone')} maxLength={14} />
                             </FloatLabel>
                         </div>
                         
                         <div className="field col-6">
                             <FloatLabel>
-                            <label htmlFor="email">E-Mail</label>
+                            <label htmlFor="email">E-mail</label>
                             <InputText className='w-full' id="email" value={convenio.email} onChange={(e) => onInputChange(e, 'email')} />
                             </FloatLabel>
                         </div>

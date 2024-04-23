@@ -14,7 +14,7 @@ import { Checkbox } from "primereact/checkbox";
 import { InputTextarea } from 'primereact/inputtextarea';
 import { FilterMatchMode } from 'primereact/api';
 import Modal from '../../components/Modal/index.js';
-
+import { FloatLabel } from 'primereact/floatlabel';
 
 export default function Consulta() {
     const { setPacienteVisible } = useContext(SidebarContext);
@@ -383,17 +383,17 @@ export default function Consulta() {
                     </div>
                     <div className='grid'>
                         <div className="field col">
+                            <FloatLabel>
                             <label htmlFor="observacoes">Observações</label>
                             <InputTextarea id="observacoes" value={consulta.observacoes} onChange={(e) => onInputChange(e, 'observacoes')} />
-                        </div>
+                            </FloatLabel>
+                        </div>  
                     </div>
                     <div className="flex align-items-center">
                         <Checkbox inputId="atendida" value={consulta.atendida} onChange={(e) => onInputChange(e, 'atendida')} />
                         <label className="ml-2" htmlFor="atendida">Atendida</label>
                     </div>
-                </Dialog>
-
-                
+                </Dialog>    
 
             </Modal>
         </>
