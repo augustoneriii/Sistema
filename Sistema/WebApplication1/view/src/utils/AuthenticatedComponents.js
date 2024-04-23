@@ -12,7 +12,7 @@ import { SidebarContext } from '../context/SideBarContext';
 
 function AuthenticatedComponents() {
     const [token, setToken] = useState(null);
-    const user = JSON.parse(localStorage.getItem('user'));
+    const [user, setUser] = useState({ idUserRole: '' });
 
     const navigate = useNavigate();
     const {
@@ -26,8 +26,10 @@ function AuthenticatedComponents() {
     } = useContext(SidebarContext);
 
     useEffect(() => {
+        const userFromStorage = JSON.parse(localStorage.getItem('user'));
         const tokenFromStorage = localStorage.getItem('token');
         setToken(tokenFromStorage);
+        setUser(userFromStorage);
 
         if (!tokenFromStorage) {
             navigate('/');

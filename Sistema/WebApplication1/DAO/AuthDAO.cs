@@ -1,4 +1,5 @@
 ﻿using app.Data;
+using app.DTO.Response;
 using app.DTO.UserDTO;
 using System.Data;
 using System.Text;
@@ -62,6 +63,31 @@ namespace app.DAO
             obj.PhoneNumber = dto.PhoneNumber;
 
             return obj;
+        }
+
+        //get all AspNetUsers
+        public async Task<List<GetAllUserResponse>> GetAllUsers()
+        {
+            var objSelect = new StringBuilder();
+            objSelect.Append("SELECT * FROM \"Sistema\".\"AspNetUsers\"");
+
+            var result = _context.ExecuteQuery(objSelect.ToString());
+
+            List<GetAllUserResponse> list = new List<GetAllUserResponse>();
+
+            foreach (DataRow row in result.Rows)
+            {
+                GetAllUserResponse obj = new GetAllUserResponse();
+                obj.Id = row["id"] != DBNull.Value ? row["id"].ToString() : string.Empty;
+                obj.UserName = row["username"] != DBNull.Value ? row["username"].ToString() : string.Empty;
+                obj.Email = row["email"] != DBNull.Value ? row["email"].ToString() : string.Empty;
+                obj.PhoneNumber = row["phonenumber"] != DBNull.Value ? row["phonenumber"].ToString() : string.Empty;
+                obj.Cpf = row["cpf"] != DBNull.Value ? row["cpf"].ToString() : string.Empty;
+
+                list.Add(obj);
+            }
+
+            return list;
         }
 
         public async Task<UserDTO> FindByEmail(string email)

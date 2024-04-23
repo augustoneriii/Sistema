@@ -43,6 +43,15 @@ namespace app.BE
                 };
             }
 
+            if (user.Password != user.ConfirmPassword)
+            {
+                return new UserRegisterDTO
+                {
+                    ErrorMessages = "Passwords do not match"
+                };
+            }
+
+
             var role = user.RoleName.ToUpper();
             UserRolesDTO roleExist = await dao.FindByRoleName(role);
 
@@ -121,19 +130,9 @@ namespace app.BE
 
         public async Task<List<GetAllUserResponse>> GetAllUsers()
         {
-            var users = _userManager.Users;
-            var usersDTO = new List<GetAllUserResponse>();
-            foreach (var user in users)
-            {
-                usersDTO.Add(new GetAllUserResponse
-                {
-                    Id = user.Id,
-                    UserName = user.UserName,
-                    Email = user.Email,
-                    PhoneNumber = user.PhoneNumber
-                });
-            }
-            return usersDTO;
+            var dao = new AuthDAO(_context);
+
+            return await dao.GetAllUsers();
         }
 
         public async Task<UserChangePasswordDTO> ChangePassword(UserChangePasswordDTO user)
