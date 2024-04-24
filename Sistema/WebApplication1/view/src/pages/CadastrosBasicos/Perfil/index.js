@@ -47,7 +47,9 @@ function Perfil() {
             try {
                 const response = await PerfilService.getDadosPessoais(currentToken);
                 setPerfis(response.data); // Assuming response.data contains the array of perfis
-                
+
+                const perfilUsuarioLogado = await getPerfilUsuarioLogado(currentToken);
+                setPerfil(perfilUsuarioLogado);
                 setDataLoaded(true); // Marca que os dados foram carregados
             } catch (error) {
                 console.error("Erro ao buscar perfil:", error);
@@ -61,6 +63,16 @@ function Perfil() {
        
     }, [perfilVisible, dataLoaded, perfis]);
 
+    const getPerfilUsuarioLogado = async (token) => {
+        // Lógica para obter as informações do usuário logado (substitua isso pela sua lógica real)
+        try {
+            const response = await PerfilService.getDadosPessoais(token);
+            const perfilUsuario = response.data; // Assuming response.data contains the perfil data
+            return perfilUsuario;
+        } catch (error) {
+            throw error;
+        }
+    };
     const dropdownSexo = [
         { label: 'Masculino', value: 'M' },
         { label: 'Feminino', value: 'F' }
@@ -75,7 +87,7 @@ function Perfil() {
     const savePerfil = () => {
         setSubmitted(true);
 
-        if (perfis.nome.trim()) {
+        if (perfil.nome.trim()) {
             let _perfis = [...perfis];
             let _perfil = { ...perfil };
 
@@ -124,9 +136,9 @@ function Perfil() {
         // Verifica se o campo é o telefone e aplica a formatação
         if (name === 'telefone') {
             _perfil[`${name}`] = Commom.formatPhone(val);
-        } if (name === 'rg') {
+        } else if (name === 'rg') {
             _perfil[`${name}`] = Commom.formatRg(val);
-        } if (name === 'cpf') {
+        } else if (name === 'cpf') {
             _perfil[`${name}`] = Commom.formatCpf(val);
         } else {
             _perfil[`${name}`] = val;
@@ -213,12 +225,18 @@ function Perfil() {
                                 <InputText className='w-full' id="cpf" value={perfil.cpf} onChange={(e) => onInputChange(e, 'cpf')} maxLength={14} />
                             </FloatLabel>
                         </div>
-                        <div className="field col">
-                            <label htmlFor="sexo">Sexo</label>
+                        <div className="field col-6">
+                            <FloatLabel>
+                                <label htmlFor="endereco">Endereço</label>
+                                <InputText className='w-full ' id="endereco" value={perfil.endereco} onChange={(e) => onInputChange(e, 'endereco')}  />
+                            </FloatLabel>
+                        </div>
+                        <div className="field col-6">
+                            <label htmlFor="sexo" className="mr-2">Sexo</label>
                             <Dropdown id="sexo" value={perfil.sexo} options={dropdownSexo} onChange={(e) => onInputChange(e, 'sexo')} placeholder="Selecione um sexo" />
                         </div>
-                        <div className="field col">
-                            <label htmlFor="nascimento">Nascimento</label>
+                        <div className="field col-6">
+                            <label htmlFor="nascimento" className="mr-2">Nascimento</label>
                             <Calendar id="nascimento" value={perfil.nascimento} onChange={(e) => onInputChange(e, 'nascimento')} showIcon />
                         </div>
                         
@@ -231,21 +249,21 @@ function Perfil() {
                     </div>
                 </div>
 
-                <div className="card">
-                    <DataTable ref={dt} value={perfis} election={selectedPerfis} onSelectionChange={e => setSelectedPerfis(e.value)}
-                        dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} scrollable scrollHeight="200px"
-                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} convenios" globalFilter={globalFilter}>
-                        <Column body={actionButtonGroupTemplate}></Column>
-                        <Column field="nome" header="Nome" sortable></Column>
-                        <Column field="cpf" header="Cpf" sortable></Column>
-                        <Column field="email" header="E-mail" sortable></Column>
-                        <Column field="rg" header="Rg" sortable></Column>
-                        <Column field="telefone" header="Telefone" sortable></Column>
-                        <Column field="endereco" header="Endereço" sortable></Column>
-                        <Column field="sexo" header="Sexo" sortable></Column>
-                    </DataTable>
-                </div>
+                {/*<div className="card">*/}
+                {/*    <DataTable ref={dt} value={perfis} election={selectedPerfis} onSelectionChange={e => setSelectedPerfis(e.value)}*/}
+                {/*        dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} scrollable scrollHeight="200px"*/}
+                {/*        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"*/}
+                {/*        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} perfis" globalFilter={globalFilter}>*/}
+                {/*        <Column body={actionButtonGroupTemplate}></Column>*/}
+                {/*        <Column field="nome" header="Nome" sortable></Column>*/}
+                {/*        <Column field="cpf" header="Cpf" sortable></Column>*/}
+                {/*        <Column field="email" header="E-mail" sortable></Column>*/}
+                {/*        <Column field="rg" header="Rg" sortable></Column>*/}
+                {/*        <Column field="telefone" header="Telefone" sortable></Column>*/}
+                {/*        <Column field="endereco" header="Endereço" sortable></Column>*/}
+                {/*        <Column field="sexo" header="Sexo" sortable></Column>*/}
+                {/*    </DataTable>*/}
+                {/*</div>*/}
         </Modal>
         </>
         
