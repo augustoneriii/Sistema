@@ -97,7 +97,7 @@ namespace app.DAO
             objInsert.Append($" '{dto.Hora}', "); // Adicionando a aspa simples de fechamento aqui
 
             objInsert.Append($" '{dto.DiaSemana}', ");
-            objInsert.Append($" '{dto.ProfissionalId}' ");
+            objInsert.Append($" '{dto.ProfissionalId}', ");
             objInsert.Append($" 1                            ");
 
             objInsert.Append(" ); ");

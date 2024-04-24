@@ -32,7 +32,6 @@ export class AgendaProfissionalService {
     }
 
     static async updateAgenda(agenda, token) {
-        console.log("update ", agenda);
         return await api.patch(`/updateAgenda`, agenda, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`

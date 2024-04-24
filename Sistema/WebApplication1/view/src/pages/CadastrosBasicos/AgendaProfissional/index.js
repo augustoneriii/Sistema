@@ -24,6 +24,7 @@ function AgendaProfissional() {
         hora: '',
         diaSemana: 'Segunda', 
         profissionalId: null,
+        ativo: null
     };
 
 
@@ -38,20 +39,36 @@ function AgendaProfissional() {
     const [globalFilter, setGlobalFilter] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
+    const [dataLoaded, setDataLoaded] = useState(false);
     const [checked, setChecked] = useState(false); // Estado para controlar o valor do checkbox
+    const [activeAgendas, setActiveAgendas] = useState([]);
 
     useEffect(() => {
-        async function fetchAgendaProfissional() {
+        async function fetchAgendas() {
             const currentToken = localStorage.getItem('token') || '';
             try {
                 const response = await AgendaProfissionalService.getAgendas(currentToken);
-                setAgenda(response.data); // Assuming response.data contains the array of consultas
+                setAgendas(response.data);
+                setDataLoaded(true);
             } catch (error) {
-                console.error("Erro ao buscar Consultas:", error);
+                console.error("Erro ao buscar agendas:", error);
             }
         }
-        fetchAgendaProfissional();
-    }, []);
+
+        if (agendaProfissionalVisible && !dataLoaded) {
+            fetchAgendas();
+        }
+        if (agenda.ativo === 1) {
+            setChecked(true); // Marca o checkbox se o campo "ativo" for igual a 1
+        } else {
+            setChecked(false);
+        }
+        if (agendas.length > 0) {
+            const filteredAgendas = agendas.filter(agenda => agenda.ativo === 1); // Filtra os convenios ativos
+            setActiveAgendas(filteredAgendas); // Atualiza o estado com os convenios ativos
+        }
+
+    }, [ agendaProfissionalVisible, dataLoaded ]);
 
     useEffect(() => {
         const currentToken = localStorage.getItem('token') || '';
@@ -92,32 +109,49 @@ function AgendaProfissional() {
 
     const saveAgenda = () => {
         setSubmitted(true);
-        console.log(agenda);
+        
 
         if (agenda.dia && agenda.hora && agenda.diaSemana && agenda.profissionalId != null) {
             const _agendas = [...agendas];
             const _agenda = { ...agenda };
 
+            _agenda.ativo = checked ? 1 : 0;
+
             let postAgenda = {
-                dia: agenda.Dia,
-                hora: agenda.Hora,
+                dia: agenda.dia, // Corrigido para letra minúscula
+                hora: agenda.hora, // Corrigido para letra minúscula
                 profissionalId: agenda.profissionalId,
-                diaSemana: agenda.DiaSemana,
-                ativo: checked ? 1 : 0
+                diaSemana: agenda.diaSemana, // Corrigido para letra minúscula
+                
             };
 
+            
+
+            _agenda.ativo = checked ? 1 : 0; // Atualiza o campo "ativo" com base no estado do checkbox
             const currentToken = localStorage.getItem('token') || '';
-            if (agenda.Id) {
-                const index = findIndexById(agenda.Id);
+            if (agenda.id) {
+                const index = findIndexById(agenda.id);
                 _agendas[index] = _agenda;
-                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Agenda Atualizada', life: 3000 });
-                AgendaProfissionalService.updateAgenda(postAgenda, currentToken);
+                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Agenda Atualizada com sucesso', life: 3000 });
+                AgendaProfissionalService.updateAgenda(_agenda, currentToken);
             } else {
-                console.log("create consulta", _agenda);
-                _agendas.push(postAgenda);
-                toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Criado', life: 3000 });
-                AgendaProfissionalService.createAgenda(postAgenda, currentToken);
+                _agendas.push(_agenda);
+                console.log("agenda", _agenda);
+                AgendaProfissionalService.createAgenda(_agenda, currentToken);
+                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Agenda criado com sucesso Criado', life: 3000 });
             }
+
+            //if (agenda.Id) {
+            //    const index = findIndexById(agenda.Id);
+            //    _agendas[index] = _agenda;
+            //    toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Agenda Atualizada', life: 3000 });
+            //    AgendaProfissionalService.updateAgenda(postAgenda, currentToken);
+            //} else {
+            //    console.log("create consulta", _agenda);
+            //    _agendas.push(postAgenda);
+            //    toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Criado', life: 3000 });
+            //    AgendaProfissionalService.createAgenda(postAgenda, currentToken);
+            //}
 
             setAgendas(_agendas);
             setAgendaDialog(false);
@@ -128,9 +162,11 @@ function AgendaProfissional() {
     };
 
     const editAgenda = (agenda) => {
-        setAgenda({ ...agenda });
-        setAgendaDialog(true);
+        setAgenda({ ...agenda }); // Define o estado da agenda com os valores da agenda selecionada
+        setChecked(agenda.ativo === 1); // Define o estado do checkbox com base no campo 'ativo' da agenda selecionada
+        setAgendaDialog(true); // Abre o diálogo de edição
     };
+
 
     const onProfissionalChange = (e) => {
         const selectedProfissionalId = e.value; // Obtém o ID do profissional selecionado
@@ -142,39 +178,7 @@ function AgendaProfissional() {
             profissionalId: selectedProfissionalId // Define o ID do profissional selecionado
         }));
     };
-    /*const confirmDeletePaciente = (paciente) => {
-        setPaciente(paciente);
-        setDeletePacienteDialog(true);
-    };
-
-    const deletePaciente = () => {
-        const currentToken = localStorage.getItem('token') || '';
-
-        if (paciente && paciente.Id) {
-            PacienteService.deletePaciente(paciente.Id, currentToken)
-                .then(() => {
-                    toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Deletado', life: 3000 });
-                    setPacientes(pacientes.filter(val => val.Id !== paciente.Id)); // Corrigido para usar 'Id'
-                    setDeletePacienteDialog(false);
-                    setPaciente(emptyPaciente);
-                })
-                .catch(error => {
-                    toast.current.show({ severity: 'warning', summary: 'Erro', detail: 'Pacientes que possuem consulta marcada não podem ser deletados', life: 3000 });
-                });
-        } else {
-            toast.current.show({ severity: 'warning', summary: 'Erro', detail: 'O Id do Paciente não foi definido', life: 3000 });
-        }
-    };
-    <Button icon="pi pi-trash" className="border-round p-button-rounded p-button-danger" onClick={() => confirmDeletePaciente(rowData)} />
-
-    <Dialog visible={deletePacienteDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deletePacienteDialogFooter} onHide={hideDeletePacienteDialog}>
-                <div className="confirmation-content">
-                    <i className="pi pi-exclamation-triangle mr-2" style={{ fontSize: '2rem' }} />
-                    {paciente && <span>Tem certeza que deseja excluir o paciente <b>{paciente.nome}</b>?</span>}
-                </div>
-            </Dialog>
-    */
-
+    
     const findIndexById = (Id) => {
         let index = -1;
         for (let i = 0; i < agendas.length; i++) {
@@ -194,7 +198,8 @@ function AgendaProfissional() {
         let valor = e.value;
 
         if (campo === 'dia' || campo === 'hora') {
-            valor = e.target.value ? new Date(e.target.value) : null;
+            // Converta para string apenas se não for null
+            valor = e.value ? formatDate(e.value) : null;
         }
 
         setAgenda(prevAgenda => ({
@@ -208,15 +213,15 @@ function AgendaProfissional() {
         setChecked(e.checked); // Atualiza o estado do checkbox
     };
 
-    const formatDate = (dateStr) => {
-        if (!dateStr) return '';
-        const date = new Date(dateStr);
-        if (!isNaN(date.getTime())) { // Check if the date is valid
-            const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-            return date.toLocaleDateString('pt-BR', options);
-        } else {
-            return ''; // Return an empty string if the date is invalid
-        }
+    const formatDate = (date) => {
+        if (!date) return ''; // Retorna uma string vazia se a data for nula
+
+        // Formate a data para o formato desejado (por exemplo, 'yyyy-mm-dd')
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Adiciona um zero à esquerda se necessário
+        const day = date.getDate().toString().padStart(2, '0'); // Adiciona um zero à esquerda se necessário
+
+        return `${year}-${month}-${day}`;
     };
 
 
@@ -289,11 +294,11 @@ function AgendaProfissional() {
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} agendas" globalFilter={globalFilter} header={header}>
                     <Column selectionMode="multiple" style={{ width: '3rem' }}></Column>
-                    <Column field="profissionais.nome" header="Profissional" sortable></Column>
+                    <Column style={{ width: '14.28%' }} field="profissionais.nome" header="Profissional" sortable></Column>
                     <Column field="id" header="Id" sortable></Column>
-                    <Column field="dia" header="dia" sortable></Column>
-                    <Column field="hora" header="hora" sortable></Column>
-                    <Column field="diasemana" header="diasemana" sortable></Column>
+                    <Column field="dia" header="Dia" sortable></Column>
+                    <Column field="hora" header="Hora" sortable></Column>
+                    <Column field="diaSemana" header="Dia da Semana" sortable></Column>
                     <Column field="ativo" header="Ativo" sortable></Column>
 
                     <Column body={actionBodyTemplate}></Column>
@@ -305,22 +310,23 @@ function AgendaProfissional() {
 
                 <div className='grid'>
                     <div className="field col-6">
-                        <label htmlFor="profissional">Profissional</label>
+                        <label htmlFor="profissional"> Profissional</label>
                         <Dropdown
                             id='profissional'
-                            value={agenda.profissional ? agenda.profissional.nome : null}
+                            value={agenda.profissionalId} // Use o ID do profissional como valor
                             onChange={(e) => onProfissionalChange(e)}
-                            options={profissionais}
-                            optionLabel="nome"
+                            options={dropdownProfissionais} // Use o array formatado corretamente
+                            optionLabel="label" // Indique que a propriedade 'label' do objeto deve ser usada como label no dropdown
                             placeholder="Selecione o Profissional"
                             className="w-full"
                         />
+
                     </div>
                     </div>
 
                 <div className="field ">
                     <label htmlFor="dia">Dia</label>
-                    <Calendar id="nascimento" value={agenda.Dia} onChange={(e) => onInputChange(e, 'dia')} showIcon />
+                    <Calendar id="nascimento" value={agenda.dia} onChange={(e) => onInputChange(e, 'dia')} showIcon />
                     {submitted && !agenda.dia && <small className="p-error">Dia é obrigatório.</small>}
                 </div>
 

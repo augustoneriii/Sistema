@@ -65,10 +65,10 @@ namespace app.Controllers
             {
                 var token = ExtractAuthToken();
                 UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
-                //if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
-                //{
-                //    return BadRequest(new { Message = "Usuário não autenticado!" });
-                //}
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
 
                 /* if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
                 {
