@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS "Sistema"."ConvenioMedicos" (
 
 CREATE TABLE IF NOT EXISTS "Sistema" . "AgendaProfissional"(
 "Id" BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-"Dia" DATE NOT NULL,
+"Dia" DATE ,
 "Hora" TIME NOT NULL,
 "Ativo" int,
 "DiaSemana" varchar(20),

@@ -47,11 +47,6 @@ namespace app.Controllers
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
-
-                if (userLogado.IdUserRole == null || userLogado.IdUserRole != "f3f629")
-                {
-                    return BadRequest(new { Message = "Usuário não tem permissão para cadastrar usuários!" });
-                }
                 
                 var response = await authService.RegisterNewUser(user);
 

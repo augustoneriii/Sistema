@@ -3,18 +3,17 @@ import api from '../../../../utils/api';
 
 export class AgendaProfissionalService {
 
- 
-    static async getProfissionais(token) {
-        return await api.get('/getAllProfissionais', {
+
+    static async getProfissionais(token, query) {
+        return await api.get(`/getAllProfissionais?${query}`, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
         });
     }
 
-
-    static async getAgendas(token) {
-        return await api.get('/getAllAgendas', {
+    static async getAgendas(token, query) {
+        return await api.get(`/getAllAgendas?${query}`, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
@@ -39,12 +38,12 @@ export class AgendaProfissionalService {
         });
     }
 
-    /*static async deleteConsulta(id, token) {
-    console.log("delete ", id);
-    return await api.delete(`/deleteConsulta?id=${id}`, {
-        headers: {
-            Authorization: `Bearer ${JSON.parse(token)}`
-        }
-    });
-}*/
+    static async deleteAgenda(id, token) {
+        console.log("delete ", id);
+        return await api.delete(`/deleteAgenda?id=${id}`, {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(token)}`
+            }
+        });
+    }
 }

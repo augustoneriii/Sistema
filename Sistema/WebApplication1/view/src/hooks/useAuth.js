@@ -18,6 +18,7 @@ function useAuth() {
 
     async function authUser(data) {
         setAuthenticated(true)
+        console.log('data', data)
         localStorage.setItem('token', JSON.stringify(data.token))
         localStorage.setItem('user', JSON.stringify(data.user))
         navigate('/')
