@@ -35,13 +35,13 @@ namespace app.Controllers
 
         [HttpGet]
         [Route("getAllAgendas")]
-        public async Task<IActionResult> GetAll(AgendaProfissionalDTO dto)
+        public async Task<IActionResult> GetAll([FromQuery] AgendaProfissionalDTO dto)
         {
             var token = ExtractAuthToken();
             UserValidationResponse userLogado = await _auth.CheckUser(token);
             if (userLogado == null || !userLogado.IsAuthenticated)
-            {
-                return BadRequest(new { Message = "Usuário não autenticado!" });
+           {
+               return BadRequest(new { Message = "Usuário não autenticado!" });
             }
 
             var response = await _be.GetAll(dto);

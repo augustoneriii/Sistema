@@ -137,17 +137,47 @@ namespace app.BE
 
         public async Task<UserChangePasswordDTO> ChangePassword(UserChangePasswordDTO user)
         {
-            var identityUser = _userManager.FindByEmailAsync(user.Email).Result;
+            var dao = new AuthDAO(_context);
+
+            var identityUser = await dao.FindByEmail(user.Email);
             if (identityUser == null)
                 return null;
 
-            var result = _userManager.ChangePasswordAsync(identityUser, user.CurrentPassword, user.NewPassword).Result;
+            //decript identityUser.Password
+            var passwordHash = new PasswordHasher<IdentityUser>();
+
+            var pwTest = passwordHash.VerifyHashedPassword(null, identityUser.Password, user.CurrentPassword);
+
+            if (pwTest != PasswordVerificationResult.Success)
+            {
+                return new UserChangePasswordDTO
+                {
+                    Succeeded = false,
+                    Errors = new List<string> { "Current password is incorrect" }
+                };
+            }
+
+            if (user.CurrentPassword == user.NewPassword)
+            {
+                return new UserChangePasswordDTO
+                {
+                    Succeeded = false,
+                    Errors = new List<string> { "New password must be different from the current password" }
+                };
+            }
+
+            //encrypt user.NewPassword
+            var hashed = passwordHash.HashPassword(null, user.NewPassword);
+
+            user.NewPassword = hashed;
+
+            var result = await dao.ChangePassword(user);
 
             if (result.Succeeded)
             {
                 return new UserChangePasswordDTO
                 {
-                    Email = identityUser.Email,
+                    Email = user.Email,
                     CurrentPassword = user.CurrentPassword,
                     NewPassword = user.NewPassword,
                     Succeeded = true,

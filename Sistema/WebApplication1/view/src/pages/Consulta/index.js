@@ -90,9 +90,9 @@ export default function Consulta() {
 
     const headerTemplate = (data) => {
         return (
-            <React.Fragment>
-                <span className="vertical-align-middle ml-2 font-bold line-height-3">{data?.NomeProfissional || 'Profissional Não Definido'}</span>
-            </React.Fragment>
+            <>
+                <span className="vertical-align-middle ml-2 font-bold line-height-3">{data?.profissionais?.nome || 'Profissional Não Definido'}</span>
+            </>
         );
     };
 
@@ -327,19 +327,19 @@ export default function Consulta() {
                     <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
 
                     <DataTable ref={dt} value={consultas} selection={selectedConsultas} onSelectionChange={e => setSelectedConsultas(e.value)}
-                        dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} rowGroupMode="subheader" groupRowsBy="NomeProfissional" sortOrder={1}
-                        sortField="NomeProfissional" paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                        dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} rowGroupMode="subheader" groupRowsBy="profissionais.nome" sortOrder={1}
+                        sortField="profissionais.nome" paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         expandableRowGroups expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)} sortMode="single" rowGroupHeaderTemplate={headerTemplate}
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} consultas" globalFilter={globalFilter} header={header}>
                         <Column style={{ width: '14.28%' }} field="profissionais.nome" header="Profissional" sortable></Column>
                         <Column style={{ width: '14.28%' }} field="pacientes.nome" header="Paciente" sortable></Column>
                         <Column style={{ width: '14.28%' }} field="data" header="Data" body={(rowData) => formatDate(rowData.data)} sortable></Column>
-
                         <Column style={{ width: '14.28%' }} field="hora" header="Hora" body={(rowData) => formatDate(rowData.hora)} sortable></Column>
                         <Column style={{ width: '14.28%' }} field="status" header="Status" sortable></Column>
                         <Column style={{ width: '14.28%' }} field="tipo" header="Tipo" sortable></Column>
                         <Column style={{ width: '14.28%' }} header="Ações" body={actionBodyTemplate}></Column>
                     </DataTable>
+
                 </div>
 
                 <Dialog visible={consultaDialog} style={{ width: '850px', margin: 'auto' }} header="Detalhes do Consulta" modal className="p-fluid" footer={consultaDialogFooter} onHide={hideDialog}>
