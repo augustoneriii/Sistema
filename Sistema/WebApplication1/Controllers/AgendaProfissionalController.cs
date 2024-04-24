@@ -43,9 +43,11 @@ namespace app.Controllers
             //{
             //    return BadRequest(new { Message = "Usuário não autenticado!" });
             //}
-
+            _context.BeginTransaction();
             var response = await _be.GetAll(dto);
+            _context.Commit();
             return Ok(response);
+
         }
 
         //Post: AgendaProfissional

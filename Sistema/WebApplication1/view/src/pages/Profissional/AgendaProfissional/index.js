@@ -6,6 +6,8 @@ import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import Modal from '../../../components/Modal/index.js'
 import { Splitter, SplitterPanel } from 'primereact/splitter';
+import { Card } from 'primereact/card';
+
 
 function AgendaProfissional() {
     const { agendaProfissionalVisible, setAgendaProfissionalVisible } = useContext(SidebarContext);
@@ -69,8 +71,10 @@ function AgendaProfissional() {
 
 
     const saveAgenda = (newAgenda) => {
-        setSubmitted(true);
-        console.log("agenda", newAgenda);
+
+        if (!newAgenda.profissionalId) {
+            toast.current.show({ severity: 'error', summary: 'Erro', detail: 'Profissional não encontrado ou não cadastrado.', life: 3000 });
+        }
 
         if (newAgenda.hora && newAgenda.diaSemana && newAgenda.profissionalId != null) {
             const _agenda = { ...newAgenda };
@@ -100,7 +104,10 @@ function AgendaProfissional() {
 
     const onButtonClick = (dia, horario) => {
 
-        console.log("dia", profissionais);
+        if (profissionais.length === 0) {
+            toast.current.show({ severity: 'error', summary: 'Erro', detail: 'Profissional não encontrado ou não cadastrado.', life: 3000 });
+            return
+        }
         let newAgenda = {
             ...agenda,
             diaSemana: dia,
@@ -120,7 +127,6 @@ function AgendaProfissional() {
         { label: 'Quinta', value: 'Quinta' },
         { label: 'Sexta', value: 'Sexta' },
         { label: 'Sábado', value: 'Sábado' },
-        { label: 'Domingo', value: 'Domingo' }
     ];
 
     const horariosAtendimento = [
@@ -161,17 +167,17 @@ function AgendaProfissional() {
                                         return (
                                             <div className='col-6' key={index}>
                                                 {booked ? (
-                                                    <Button
-                                                        label={horario.label}
-                                                        className="border-round p-button-success mr-2"
-                                                        onClick={() => deleteAgenda(id)}  // Passando o ID do agendamento
-                                                    />
+                                                    <Card
+                                                        className="bg-info text-center text-light cursor-pointer"
+                                                        onClick={() => deleteAgenda(id)}
+                                                    >
+                                                        {horario.label}
+                                                    </Card>
                                                 ) : (
-                                                    <Button
-                                                        label={horario.label}
-                                                        className="border-round p-button-secondary mr-2"
-                                                        onClick={() => onButtonClick(dia.label, horario.value)}
-                                                    />
+                                                    <Card className="bg-light text-center  cursor-pointer"
+                                                        onClick={() => onButtonClick(dia.label, horario.value)}>
+                                                        {horario.label}
+                                                    </Card>
                                                 )}
                                             </div>
                                         );
