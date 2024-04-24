@@ -74,7 +74,7 @@ function AgendaProfissional() {
         const currentToken = localStorage.getItem('token') || '';
         AgendaProfissionalService.getProfissionais(currentToken)
             .then(response => {
-                setProfissionais(response.data); // Acesso à array de profissionais
+                setProfissionais(response.data); // Acesso ï¿½ array de profissionais
             })
             .catch(error => {
                 console.error("Erro ao buscar profissionais:", error);
@@ -86,11 +86,7 @@ function AgendaProfissional() {
             label: profissional.nome,
             value: profissional.id
         };
-    });
-
-
-
-    
+    });   
 
     const openNew = () => {
         setAgenda(emptyAgenda);
@@ -118,10 +114,10 @@ function AgendaProfissional() {
             _agenda.ativo = checked ? 1 : 0;
 
             let postAgenda = {
-                dia: agenda.dia, // Corrigido para letra minúscula
-                hora: agenda.hora, // Corrigido para letra minúscula
+                dia: agenda.dia, // Corrigido para letra minï¿½scula
+                hora: agenda.hora, // Corrigido para letra minï¿½scula
                 profissionalId: agenda.profissionalId,
-                diaSemana: agenda.diaSemana, // Corrigido para letra minúscula
+                diaSemana: agenda.diaSemana, // Corrigido para letra minï¿½scula
                 
             };
 
@@ -157,19 +153,19 @@ function AgendaProfissional() {
             setAgendaDialog(false);
             setAgenda(emptyAgenda);
         } else {
-            toast.current.show({ severity: 'error', summary: 'Erro', detail: 'Todos os campos são obrigatórios.', life: 3000 });
+            toast.current.show({ severity: 'error', summary: 'Erro', detail: 'Todos os campos sï¿½o obrigatï¿½rios.', life: 3000 });
         }
     };
 
     const editAgenda = (agenda) => {
         setAgenda({ ...agenda }); // Define o estado da agenda com os valores da agenda selecionada
         setChecked(agenda.ativo === 1); // Define o estado do checkbox com base no campo 'ativo' da agenda selecionada
-        setAgendaDialog(true); // Abre o diálogo de edição
+        setAgendaDialog(true); // Abre o diï¿½logo de ediï¿½ï¿½o
     };
 
 
     const onProfissionalChange = (e) => {
-        const selectedProfissionalId = e.value; // Obtém o ID do profissional selecionado
+        const selectedProfissionalId = e.value; // Obtï¿½m o ID do profissional selecionado
         const selectedProfissional = profissionais.find(profissional => profissional.id === selectedProfissionalId); // Encontra o objeto do profissional pelo ID
 
         setAgenda(prevAgenda => ({
@@ -198,7 +194,7 @@ function AgendaProfissional() {
         let valor = e.value;
 
         if (campo === 'dia' || campo === 'hora') {
-            // Converta para string apenas se não for null
+            // Converta para string apenas se nï¿½o for null
             valor = e.value ? formatDate(e.value) : null;
         }
 
@@ -218,8 +214,8 @@ function AgendaProfissional() {
 
         // Formate a data para o formato desejado (por exemplo, 'yyyy-mm-dd')
         const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Adiciona um zero à esquerda se necessário
-        const day = date.getDate().toString().padStart(2, '0'); // Adiciona um zero à esquerda se necessário
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Adiciona um zero ï¿½ esquerda se necessï¿½rio
+        const day = date.getDate().toString().padStart(2, '0'); // Adiciona um zero ï¿½ esquerda se necessï¿½rio
 
         return `${year}-${month}-${day}`;
     };
@@ -260,16 +256,16 @@ function AgendaProfissional() {
 
     const dropDownDiasDaSemana = [
         { label: 'Segunda', value: 'Segunda' },
-        { label: 'Terça', value: 'Terça' },
+        { label: 'Terï¿½a', value: 'Terï¿½a' },
         { label: 'Quarta', value: 'Quarta' },
         { label: 'Quinta', value: 'Quinta' },
         { label: 'Sexta', value: 'Sexta' },
-        { label: 'Sábado', value: 'Sábado' },
+        { label: 'Sï¿½bado', value: 'Sï¿½bado' },
         { label: 'Domingo', value: 'Domingo' }
     ];
     /*const deletePacienteDialogFooter = (
         <React.Fragment>
-            <Button label="Não" icon="pi pi-times" className="border-round p-button-text" onClick={hideDeletePacienteDialog} />
+            <Button label="Nï¿½o" icon="pi pi-times" className="border-round p-button-text" onClick={hideDeletePacienteDialog} />
             <Button label="Sim" icon="pi pi-check" className="border-round p-button-text" onClick={deletePaciente} />
         </React.Fragment>
     );*/
@@ -327,7 +323,7 @@ function AgendaProfissional() {
                 <div className="field ">
                     <label htmlFor="dia">Dia</label>
                     <Calendar id="nascimento" value={agenda.dia} onChange={(e) => onInputChange(e, 'dia')} showIcon />
-                    {submitted && !agenda.dia && <small className="p-error">Dia é obrigatório.</small>}
+                    {submitted && !agenda.dia && <small className="p-error">Dia ï¿½ obrigatï¿½rio.</small>}
                 </div>
 
                 <div className="field col">
