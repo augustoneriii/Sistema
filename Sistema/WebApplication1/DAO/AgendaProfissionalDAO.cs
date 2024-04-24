@@ -9,7 +9,7 @@ namespace app.DAO
     public class AgendaProfissionalDAO
     {
         private AppDbContext _context;
-        
+
         public AgendaProfissionalDAO(AppDbContext context)
         {
             _context = context;
@@ -32,7 +32,7 @@ namespace app.DAO
 
             objSelect.Append("LEFT JOIN \"Sistema\".\"Profissionais\" ON \"Sistema\".\"AgendaProfissional\".\"ProfissionalId\" = \"Profissionais\".\"Id\" ");
 
-            objSelect.Append("WHERE 1 = 1");
+            objSelect.Append("WHERE 1 = 1 ");
 
             if (dto != null)
             {
@@ -48,6 +48,10 @@ namespace app.DAO
                 {
                     objSelect.Append($"AND \"ProfissionalId\" = '{dto.Profissionais.Id}'");
                 }
+                if (dto.Profissionais != null && !string.IsNullOrEmpty(dto.Profissionais.Cpf))
+                {
+                    objSelect.Append($"AND \"Profissionais\".\"Cpf\" = '{dto.Profissionais.Cpf}'");
+                }
             }
 
             var dt = _context.ExecuteQuery(objSelect.ToString());
@@ -60,7 +64,7 @@ namespace app.DAO
                 {
                     var agenda = new AgendaProfissionalDTO();
                     agenda.Id = Convert.ToInt32(row["Id"]);
-                    agenda.Dia = Convert.ToDateTime(row["Dia"]);
+                    //agenda.Dia = Convert.ToDateTime(row["Dia"]);
                     agenda.Hora = Convert.ToDateTime(row["Hora"]);
                     agenda.DiaSemana = row["DiaSemana"].ToString();
                     agenda.Ativo = Convert.ToInt32(row["Ativo"]);
@@ -84,7 +88,6 @@ namespace app.DAO
             var objInsert = new StringBuilder();
             objInsert.Append("INSERT INTO \"Sistema\".\"AgendaProfissional\" (");
 
-            objInsert.Append(" \"Dia\", ");
             objInsert.Append(" \"Hora\", ");
             objInsert.Append(" \"DiaSemana\", ");
             objInsert.Append(" \"ProfissionalId\" ");
@@ -93,7 +96,7 @@ namespace app.DAO
 
             objInsert.Append(") VALUES (");
 
-            objInsert.Append($" '{dto.Dia}', ");
+            //objInsert.Append($" '{dto.Dia}', ");
             objInsert.Append($" '{dto.Hora}', "); // Adicionando a aspa simples de fechamento aqui
 
             objInsert.Append($" '{dto.DiaSemana}', ");
@@ -112,7 +115,7 @@ namespace app.DAO
         {
             var objUpdate = new StringBuilder();
             objUpdate.Append("UPDATE \"Sistema\".\"AgendaProfissional\" SET ");
-            objUpdate.Append($" \"Dia\" = '{dto.Dia}', ");
+            //objUpdate.Append($" \"Dia\" = '{dto.Dia}', ");
             objUpdate.Append($" \"Hora\" = TO_TIMESTAMP('{dto.Hora}', 'HH24:MI:SS'), "); // Usando TO_TIMESTAMP para converter hora
             objUpdate.Append($" \"DiaSemana\" = '{dto.DiaSemana}', ");
             objUpdate.Append($" \"ProfissionalId\" = '{dto.ProfissionalId}', ");
@@ -124,14 +127,14 @@ namespace app.DAO
             return id;
         }
 
-        ////Delete
-        //public async Task Delete(long? id)
-        //{
-        //    var objDelete = new StringBuilder();
-        //    objDelete.Append("DELETE FROM \"Sistema\".\"AgendaProfissional\" ");
-        //    objDelete.Append($" WHERE \"Id\" = {id} ");
+        //Delete
+        public async Task Delete(long? id)
+        {
+            var objDelete = new StringBuilder();
+            objDelete.Append("DELETE FROM \"Sistema\".\"AgendaProfissional\" ");
+            objDelete.Append($" WHERE \"Id\" = {id} ");
 
-        //    _context.ExecuteNonQuery(objDelete.ToString());
-        //}
+            _context.ExecuteNonQuery(objDelete.ToString());
+        }
     }
 }

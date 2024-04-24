@@ -90,6 +90,30 @@ namespace app.DAO
             return list;
         }
 
+        //get AspNetUsers by cpf
+        public async Task<UserDTO> FindByCpf(string cpf)
+        {
+            var objSelect = new StringBuilder();
+            objSelect.Append("SELECT * FROM \"Sistema\".\"AspNetUsers\" ");
+            objSelect.Append($"WHERE cpf = '{cpf}'");
+
+            var result = _context.ExecuteQuery(objSelect.ToString());
+
+            if (result.Rows.Count == 0)
+                return null;
+
+            var row = result.Rows[0];
+
+            UserDTO obj = new UserDTO();
+            obj.Id = row["id"] != DBNull.Value ? row["id"].ToString() : string.Empty;
+            obj.UserName = row["username"] != DBNull.Value ? row["username"].ToString() : string.Empty;
+            obj.Email = row["email"] != DBNull.Value ? row["email"].ToString() : string.Empty;
+            obj.Password = row["passwordhash"] != DBNull.Value ? row["passwordhash"].ToString() : string.Empty;
+            obj.PhoneNumber = row["phonenumber"] != DBNull.Value ? row["phonenumber"].ToString() : string.Empty;
+
+            return obj;
+        }
+
         public async Task<UserDTO> FindByEmail(string email)
         {
             var objSelect = new StringBuilder();
@@ -107,6 +131,7 @@ namespace app.DAO
             obj.Id = row["id"] != DBNull.Value ? row["id"].ToString() : string.Empty;
             obj.UserName = row["username"] != DBNull.Value ? row["username"].ToString() : string.Empty;
             obj.Email = row["email"] != DBNull.Value ? row["email"].ToString() : string.Empty;
+            obj.Cpf = row["cpf"] != DBNull.Value ? row["cpf"].ToString() : string.Empty;
             obj.Password = row["passwordhash"] != DBNull.Value ? row["passwordhash"].ToString() : string.Empty;
             obj.PhoneNumber = row["phonenumber"] != DBNull.Value ? row["phonenumber"].ToString() : string.Empty;
 

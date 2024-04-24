@@ -8,7 +8,7 @@ import Consulta from '../pages/Consulta';
 import Profissional from '../pages/Profissional';
 import Usuarios from '../pages/CadastrosBasicos/Usuarios';
 import Perfil from '../pages/CadastrosBasicos/Perfil';
-import AgendaProfissional from '../pages/CadastrosBasicos/AgendaProfissional';
+import AgendaProfissional from '../pages/Profissional/AgendaProfissional';
 import { SidebarContext } from '../context/SideBarContext';
 import ListaAtendimentos from '../pages/Profissional/ListaAtendimento';
 

@@ -121,7 +121,8 @@ namespace app.BE
                         Token = tokenHandler.WriteToken(token),
                         UserName = identityUser.UserName,
                         Email = identityUser.Email,
-                        IdUserRole = userRoles.Id
+                        IdUserRole = userRoles.Id,
+                        Cpf = identityUser.Cpf
                     };
                 }
             }
@@ -222,7 +223,7 @@ namespace app.BE
                 result.IsAuthenticated = true;
                 result.IdUser = identityClaims.FindFirst(ClaimTypes.NameIdentifier)?.Value; // Id armazenado em ClaimTypes.NameIdentifier
                 result.UserName = identityClaims.FindFirst(ClaimTypes.Name)?.Value; // UserName armazenado em ClaimTypes.Name
-                result.Email = identityClaims.FindFirst(ClaimTypes.Email)?.Value; // Certifique-se de que o e-mail está incluído quando o token é emitido
+                result.Email = identityClaims.FindFirst(ClaimTypes.Email)?.Value; // Certifique-se de que o e-mail está incluído quando o token é emitido 
 
                 //return AspNetUserRoles from user
                 UserRolesDTO userRoles = await dao.GetAspNetUserRoles(result.Email);
@@ -230,6 +231,11 @@ namespace app.BE
                 {
                     result.IdUserRole = userRoles.Id;
                 }
+
+                UserDTO user = await dao.FindByEmail(result.Email);
+
+                result.Cpf = user.Cpf;
+
 
                 return result;
             }

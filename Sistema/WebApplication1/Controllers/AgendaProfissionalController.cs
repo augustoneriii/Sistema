@@ -37,12 +37,12 @@ namespace app.Controllers
         [Route("getAllAgendas")]
         public async Task<IActionResult> GetAll([FromQuery] AgendaProfissionalDTO dto)
         {
-            var token = ExtractAuthToken();
-            UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
-            if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
-            {
-                return BadRequest(new { Message = "Usuário não autenticado!" });
-            }
+            //var token = ExtractAuthToken();
+            //UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
+            //if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+            //{
+            //    return BadRequest(new { Message = "Usuário não autenticado!" });
+            //}
 
             var response = await _be.GetAll(dto);
             return Ok(response);
@@ -104,30 +104,30 @@ namespace app.Controllers
 
         //Delete: Consulta
 
-        //[Route("deleteAgenda")]
-        //[HttpDelete]
-        //public async Task<IActionResult> Delete([FromQuery] long id)
-        //{
-        //    try
-        //    {
-        //        var token = ExtractAuthToken();
+        [Route("deleteAgenda")]
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromQuery] long id)
+        {
+            try
+            {
+                var token = ExtractAuthToken();
 
-        //        UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
-        //        if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
-        //        {
-        //            return BadRequest(new { Message = "Usuário não autenticado!" });
-        //        }
+                UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
 
-        //        _context.BeginTransaction();
-        //        await _be.Delete(id);
-        //        _context.Commit();
-        //        return Ok();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _context.Rollback();
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+                _context.BeginTransaction();
+                await _be.Delete(id);
+                _context.Commit();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _context.Rollback();
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

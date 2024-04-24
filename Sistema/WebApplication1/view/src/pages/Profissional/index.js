@@ -111,7 +111,7 @@ export default function Profissional() {
         });
     }, []);
 
-    
+
     const profissaoBodyTemplate = (rowData) => {
         return rowData.profissoes ? rowData.profissoes.nome : '';
     };
@@ -119,11 +119,11 @@ export default function Profissional() {
     const conselhoBodyTemplate = (rowData) => {
         return rowData.profissoes ? rowData.profissoes.conselhoProfissional : '';
     };
-   
-      const findProfissaoById = (id) => {
-         console.log("ID da Profissão:", id);
-         console.log("Profissões:", profissoes);
-         return profissoes.find(profissao => profissao.id === id);
+
+    const findProfissaoById = (id) => {
+        console.log("ID da Profissão:", id);
+        console.log("Profissões:", profissoes);
+        return profissoes.find(profissao => profissao.id === id);
     };
 
     const convenioBodyTemplate = (rowData) => {
@@ -163,48 +163,56 @@ export default function Profissional() {
         setDeleteProfissionalDialog(false);
     };*/
 
-        const saveProfissional = () => {
-            setSubmitted(true);
+    //metodo para remover . e - do cpf
+    const removeCaracteres = (cpf) => {
+        return cpf.replace(/[.-]/g, '');
+    }
 
-            if (profissional.nome.trim()) {
-                let _profissionais = [...profissionais];
-                let _profissional = {
-                    id: profissional.id,
-                    nome: profissional.nome,
-                    cpf: profissional.cpf,
-                    rg: profissional.rg,
-                    telefone: profissional.telefone,
-                    email: profissional.email,
-                    endereco: profissional.endereco,
-                    conselho: profissional.profissao.nome,
-                    nascimento: profissional.nascimento,
-                    sexo: profissional.sexo,
-                    observacoes: profissional.observacoes,
-                   // image: "string",
-                    profissaoId: profissional.profissaoId,
-                    convenioId: profissional.convenioId 
-                }
-                //let _profissional = { ...profissional, conselho: conselho }; // atualiza o conselho com o valor digitado
+    const saveProfissional = () => {
+        setSubmitted(true);
 
-                _profissional.ativo = checked ? 1 : 0; // Atualiza o campo "ativo" com base no estado do checkbox
-                
-                const currentToken = localStorage.getItem('token') || '';
-                if (profissional.id) {
-                    const index = findIndexById(profissional.id);
-                    _profissionais[index] = _profissional;
-                    toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissional Atualizado', life: 3000 });
-                    ProfissionalService.updateProfissional(_profissional, currentToken);
-                } else {
-                    _profissionais.push(_profissional);
-                    toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissional Criado', life: 3000 });
-                    ProfissionalService.saveProfissional(_profissional, currentToken);
-                }
+        if (profissional.nome.trim()) {
 
-                setProfissionais(_profissionais);
-                setProfissionalDialog(false);
-                setProfissional(emptyProfissional);
+            
+
+            let _profissionais = [...profissionais];
+            let _profissional = {
+                id: profissional.id,
+                nome: profissional.nome,
+                cpf: removeCaracteres(profissional.cpf),
+                rg: profissional.rg,
+                telefone: profissional.telefone,
+                email: profissional.email,
+                endereco: profissional.endereco,
+                conselho: profissional.profissao.nome,
+                nascimento: profissional.nascimento,
+                sexo: profissional.sexo,
+                observacoes: profissional.observacoes,
+                // image: "string",
+                profissaoId: profissional.profissaoId,
+                convenioId: profissional.convenioId
             }
-        };
+            //let _profissional = { ...profissional, conselho: conselho }; // atualiza o conselho com o valor digitado
+
+            _profissional.ativo = checked ? 1 : 0; // Atualiza o campo "ativo" com base no estado do checkbox
+
+            const currentToken = localStorage.getItem('token') || '';
+            if (profissional.id) {
+                const index = findIndexById(profissional.id);
+                _profissionais[index] = _profissional;
+                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissional Atualizado', life: 3000 });
+                ProfissionalService.updateProfissional(_profissional, currentToken);
+            } else {
+                _profissionais.push(_profissional);
+                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissional Criado', life: 3000 });
+                ProfissionalService.saveProfissional(_profissional, currentToken);
+            }
+
+            setProfissionais(_profissionais);
+            setProfissionalDialog(false);
+            setProfissional(emptyProfissional);
+        }
+    };
 
     const editProfissional = (profissional) => {
         setProfissional({ ...profissional });
@@ -308,7 +316,7 @@ export default function Profissional() {
         return (
             <>
                 <Button icon="pi pi-pencil" className="border-round p-button-rounded p-button-success mr-2" onClick={() => editProfissional(rowData)} />
-                
+
             </>
         );
     };
@@ -349,7 +357,7 @@ export default function Profissional() {
         </>
     );
 
-    
+
 
     return (
         <>
@@ -369,7 +377,6 @@ export default function Profissional() {
                         dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} profissionais" globalFilter={globalFilter} header={header}>
-                        <Column selectionMode="multiple" style={{ width: '3rem' }}></Column>
                         <Column field="nome" header="Nome" sortable></Column>
                         <Column field="cpf" header="CPF" sortable></Column>
                         <Column field="rg" header="RG" sortable></Column>
@@ -386,46 +393,46 @@ export default function Profissional() {
                 <Dialog visible={profissionalDialog} style={{ width: '850px', margin: 'auto' }} header="Detalhes do Profissional" modal className="p-fluid" footer={profissionalDialogFooter} onHide={hideDialog}>
                     <div className="field mt-4">
                         <FloatLabel>
-                        <label htmlFor="email">E-mail</label>
-                        <InputText id="email" value={profissional.email} onChange={(e) => onInputChange(e, 'email')} />
+                            <label htmlFor="email">E-mail</label>
+                            <InputText id="email" value={profissional.email} onChange={(e) => onInputChange(e, 'email')} />
                         </FloatLabel>
                     </div>
                     <div className="field mt-4">
                         <FloatLabel>
-                        <label htmlFor="nome">Nome</label>
-                        <InputText id="nome" value={profissional.nome} onChange={(e) => onInputChange(e, 'nome')} required autoFocus className={classNames({ 'p-invalid': submitted && !profissional.nome })} />
-                        {submitted && !profissional.nome && <small className="p-error">Nome é obrigatório.</small>}
+                            <label htmlFor="nome">Nome</label>
+                            <InputText id="nome" value={profissional.nome} onChange={(e) => onInputChange(e, 'nome')} required autoFocus className={classNames({ 'p-invalid': submitted && !profissional.nome })} />
+                            {submitted && !profissional.nome && <small className="p-error">Nome é obrigatório.</small>}
                         </FloatLabel>
                     </div>
 
                     <div className='grid'>
                         <div className="field col mt-3">
                             <FloatLabel>
-                            <label htmlFor="cpf">CPF</label>
+                                <label htmlFor="cpf">CPF</label>
                                 <InputText id="cpf" value={profissional.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={classNames({ 'p-invalid': submitted && !profissional.cpf })} maxLength={14} />
-                            {submitted && !profissional.cpf && <small className="p-error">CPF é obrigatório.</small>}
+                                {submitted && !profissional.cpf && <small className="p-error">CPF é obrigatório.</small>}
                             </FloatLabel>
                         </div>
 
                         <div className="field col mt-3">
                             <FloatLabel>
-                            <label htmlFor="rg">RG</label>
+                                <label htmlFor="rg">RG</label>
                                 <InputText id="rg" value={profissional.rg} onChange={(e) => onInputChange(e, 'rg')} maxLength={9} />
                             </FloatLabel>
                         </div>
 
                         <div className="field col mt-3">
                             <FloatLabel>
-                            <label htmlFor="telefone">Telefone</label>
-                               <InputText className='w-full' id="telefone" value={profissional.telefone} onChange={(e) => onInputChange(e, 'telefone')} maxLength={14} />
+                                <label htmlFor="telefone">Telefone</label>
+                                <InputText className='w-full' id="telefone" value={profissional.telefone} onChange={(e) => onInputChange(e, 'telefone')} maxLength={14} />
                             </FloatLabel>
                         </div>
                     </div>
 
                     <div className="field mt-3">
                         <FloatLabel>
-                        <label htmlFor="endereco">Endereço</label>
-                        <InputText id="endereco" value={profissional.endereco} onChange={(e) => onInputChange(e, 'endereco')} />
+                            <label htmlFor="endereco">Endereço</label>
+                            <InputText id="endereco" value={profissional.endereco} onChange={(e) => onInputChange(e, 'endereco')} />
                         </FloatLabel>
                     </div>
 
@@ -483,8 +490,8 @@ export default function Profissional() {
 
                     <div className="field mt-3">
                         <FloatLabel>
-                        <label htmlFor="observacoes">Observações</label>
-                        <InputTextarea id="observacoes" value={profissional.observacoes} onChange={(e) => onInputChange(e, 'observacoes')} rows={4} cols={30} />
+                            <label htmlFor="observacoes">Observações</label>
+                            <InputTextarea id="observacoes" value={profissional.observacoes} onChange={(e) => onInputChange(e, 'observacoes')} rows={4} cols={30} />
                         </FloatLabel>
 
                     </div>

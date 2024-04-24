@@ -36,11 +36,11 @@ namespace app.BE
         }
 
         //delete
-        /* public async Task Delete(long id)
-         {
-             var dao = new AgendaProfissionalDAO(_context);
-             await dao.Delete(id);
-         }*/
+        public async Task Delete(long id)
+        {
+            var dao = new AgendaProfissionalDAO(_context);
+            await dao.Delete(id);
+        }
     }
 
 }
