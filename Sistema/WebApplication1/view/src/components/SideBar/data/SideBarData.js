@@ -1,5 +1,51 @@
 const sidebarItems = [
     {
+        text: 'Profissional',
+        icon: 'pi pi-fw pi-user',
+        items: [
+            {
+                text: 'Lista de Atentimentos',
+                icon: 'pi pi-user',
+                link: '',
+                action: 'setAtendimentoVisible',
+                roles: ['c8fffd', 'f3f629', 'f8abf4'],
+                actionValue: true
+            },
+            {
+                text: 'Agenda Profissional',
+                icon: 'pi pi-calendar',
+                link: '',
+                action: 'setAgendaProfissionalVisible',
+                roles: ["f3f629", "f8abf4"],
+                actionValue: true
+            },
+        ],
+        roles: ['c8fffd', 'f3f629', 'f8abf4']
+    },
+    {
+        text: 'Agendamento',
+        icon: 'pi pi-fw pi-calendar',
+        items: [
+            {
+                text: 'Consultas',
+                icon: 'pi pi-calendar',
+                link: '',
+                action: 'setConsultaVisible',
+                roles: ["f3f629", "f8abf4"],
+                actionValue: true
+            },
+            {
+                text: 'Agenda Calendário',
+                icon: 'pi pi-calendar',
+                link: '',
+                action: 'setAgendaCalendarioVisible',
+                roles: ["f3f629", "f8abf4"],
+                actionValue: true
+            }
+        ],
+        roles: ['c8fffd', 'f3f629', 'f8abf4']
+    },
+    {
         text: 'Cadastros Básicos',
         icon: 'pi pi-fw pi-plus',
         items: [
@@ -32,29 +78,6 @@ const sidebarItems = [
                 icon: 'pi pi-briefcase',
                 link: '',
                 action: 'setProfissaoVisible',
-                roles: ["f3f629", "f8abf4"],
-                actionValue: true
-            },
-        ],
-        roles: ['c8fffd', 'f3f629', 'f8abf4']
-    },
-    {
-        text: 'Agendamento',
-        icon: 'pi pi-fw pi-calendar',
-        items: [
-            {
-                text: 'Consultas',
-                icon: 'pi pi-calendar',
-                link: '',
-                action: 'setConsultaVisible',
-                roles: ["f3f629", "f8abf4"],
-                actionValue: true
-            },
-            {
-                text: 'Agenda Profissional',
-                icon: 'pi pi-calendar',
-                link: '',
-                action: 'setAgendaProfissionalVisible',
                 roles: ["f3f629", "f8abf4"],
                 actionValue: true
             },

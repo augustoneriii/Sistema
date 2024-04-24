@@ -10,6 +10,7 @@ import Usuarios from '../pages/CadastrosBasicos/Usuarios';
 import Perfil from '../pages/CadastrosBasicos/Perfil';
 import AgendaProfissional from '../pages/CadastrosBasicos/AgendaProfissional';
 import { SidebarContext } from '../context/SideBarContext';
+import ListaAtendimentos from '../pages/Profissional/ListaAtendimento';
 
 
 function AuthenticatedComponents() {
@@ -25,7 +26,8 @@ function AuthenticatedComponents() {
         profissionalVisible,
         usuarioVisible,
         perfilVisible,
-        agendaProfissionalVisible
+        agendaProfissionalVisible,
+        atendimentoVisible
     } = useContext(SidebarContext);
 
     useEffect(() => {
@@ -47,6 +49,7 @@ function AuthenticatedComponents() {
                     {perfilVisible && <Perfil />}
                     {agendaProfissionalVisible && <AgendaProfissional />}
                     {perfilVisible && <Perfil />}
+                    {atendimentoVisible && <ListaAtendimentos />}
                 </>
             ) : (
                 <>
@@ -58,6 +61,7 @@ function AuthenticatedComponents() {
                     {usuarioVisible && <Usuarios />}
                     {agendaProfissionalVisible && <AgendaProfissional />}
                     {perfilVisible && <Perfil />}
+                    {atendimentoVisible && <ListaAtendimentos />}
                 </>
             )}
         </>

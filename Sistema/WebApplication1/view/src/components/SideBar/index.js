@@ -33,7 +33,7 @@ function SideBar({ idUserRole }) {
                 {isExpanded ? <span className="fs-4">SysClin</span> : ''}
             </Link>
             <hr />
-            <Link to="/" className="nav-link link-dark ml-3" onClick={logout}> <i className="pi pi-sign-out"></i> {isExpanded ? 'Logout' : ''}</Link>
+            <Link to="/" className="nav-link link-dark ml-3 btn btn-light text-start" onClick={logout}> <i className="pi pi-sign-out"></i> {isExpanded ? 'Logout' : ''}</Link>
             <hr />
             <ul className="nav nav-pills flex-column mb-auto">
                 {sidebarItems.filter(item => hasRole(item.roles)).map((item, index) => (

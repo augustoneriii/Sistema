@@ -1,5 +1,5 @@
 .sidebar {
-    width: 10vw;
+    width: 13vw;
     z-index: 1000;
     height: 100vh;
     transition: width 0.3s ease;
@@ -7,7 +7,7 @@
 }
 
 .sidebar.expanded {
-    width: 10vw;
+    width: 13vw;
 }
 
 .sidebar.collapsed {
@@ -17,10 +17,6 @@
 .nav-link {
     color: #0D0D0D;
     transition: background-color 0.3s;
-}
-
-.nav-link:hover {
-    background-color: #17BFAE;
 }
 
 .nav-item .icon {
@@ -38,4 +34,10 @@ hr {
 
 li {
     list-style-type: none;
+    margin: 8px  0 0 0;
 }
+
+li span:hover {
+  background-color: #e0e0e0 !important;
+}
+   

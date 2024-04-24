@@ -28,16 +28,13 @@ function Home() {
             <h2>Seja bem-vindo {user.userName}</h2>
             <h3>{user.idUserRole}</h3>
             <hr />
-            {user.idUserRole !== "f8abf4" ?
-                null
-                :
-                <FullCalendar
-                    plugins={[dayGridPlugin]}
-                    initialView="dayGridMonth"
-                    events={events}
-                    locale={ptLocale}
-                />
-            }
+
+            <FullCalendar
+                plugins={[dayGridPlugin]}
+                initialView="dayGridMonth"
+                events={events}
+                locale={ptLocale}
+            />
         </div>
     );
 }
