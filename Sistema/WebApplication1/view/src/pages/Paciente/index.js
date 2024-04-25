@@ -115,6 +115,10 @@ export default function Paciente() {
         setDeletePacienteDialog(false);
     };*/
 
+    const removeCaracteres = (cpf) => {
+        return cpf.replace(/[.-]/g, '');
+    }
+
     const savePaciente = () => {
         setSubmitted(true);
 
@@ -122,6 +126,8 @@ export default function Paciente() {
             let _pacientes = [...pacientes];
             let _paciente = { ...paciente };
             console.log("Valor de Nascimento:", _paciente.nascimento);
+
+            _paciente.cpf = removeCaracteres(_paciente.cpf);
 
             _paciente.ativo = checked ? 1 : 0;
 
