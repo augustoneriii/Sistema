@@ -57,9 +57,22 @@ function ListaAtendimentos() {
     async function fetchConsulta() {
         const currentToken = localStorage.getItem('token') || '';
         try {
+            const currentDate = new Date(); // Obtém a data atual do sistema
             const response = await AtendimentoService.getConsultas(currentToken, `Profissionais.Cpf=${user.cpf}`);
             // Acessa o array de consultas
-            const consultasComIdProfissional = response.data.map(consulta => {
+            const consultasComIdProfissional = response.data
+                .filter(consulta => {
+                const consultaDate = new Date(consulta.data);
+                return consultaDate.getDate() === currentDate.getDate() && // Verifica o dia
+                    consultaDate.getMonth() === currentDate.getMonth() && // Verifica o mês
+                    consultaDate.getFullYear() === currentDate.getFullYear(); // Verifica o ano
+                }).sort((a, b) => {
+                    // Ordena as consultas pelo horário
+                    const horaA = new Date(a.hora);
+                    const horaB = new Date(b.hora);
+                    return horaA.getTime() - horaB.getTime();
+                })
+                .map(consulta => {
                 // Verifica se o CPF do profissional na consulta corresponde ao CPF do usuário logado
                 if (consulta.profissionais.cpf === user.cpf) {
                     // Retorna a consulta com o id do profissional
