@@ -47,8 +47,9 @@ namespace app.Controllers
             {
                 return BadRequest(new { Message = "Usuário não autenticado!" });
             }
-
+            _context.BeginTransaction();
             var response = await _be.GetAll(dto);
+            _context.Commit();
             return Ok(response);
         }
 
@@ -65,11 +66,6 @@ namespace app.Controllers
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
-
-                /*if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
-                {
-                    return BadRequest(new { Message = "Usuário não autorizado!" });
-                }*/
 
                 _context.BeginTransaction();
                 var response = await _be.Insert(consulta);
@@ -98,10 +94,6 @@ namespace app.Controllers
                 {
                     return BadRequest(new { Message = "Usuário não autenticado!" });
                 }
-                //if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
-                //{
-                //    return BadRequest(new { Message = "Usuário não autorizado!" });
-                //}
 
                 _context.BeginTransaction();
                 var response = await _be.Update(consulta);
@@ -114,34 +106,5 @@ namespace app.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-        //Delete: Consulta
-
-        //[Route("deleteConsulta")]
-        //[HttpDelete]
-        //public async Task<IActionResult> Delete([FromQuery] long id)
-        //{
-        //    try
-        //    {
-        //        var token = ExtractAuthToken();
-
-        //        UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
-        //        if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
-        //        {
-        //            return BadRequest(new { Message = "Usuário não autenticado!" });
-        //        }
-
-        //        _context.BeginTransaction();
-        //        await _be.Delete(id);
-        //        _context.Commit();
-        //        return Ok();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _context.Rollback();
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
-
     }
 }
