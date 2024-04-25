@@ -41,12 +41,12 @@ namespace app.Controllers
         [Route("getAllConsultas")]
         public async Task<IActionResult> GetAll(ConsultaDTO dto)
         {
-            var token = ExtractAuthToken();
-            UserValidationResponse userLogado = await _auth.CheckUser(token);
-            if (userLogado == null || !userLogado.IsAuthenticated)
-            {
-                return BadRequest(new { Message = "Usuário não autenticado!" });
-            }
+            //var token = ExtractAuthToken();
+            //UserValidationResponse userLogado = await _auth.CheckUser(token);
+            //if (userLogado == null || !userLogado.IsAuthenticated)
+            //{
+            //    return BadRequest(new { Message = "Usuário não autenticado!" });
+            //}
             _context.BeginTransaction();
             var response = await _be.GetAll(dto);
             _context.Commit();
