@@ -92,14 +92,14 @@ namespace app.Controllers
             {
                 var token = ExtractAuthToken();
                 UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
-                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
-                {
-                    return BadRequest(new { Message = "Usuário não autenticado!" });
-                }
-                if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
-                {
-                    return BadRequest(new { Message = "Usuário não autorizado!" });
-                }
+                //if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+                //{
+                //    return BadRequest(new { Message = "Usuário não autenticado!" });
+                //}
+                //if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
+                //{
+                //    return BadRequest(new { Message = "Usuário não autorizado!" });
+                //}
                 _context.BeginTransaction();
                 var response = await _be.Update(profissoes);
                 _context.Commit();

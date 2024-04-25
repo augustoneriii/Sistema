@@ -34,6 +34,8 @@ function Profissao() {
     const dt = useRef(null);
     const [menuModel, setMenuModel] = useState([]);
     const menuRef = useRef(null);
+    const [errorMessage, setErrorMessage] = useState(''); // Novo estado para controlar a mensagem de erro
+
     const [checked, setChecked] = useState(true); // Estado para controlar o valor do checkbox
 
     useEffect(() => {
@@ -74,20 +76,29 @@ function Profissao() {
 
             _profissao.ativo = checked ? 1 : 0; // Atualiza o campo "ativo" com base no estado do checkbox
             const currentToken = localStorage.getItem('token') || '';
-            if (profissao.id) {
-                const index = findIndexById(profissao.id);
-                _profissoes[index] = _profissao;
-                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissao Atualizado', life: 3000 });
-                ProfissaoService.updateProfissao(_profissao, currentToken);
-            } else {
-                _profissoes.push(_profissao);
-                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissao Criado', life: 3000 });
-                ProfissaoService.createProfissao(_profissao, currentToken);
+            try {
+                if (profissao.id) {
+                    const index = findIndexById(profissao.id);
+                    _profissoes[index] = _profissao;
+                    toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissao Atualizado', life: 3000 });
+                    ProfissaoService.updateProfissao(_profissao, currentToken);
+                } else {
+                    _profissoes.push(_profissao);
+                    toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissao Criado', life: 3000 });
+                    ProfissaoService.createProfissao(_profissao, currentToken);
+                }
+                setProfissoes(_profissoes);
+                setProfissaoDialog(false);
+                setProfissao(emptyProfissao);
+            }catch (error) {
+                console.error("Erro ao salvar profissao:", error);
+                if (error.response && error.response.status === 400) {
+                    toast.current.show({ severity: 'error', summary: 'Erro', detail: `Usuário não tem permissão para essa operação: ${error}`, life: 3000 });
+                }
+                
             }
 
-            setProfissoes(_profissoes);
-            setProfissaoDialog(false);
-            setProfissao(emptyProfissao);
+                
         }
     };
 
