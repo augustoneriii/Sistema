@@ -10,6 +10,7 @@ import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Dropdown } from 'primereact/dropdown';
 import UsuarioService from './Service/UsuarioService';
 import ChangePassword from '../../Configuracoes/ChangePassword';
+import { Commom } from '../../../utils/Commom.js';
 
 function Usuarios() {
     const { usuarioVisible, setUsuarioVisible } = useContext(SidebarContext);
@@ -82,6 +83,14 @@ function Usuarios() {
     const onInputChange = (e, name) => {
         const val = (e.target && e.target.value) || '';
         const _usuario = { ...usuario };
+
+     if (name === 'cpf') {
+        _usuario.cpf = Commom.formatCpf(val)
+    } else if (name === "rg") {
+         _usuario.rg = Commom.formatRg(val)
+    } else {
+         _usuario[name] = val;
+    }
         _usuario[`${name}`] = val;
         setUsuario(_usuario);
     }

@@ -3,7 +3,8 @@ import Modal from '../../../components/Modal'
 import { Toast } from 'primereact/toast';
 import { SidebarContext } from '../../../context/SideBarContext'
 import { DataTable } from 'primereact/datatable';
-import { ConsultaService } from '../../Consulta/service/ConsultaService.js';
+//import { ConsultaService } from '../../Consulta/service/ConsultaService.js';
+import { AtendimentoService } from './service/AtendimentoService.js'
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 function ListaAtendimentos() {
@@ -19,11 +20,14 @@ function ListaAtendimentos() {
         tipo: ''
 
     };
+    const user = JSON.parse(localStorage.getItem('user'));
 
+ 
   const [globalFilter, setGlobalFilter] = useState(null);
   const { atendimentoVisible, setAtendimentoVisible, profissionalId } = useContext(SidebarContext)
   const [dataLoaded, setDataLoaded] = useState(false);
   const toast = useRef(null);
+  const [profissionais, setProfissionais] = useState([]);
   const [selectedConsultas, setSelectedConsultas] = useState(null);
   const dt = useRef(null);
   const [consulta, setConsulta] = useState(emptyConsulta);
@@ -31,18 +35,57 @@ function ListaAtendimentos() {
   const [expandedRows, setExpandedRows] = useState([]);
 
     useEffect(() => {
-        async function fetchConsulta() {
-            const currentToken = localStorage.getItem('token') || '';
-            try {
-                const response = await ConsultaService.getConsultas(currentToken);
-                const consultasFiltradas = response.data.filter(consulta => consulta.profissionalId === profissionalId);
-                setConsultas(consultasFiltradas); // Definindo consultas após filtrar
-            } catch (error) {
-                console.error("Erro ao buscar Consultas:", error);
-            }
-        }
         fetchConsulta();
-    }, [profissionalId]);
+    }, []);
+
+    useEffect(() => {
+        const currentToken = localStorage.getItem('token') || '';
+        AtendimentoService.getProfissionais(currentToken, `Cpf=${user.cpf}`)
+            .then(response => {
+                setProfissionais(response.data);
+            })
+            .catch(error => {
+                console.error("Erro ao buscar profissionais:", error);
+            });
+    }, []);
+
+    useEffect(() => {
+        console.log(profissionais);
+    }, [profissionais]);
+
+        //async function fetchConsulta() {
+        //    const currentToken = localStorage.getItem('token') || '';
+        //    try {
+        //        const response = await AtendimentoService.getConsultas(currentToken, `Consultas.profissionais.id=${6}`);
+        //        setConsulta(response.data);
+        //        setDataLoaded(true);
+        //    } catch (error) {
+        //        console.error("Erro ao buscar consulta", error);
+        //    }
+        //}
+
+    async function fetchConsulta() {
+        const currentToken = localStorage.getItem('token') || '';
+        try {
+            const response = await AtendimentoService.getConsultas(currentToken, `Profissionais.Cpf=${user.cpf}`);
+            // Acessa o array de consultas
+            const consultasComIdProfissional = response.data.map(consulta => {
+                // Verifica se o CPF do profissional na consulta corresponde ao CPF do usuário logado
+                if (consulta.profissionais.cpf === user.cpf) {
+                    // Retorna a consulta com o id do profissional
+                    return { ...consulta, profissionalId: consulta.profissionais.id };
+                } else {
+                    // Se o CPF não corresponder, retorna null (ou qualquer outro valor que você queira)
+                    return null;
+                }
+            }).filter(consulta => consulta !== null); // Filtra para remover as consultas que não correspondem ao CPF do usuário logado
+            setConsultas(consultasComIdProfissional);
+            setDataLoaded(true);
+        } catch (error) {
+            console.error("Erro ao buscar consulta", error);
+        }
+    }
+
 
   const onHideModal = () => {
     setAtendimentoVisible(false);
@@ -56,11 +99,19 @@ function ListaAtendimentos() {
     };
 
     const headerTemplate = (data) => {
-        return (
-            <>
-                <span className="vertical-align-middle ml-2 font-bold line-height-3">{data?.profissionais?.nome || 'Profissional Não Definido'}</span>
-            </>
-        );
+        if (data && data.profissionais && data.profissionais.nome) {
+            return (
+                <>
+                    <span className="vertical-align-middle ml-2 font-bold line-height-3">{data.profissionais.nome}</span>
+                </>
+            );
+        } else {
+            return (
+                <>
+                    <span className="vertical-align-middle ml-2 font-bold line-height-3">Profissional Não Definido</span>
+                </>
+            );
+        }
     };
     const chamaPaciente = (dataRow) =>{//teste de botão
         toast.current.show({ severity: 'success', summary: 'Sucesso', detail: `Botão de chamar paciente (em teste) `, life: 4000 });
