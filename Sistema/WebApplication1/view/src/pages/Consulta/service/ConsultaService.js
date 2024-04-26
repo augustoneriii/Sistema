@@ -44,15 +44,8 @@ export class ConsultaService {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
-        });
-    }
 
-    /*static async deleteConsulta(id, token) {
-    console.log("delete ", id);
-    return await api.delete(`/deleteConsulta?id=${id}`, {
-        headers: {
-            Authorization: `Bearer ${JSON.parse(token)}`
-        }
-    });
-}*/
+        });
+
+    }
 }

@@ -140,15 +140,13 @@ namespace app.DAO
         {
             var objUpdate = new StringBuilder();
             objUpdate.Append("UPDATE \"Sistema\".\"Consultas\" SET ");
-            objUpdate.Append($" \"Data\" = '{dto.Data:yyyy-MM-dd}', ");
-            objUpdate.Append($" \"Hora\" = '{dto.Hora}', ");
-            objUpdate.Append($" \"Atendida\" = '{dto.Atendida}', ");
+            objUpdate.Append($" \"Data\" = '{dto.Data?.ToString("yyyy-MM-dd")}', ");
+            objUpdate.Append($" \"Hora\" = '{dto.Hora?.ToString("HH:mm:ss")}', ");
+            objUpdate.Append($" \"Atendida\" = {dto.Atendida}, "); // Aqui pode ser necessário verificar se dto.Atendida é true ou false
             objUpdate.Append($" \"Status\" = '{dto.Status}', ");
             objUpdate.Append($" \"Tipo\" = '{dto.Tipo}', ");
             objUpdate.Append($" \"Observacoes\" = '{dto.Observacoes}' ");
-
-
-            objUpdate.Append($"WHERE \"Id\" = '{dto.Id}' ");
+            objUpdate.Append($" WHERE \"Id\" = {dto.Id} ");
 
             var id = _context.ExecuteNonQuery(objUpdate.ToString());
 
