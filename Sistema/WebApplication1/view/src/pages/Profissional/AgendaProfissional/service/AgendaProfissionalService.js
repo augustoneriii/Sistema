@@ -21,7 +21,6 @@ export class AgendaProfissionalService {
     }
 
     static async createAgenda(agenda, token) {
-        console.log("create ", agenda);
 
         return await api.post('/insertAgenda', agenda, {
             headers: {
@@ -39,7 +38,6 @@ export class AgendaProfissionalService {
     }
 
     static async deleteAgenda(id, token) {
-        console.log("delete ", id);
         return await api.delete(`/deleteAgenda?id=${id}`, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`

@@ -50,39 +50,31 @@ function ListaAtendimentos() {
             });
     }, []);
 
-    useEffect(() => {
-        console.log(profissionais);
-    }, [profissionais]);
-
     async function fetchConsulta() {
         const currentToken = localStorage.getItem('token') || '';
         try {
-            const currentDate = new Date(); // Obtém a data atual do sistema
+            const currentDate = new Date(); // Obtï¿½m a data atual do sistema
             const response = await AtendimentoService.getConsultas(currentToken, `Profissionais.Cpf=${user.cpf}`);
             // Acessa o array de consultas
             const consultasComIdProfissional = response.data
                 .filter(consulta => {
                 const consultaDate = new Date(consulta.data);
                 return consultaDate.getDate() === currentDate.getDate() && // Verifica o dia
-                    consultaDate.getMonth() === currentDate.getMonth() && // Verifica o mês
+                    consultaDate.getMonth() === currentDate.getMonth() && // Verifica o mï¿½s
                     consultaDate.getFullYear() === currentDate.getFullYear(); // Verifica o ano
                 }).sort((a, b) => {
-                    // Ordena as consultas pelo horário
                     const horaA = new Date(a.hora);
                     const horaB = new Date(b.hora);
                     return horaA.getTime() - horaB.getTime();
                 })
                 .map(consulta => {
-                // Verifica se o CPF do profissional na consulta corresponde ao CPF do usuário logado
                 if (consulta.profissionais.cpf === user.cpf) {
-                    // Retorna a consulta com o id do profissional
                     
                     return { ...consulta, profissionalId: consulta.profissionais.id};
                 } else {
-                    // Se o CPF não corresponder, retorna null (ou qualquer outro valor que você queira)
                     return null;
                 }
-            }).filter(consulta => consulta !== null); // Filtra para remover as consultas que não correspondem ao CPF do usuário logado
+            }).filter(consulta => consulta !== null);
             setConsultas(consultasComIdProfissional);
             setDataLoaded(true);
         } catch (error) {
@@ -90,22 +82,11 @@ function ListaAtendimentos() {
         }
     }
 
-    console.log('Consulta:', consulta);
-    console.log('Paciente:', consulta.pacientes);
-    /*console.log('convenioId:', consulta.pacientes.convenioId);*/
-
-
-
   const onHideModal = () => {
     setAtendimentoVisible(false);
     setDataLoaded(false);
     }
 
-  //const formatDate = (dateStr) => {
-  //   if (!dateStr) return '';
-  //      const date = new Date(dateStr);
-  //      return date instanceof Date && !isNaN(date) ? date.toLocaleDateString() : '';
-  //  };
 
     const formatHora = (dateStr) => {
         if (!dateStr) return '';
@@ -124,13 +105,13 @@ function ListaAtendimentos() {
         } else {
             return (
                 <>
-                    <span className="vertical-align-middle ml-2 font-bold line-height-3">Profissional Não Definido</span>
+                    <span className="vertical-align-middle ml-2 font-bold line-height-3">Profissional Nï¿½o Definido</span>
                 </>
             );
         }
     };
-    const chamaPaciente = (dataRow) =>{//teste de botão
-        toast.current.show({ severity: 'success', summary: 'Sucesso', detail: `Botão de chamar paciente (em teste) `, life: 4000 });
+    const chamaPaciente = (dataRow) =>{//teste de botï¿½o
+        toast.current.show({ severity: 'success', summary: 'Sucesso', detail: `Botï¿½o de chamar paciente (em teste) `, life: 4000 });
     }
     const actionBodyTemplate = (rowData) => {
         return (

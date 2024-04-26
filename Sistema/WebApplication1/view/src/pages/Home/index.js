@@ -24,7 +24,7 @@ function Home() {
     async function fetchConsulta() {
         const currentToken = localStorage.getItem('token') || '';
         try {
-            if (user.idUserRole === "f8abf4" || user.idUserRole == "f8abf4") {
+            if ((user.idUserRole === "f8abf4" || user.idUserRole == "f8abf4") || (user.idUserRole === "f3f629" || user.idUserRole == "f3f629")) {
                 const response = await HomeService.getConsultas(currentToken, ``);
 
                 const consultasComIdProfissional = response.data.map(consulta => {
@@ -69,7 +69,7 @@ function Home() {
     };
 
     const formatConsultasForCalendar = () => {
-        if (user.idUserRole === "f8abf4" || user.idUserRole == "f8abf4") {
+        if ((user.idUserRole === "f8abf4" || user.idUserRole == "f8abf4") || (user.idUserRole === "f3f629" || user.idUserRole == "f3f629")) {
             const todasAsConsultas = consultas;
             return todasAsConsultas.map(consulta => ({
                 title: 'Consulta',

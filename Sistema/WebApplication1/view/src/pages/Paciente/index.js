@@ -135,7 +135,6 @@ export default function Paciente() {
         if (paciente.nome && paciente.nome.trim()) { // Correção aqui
             let _pacientes = [...pacientes];
             let _paciente = { ...paciente };
-            console.log("Valor de Nascimento:", _paciente.nascimento);
 
             _paciente.cpf = removeCaracteres(_paciente.cpf);
 
@@ -146,7 +145,6 @@ export default function Paciente() {
 
             const currentToken = localStorage.getItem('token') || '';
 
-            console.log("Paciente:", paciente.id);
             if (paciente.id) {
                 const index = findIndexById(paciente.id);
                 _pacientes[index] = _paciente;
