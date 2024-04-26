@@ -18,25 +18,24 @@ namespace app.DAO
         public async Task<List<ConsultaDTO>> GetAll(ConsultaDTO dto)
         {
             var objSelect = new StringBuilder();
-            objSelect.Append("SELECT ");
-            objSelect.Append("\"Sistema\".\"Consultas\".\"Id\", ");
-            objSelect.Append("\"Sistema\".\"Consultas\".\"Data\", ");
+            objSelect.Append("SELECT \"Sistema\".\"Consultas\".\"Id\",                               ");
+            objSelect.Append("\"Sistema\".\"Consultas\".\"Data\",                                    ");
             objSelect.Append("TO_CHAR(\"Sistema\".\"Consultas\".\"Hora\", 'HH24:MI:SS') AS \"Hora\", ");
-            objSelect.Append("\"Sistema\".\"Consultas\".\"PacienteId\", ");
-            objSelect.Append("\"Sistema\".\"Consultas\".\"ProfissionalId\", ");
-            objSelect.Append("\"Sistema\".\"Consultas\".\"Atendida\", ");
-            objSelect.Append("\"Sistema\".\"Consultas\".\"Status\", ");
-            objSelect.Append("\"Sistema\".\"Consultas\".\"Tipo\", ");
-            objSelect.Append("\"Sistema\".\"Consultas\".\"Observacoes\", ");
-            objSelect.Append("\"Sistema\".\"Consultas\".\"CreatedAt\", ");
-            objSelect.Append("\"Sistema\".\"Consultas\".\"UpdatedAt\", ");
-            objSelect.Append("\"Pacientes\".\"Nome\" AS \"NomePacientes\", ");
-            objSelect.Append("\"Pacientes\".\"Cpf\" AS \"CpfPacientes\", ");
-            objSelect.Append("\"Pacientes\".\"Telefone\" AS \"TelefonePacientes\", ");
-            objSelect.Append("\"Profissionais\".\"Nome\" AS \"NomeProfissionais\", ");
-            objSelect.Append("\"Profissionais\".\"Email\" AS \"EmailProfissionais\", ");
-            objSelect.Append("\"Profissionais\".\"Cpf\" AS \"CpfProfissionais\" ");
-            objSelect.Append("FROM \"Sistema\".\"Consultas\" ");
+            objSelect.Append("\"Sistema\".\"Consultas\".\"PacienteId\",                              ");
+            objSelect.Append("\"Sistema\".\"Consultas\".\"ProfissionalId\",                          ");
+            objSelect.Append("\"Sistema\".\"Consultas\".\"Atendida\",                                ");
+            objSelect.Append("\"Sistema\".\"Consultas\".\"Status\",                                  ");
+            objSelect.Append("\"Sistema\".\"Consultas\".\"Tipo\",                                    ");
+            objSelect.Append("\"Sistema\".\"Consultas\".\"Observacoes\",                             ");
+            objSelect.Append("\"Sistema\".\"Consultas\".\"CreatedAt\",                               ");
+            objSelect.Append("\"Sistema\".\"Consultas\".\"UpdatedAt\",                               ");
+            objSelect.Append("\"Pacientes\".\"Nome\" AS \"NomePacientes\",                           ");
+            objSelect.Append("\"Pacientes\".\"Cpf\" AS \"CpfPacientes\",                             ");
+            objSelect.Append("\"Pacientes\".\"Telefone\" AS \"TelefonePacientes\",                   ");
+            objSelect.Append("\"Profissionais\".\"Nome\" AS \"NomeProfissionais\",                   ");
+            objSelect.Append("\"Profissionais\".\"Email\" AS \"EmailProfissionais\",                 ");
+            objSelect.Append("\"Profissionais\".\"Cpf\" AS \"CpfProfissionais\"                      ");
+            objSelect.Append("FROM \"Sistema\".\"Consultas\"                                         ");
             objSelect.Append("LEFT JOIN \"Sistema\".\"Pacientes\"     ON \"Sistema\".\"Consultas\".\"PacienteId\"      = \"Pacientes\".\"Id\" ");
             objSelect.Append("LEFT JOIN \"Sistema\".\"Profissionais\" ON \"Sistema\".\"Consultas\".\"ProfissionalId\" = \"Profissionais\".\"Id\"  ");
 
@@ -62,7 +61,7 @@ namespace app.DAO
                 objSelect.Append($"AND \"Observacoes\" = '{dto.Observacoes}' ");
             }
 
-            if (!string.IsNullOrEmpty(dto.Profissionais.Cpf))
+            if (!string.IsNullOrEmpty(dto.Profissionais?.Cpf))
             {
                 objSelect.Append($"AND \"Profissionais\".\"Cpf\" = '{dto.Profissionais.Cpf}' ");
             }
@@ -90,8 +89,6 @@ namespace app.DAO
                         Telefone = row["TelefonePacientes"] != DBNull.Value ? row["TelefonePacientes"].ToString() : string.Empty,
 
                     },
-
-
 
                     Profissionais = new ProfissionaisDTO
                     {

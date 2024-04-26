@@ -15,7 +15,7 @@ export class HomeService {
 
 
     static async getConsultas(token, query) {
-        return await api.get(`/getAllConsultas?${query}`, {
+        return await api.get(`/getAllConsultas${query}`, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }

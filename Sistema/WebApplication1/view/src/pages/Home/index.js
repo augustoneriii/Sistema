@@ -23,20 +23,27 @@ function Home() {
     async function fetchConsulta() {
         const currentToken = localStorage.getItem('token') || '';
         try {
-            const response = await HomeService.getConsultas(currentToken, `Profissionais.Cpf=${ user.cpf }`);
-            // Acessa o array de consultas
-            const consultasComIdProfissional = response.data.map(consulta => {
-                // Verifica se o CPF do profissional na consulta corresponde ao CPF do usuário logado
-                if (consulta.profissionais.cpf === user.cpf) {
-                    // Retorna a consulta com o id do profissional
-                    return { ...consulta, profissionalId: consulta.profissionais.id };
-                } else {
-                    // Se o CPF não corresponder, retorna null (ou qualquer outro valor que você queira)
-                    return null;
-                }
-            }).filter(consulta => consulta !== null); // Filtra para remover as consultas que não correspondem ao CPF do usuário logado
-            setConsultas(consultasComIdProfissional);
-            setDataLoaded(true);
+            if (user.idUserRole === "f8abf4" || user.idUserRole == "f8abf4") {
+                const response = await HomeService.getConsultas(currentToken, ``);
+
+                const consultasComIdProfissional = response.data.map(consulta => {
+                    return consulta
+
+                }).filter(consulta => consulta !== null);
+                setConsultas(consultasComIdProfissional);
+                setDataLoaded(true);
+
+            } else {
+                const response = await HomeService.getConsultas(currentToken, `?Profissionais.Cpf=${user.cpf}`);
+
+                const consultasComIdProfissional = response.data.map(consulta => {
+                    if (consulta.profissionais.cpf === user.cpf)
+                        return { ...consulta, profissionalId: consulta.profissionais.id };
+
+                }).filter(consulta => consulta !== null);
+                setConsultas(consultasComIdProfissional);
+                setDataLoaded(true);
+            }
         } catch (error) {
             console.error("Erro ao buscar consulta", error);
         }
@@ -45,7 +52,7 @@ function Home() {
 
     useEffect(() => {
         const currentToken = localStorage.getItem('token') || '';
-        HomeService.getProfissionais(currentToken, `Cpf=${ user.cpf }`)
+        HomeService.getProfissionais(currentToken, `Cpf=${user.cpf}`)
             .then(response => {
                 setProfissionais(response.data);
             })
@@ -61,25 +68,30 @@ function Home() {
     };
 
     const formatConsultasForCalendar = () => {
-        // Filtrando apenas as consultas desse profissional
-        const consultasDoProfissional = consultas.filter(consulta => {
-            // Verifica se consulta.profissionais é um array
-            if (Array.isArray(consulta.profissionais)) {
-                // Verifica se o CPF do profissional logado está presente nas consultas
-                return consulta.profissionais.some(profissional => profissional.cpf === user.cpf);
-            } else {
-                // Se consulta.profissionais não for um array, verifica diretamente o CPF
-                return consulta.profissionais.cpf === user.cpf;
-            }
-        });
+        if (user.idUserRole === "f8abf4" || user.idUserRole == "f8abf4") {
+            const todasAsConsultas = consultas;
+            return todasAsConsultas.map(consulta => ({
+                title: 'Consulta',
+                start: new Date(consulta.data).toISOString(),
+                backgroundColor: getEventColor(consulta.status)
+            }));
 
-        // Mapeando e formatando as consultas filtradas para o formato esperado pelo calendário
-        return consultasDoProfissional.map(consulta => ({
-            title: 'Consulta',
-            start: new Date(consulta.data).toISOString(),
-            backgroundColor: getEventColor(consulta.status)
-        }));
-    };
+        } else {
+            const consultasDoProfissional = consultas.filter(consulta => {
+                if (Array.isArray(consulta.profissionais)) {
+                    return consulta.profissionais.some(profissional => profissional.cpf === user.cpf);
+                } else {
+                    return consulta.profissionais.cpf === user.cpf;
+                }
+            });
+
+            return consultasDoProfissional.map(consulta => ({
+                title: 'Consulta',
+                start: new Date(consulta.data).toISOString(),
+                backgroundColor: getEventColor(consulta.status)
+            }));
+        }
+    }
 
 
     const getEventColor = (status) => {
