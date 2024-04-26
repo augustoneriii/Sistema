@@ -61,6 +61,7 @@ namespace app.DAO
             {
                 objSelect.Append($"AND \"Observacoes\" = '{dto.Observacoes}' ");
             }
+
             if (!string.IsNullOrEmpty(dto.Profissionais.Cpf))
             {
                 objSelect.Append($"AND \"Profissionais\".\"Cpf\" = '{dto.Profissionais.Cpf}' ");
@@ -112,36 +113,30 @@ namespace app.DAO
         {
             var objInsert = new StringBuilder();
             objInsert.Append("INSERT INTO \"Sistema\".\"Consultas\" (");
-            
             objInsert.Append(" \"Data\", ");
             objInsert.Append(" \"Hora\", ");
             objInsert.Append(" \"Atendida\", ");
             objInsert.Append(" \"Status\", ");
             objInsert.Append(" \"Tipo\", ");
             objInsert.Append(" \"Observacoes\", ");
-          
             objInsert.Append(" \"PacienteId\", ");
             objInsert.Append(" \"ProfissionalId\" ");
-
-
             objInsert.Append(") VALUES (");
-            
             objInsert.Append($" '{dto.Data}', ");
             objInsert.Append($" '{dto.Hora}', ");
-            objInsert.Append($" '{dto.Atendida:  1 : 0}', "); // Correção na definição de Atendida
+            objInsert.Append($" {dto.Atendida}, "); // Removido os caracteres de formatação
             objInsert.Append($" '{dto.Status}', ");
             objInsert.Append($" '{dto.Tipo}', ");
             objInsert.Append($" '{dto.Observacoes}', ");
             objInsert.Append($" '{dto.PacienteId}', ");
             objInsert.Append($" '{dto.ProfissionalId}' ");
-
-
             objInsert.Append(" ); ");
-            
+
             var id = _context.ExecuteNonQuery(objInsert.ToString());
 
             return id;
         }
+
 
         //Update
         public async Task<int> Update(ConsultaRequest dto)
