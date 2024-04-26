@@ -173,7 +173,7 @@ export default function Profissional() {
 
         if (profissional.nome.trim()) {
 
-            
+
 
             let _profissionais = [...profissionais];
             let _profissional = {
@@ -307,7 +307,15 @@ export default function Profissional() {
     const leftToolbarTemplate = () => {
         return (
             <>
-                <Button label="Novo" icon="pi pi-plus" className="border-round p-button-success mr-2" onClick={openNew} />
+                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
+            </>
+        );
+    };
+
+    const rightToolbarTemplate = () => {
+        return (
+            <>
+                <Button label="Novo" icon="pi pi-plus" className="border-round p-button-rounded p-button-success" onClick={openNew} />
             </>
         );
     };
@@ -343,10 +351,6 @@ export default function Profissional() {
     const header = (
         <div className="table-header">
             <h5 className="mx-0 my-1">Gerenciar Profissionais</h5>
-            <span className="p-input-icon-left">
-                <i className="pi pi-search" />
-                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
-            </span>
         </div>
     );
 
@@ -364,14 +368,8 @@ export default function Profissional() {
             <Toast ref={toast} />
             <Modal header={header} modal={false} visible={profissionalVisible} style={{ width: '50vw' }} onHide={() => setProfissionalVisible(false)}>
 
-                <Card>
-                    <span className="p-text-center p-mb-4" style={{ fontSize: '24px', color: '#333', borderBottom: 'solid 1px #6c757d' }}>
-                        Cadastro de Profissional
-                    </span>
-                </Card>
-
                 <div className="card">
-                    <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
+                    <Toolbar className="mb-4" right={rightToolbarTemplate} left={leftToolbarTemplate}></Toolbar>
 
                     <DataTable ref={dt} value={profissionais} selection={selectedProfissionais} onSelectionChange={e => setSelectedProfissionais(e.value)}
                         dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}

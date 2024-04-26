@@ -13,6 +13,7 @@ import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import { Checkbox } from 'primereact/checkbox';
+import { FloatLabel } from 'primereact/floatlabel';
 import Modal from '../../components/Modal/index.js'
 
 export default function Paciente() {
@@ -42,6 +43,7 @@ export default function Paciente() {
     const [pacienteDialog, setPacienteDialog] = useState(false);
     const [convenios, setConvenios] = useState([]);
     //const [deletePacienteDialog, setDeletePacienteDialog] = useState(false);
+    const [search, setSearch] = useState('');
     const [paciente, setPaciente] = useState(emptyPaciente);
     const [selectedPacientes, setSelectedPacientes] = useState(null);
     const [submitted, setSubmitted] = useState(false);
@@ -88,6 +90,14 @@ export default function Paciente() {
         { label: 'Masculino', value: 'm' },
         { label: 'Feminino', value: 'f' },
     ]
+    const onSearchChange = (e) => {
+        setSearch(e.target.value);
+    };
+
+    const onSearch = () => {
+        setGlobalFilter(search);
+    };
+
 
     const tipoSanguineoOptions = [
         { label: 'A+', value: 'A+' },
@@ -217,53 +227,78 @@ export default function Paciente() {
     const formatDate = (dateStr) => {
         if (!dateStr) return '';
         const date = new Date(dateStr);
-        if (!isNaN(date.getTime())) { // Check if the date is valid
+        if (!isNaN(date.getTime())) {
             const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
             return date.toLocaleDateString('pt-BR', options);
         } else {
-            return ''; // Return an empty string if the date is invalid
+            return '';
         }
     };
+
+    const normalizeCPF = (cpf) => {
+        return cpf.replace(/[^\d]/g, "");
+    }
+
+
+    const pacienteFiltrado = (paciente) => {
+        if (!globalFilter) return true;
+
+        const filtro = globalFilter.toLowerCase();
+        const cpfNorm = normalizeCPF(paciente.cpf);
+
+        return paciente.nome.toLowerCase().includes(filtro) || cpfNorm.includes(normalizeCPF(filtro));
+    };
+
+
+
+    const filteredPacientes = pacientes.filter(paciente => pacienteFiltrado(paciente));
 
 
     const leftToolbarTemplate = () => {
         return (
-            <React.Fragment>
-                <Button label="Novo" icon="pi pi-plus" className="border-round p-button-secondary mr-2" onClick={openNew} />
-            </React.Fragment>
+            <>
+                <FloatLabel >
+                    <label htmlFor="search">Nome / CPF</label>
+                    <InputText type="search" id="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
+                </FloatLabel>
+            </>
+        );
+    };
+
+    const rightToolbarTemplate = () => {
+        return (
+            <>
+                <Button label="Novo" icon="pi pi-plus" className="border-round p-button-success mr-2" onClick={openNew} />
+            </>
         );
     };
 
     const actionBodyTemplate = (rowData) => {
         return (
-            <React.Fragment>
+            <>
                 <Button icon="pi pi-pencil" className="border-round p-button-rounded p-button-secondary mr-2" onClick={() => editPaciente(rowData)} />
-            </React.Fragment>
+            </>
         );
     };
 
     const header = (
         <div className="table-header">
             <h5 className="mx-0 my-1">Gerenciar Pacientes</h5>
-            <span className="p-input-icon-left">
-                <i className="pi pi-search" />
-                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
-            </span>
         </div>
     );
 
     const pacienteDialogFooter = (
-        <React.Fragment>
+        <>
             <Button label="Cancelar" icon="pi pi-times" className="border-round p-button-text" onClick={hideDialog} />
             <Button label="Salvar" icon="pi pi-check" className="border-round p-button-text" onClick={savePaciente} />
-        </React.Fragment>
+        </>
     );
 
     /*const deletePacienteDialogFooter = (
-        <React.Fragment>
+        <>
             <Button label="Não" icon="pi pi-times" className="border-round p-button-text" onClick={hideDeletePacienteDialog} />
             <Button label="Sim" icon="pi pi-check" className="border-round p-button-text" onClick={deletePaciente} />
-        </React.Fragment>
+        </>
     );*/
 
     const headerTela = (
@@ -277,11 +312,11 @@ export default function Paciente() {
             <Toast ref={toast} />
 
             <div className="card">
-                <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
-                <DataTable ref={dt} value={pacientes} selection={selectedPacientes} onSelectionChange={e => setSelectedPacientes(e.value)}
+                <Toolbar className="mb-4" right={rightToolbarTemplate} left={leftToolbarTemplate}></Toolbar>
+                <DataTable ref={dt} value={filteredPacientes} selection={selectedPacientes} onSelectionChange={e => setSelectedPacientes(e.value)}
                     dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} scrollable scrollHeight="200px"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pacientes" globalFilter={globalFilter} header={header}>
+                    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pacientes" header={header}>
                     <Column field="id" header="Id" sortable></Column>
                     <Column field="nome" header="Nome" sortable></Column>
                     <Column field="cpf" header="CPF" sortable></Column>
@@ -291,7 +326,6 @@ export default function Paciente() {
                     <Column field="sexo" header="Sexo" sortable></Column>
                     <Column field="email" header="E-mail" sortable></Column>
                     <Column field="ativo" header="Ativo" sortable></Column>
-
                     <Column body={actionBodyTemplate}></Column>
                 </DataTable>
             </div>
@@ -330,16 +364,17 @@ export default function Paciente() {
                     <label htmlFor="endereco">Endereço</label>
                     <InputText id="endereco" value={paciente.endereco} onChange={(e) => onInputChange(e, 'endereco')} />
                 </div>
+                <div className="grid">
+                    <div className="field col-6">
+                        <label htmlFor="nascimento">Nascimento</label>
+                        <Calendar id="nascimento" value={paciente.nascimento} onChange={(e) => onInputChange(e, 'nascimento')} showIcon />
 
-                <div className="field col">
-                    <label htmlFor="nascimento">Nascimento</label>
-                    <Calendar id="nascimento" value={paciente.nascimento} onChange={(e) => onInputChange(e, 'nascimento')} showIcon />
+                    </div>
 
-                </div>
-
-                <div className="field col">
-                    <label htmlFor="sexo">Sexo</label>
-                    <Dropdown id="sexo" value={paciente.sexo} options={sexoOptions} onChange={(e) => onInputChange(e, 'sexo')} placeholder="Selecione" />
+                    <div className="field col-6">
+                        <label htmlFor="sexo">Sexo</label>
+                        <Dropdown id="sexo" value={paciente.sexo} options={sexoOptions} onChange={(e) => onInputChange(e, 'sexo')} placeholder="Selecione" />
+                    </div>
                 </div>
 
 
