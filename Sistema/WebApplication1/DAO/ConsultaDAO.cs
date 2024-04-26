@@ -62,7 +62,7 @@ namespace app.DAO
                 objSelect.Append($"AND \"Observacoes\" = '{dto.Observacoes}' ");
             }
 
-            if (dto.Profissionais != null && !string.IsNullOrEmpty(dto.Profissionais.Cpf))
+            if (!string.IsNullOrEmpty(dto.Profissionais.Cpf))
             {
                 objSelect.Append($"AND \"Profissionais\".\"Cpf\" = '{dto.Profissionais.Cpf}' ");
             }

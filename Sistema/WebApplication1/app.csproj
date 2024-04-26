@@ -29,6 +29,7 @@
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="view\src\pages\Home\service\" />
+    <Folder Include="view\src\pages\Profissional\ListaAtendimento\service\" />
   </ItemGroup>
 
 </Project>
