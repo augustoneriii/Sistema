@@ -43,7 +43,7 @@ const sidebarItems = [
                 actionValue: true
             }
         ],
-        roles: ['c8fffd', 'f3f629', 'f8abf4']
+        roles: [ 'f3f629', 'f8abf4']
     },
     {
         text: 'Cadastros Básicos',
@@ -82,7 +82,7 @@ const sidebarItems = [
                 actionValue: true
             },
         ],
-        roles: ['c8fffd', 'f3f629', 'f8abf4']
+        roles: [ 'f3f629', 'f8abf4']
     },
     {
         text: 'Configurações',

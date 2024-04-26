@@ -24,7 +24,9 @@ function SideBar({ idUserRole }) {
         }));
     };
 
-    const hasRole = (roles) => roles.includes(idUserRole);
+    const hasRole = (roles) => {
+        return roles.includes(idUserRole);
+    };
 
     return (
         <div className={`d-flex flex-column flex-shrink-0 bg-light absolute ${styles.sidebar} ${isExpanded ? styles.expanded : styles.collapsed}`} style={{ height: '100vh' }}>
