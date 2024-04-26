@@ -71,7 +71,6 @@ function AgendaProfissional() {
 
 
     const saveAgenda = (newAgenda) => {
-
         if (!newAgenda.profissionalId) {
             toast.current.show({ severity: 'error', summary: 'Erro', detail: 'Profissional não encontrado ou não cadastrado.', life: 3000 });
         }
@@ -81,8 +80,15 @@ function AgendaProfissional() {
 
             const currentToken = localStorage.getItem('token') || '';
 
-            AgendaProfissionalService.createAgenda(_agenda, currentToken);
-
+            AgendaProfissionalService.createAgenda(_agenda, currentToken)
+                .then(() => {
+                    toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Agenda salva com sucesso.', life: 3000 });
+                    getAgendas(); 
+                })
+                .catch(error => {
+                    console.error("Erro ao salvar agenda:", error);
+                    toast.current.show({ severity: 'error', summary: 'Erro', detail: 'Erro ao salvar agenda.', life: 3000 });
+                });
         } else {
             toast.current.show({ severity: 'error', summary: 'Erro', detail: 'Todos os campos são obrigatórios.', life: 3000 });
         }
@@ -103,14 +109,13 @@ function AgendaProfissional() {
     };
 
     const onButtonClick = (dia, horario) => {
-
         if (profissionais.length === 0) {
             toast.current.show({ severity: 'error', summary: 'Erro', detail: 'Profissional não encontrado ou não cadastrado.', life: 3000 });
-            return
+            return;
         }
         let newAgenda = {
             ...agenda,
-            diaSemana: new Date().toLocaleDateString('pt-BR', { weekday: 'long' }), // Obtém o dia da semana atual
+            diaSemana: dia, // Usando o dia selecionado pelo usuário
             hora: new Date().toISOString().split('T')[0] + 'T' + horario + ':00Z',
             profissionalId: profissionais[0].id,
             ativo: 1
@@ -119,7 +124,6 @@ function AgendaProfissional() {
         saveAgenda(newAgenda);
         getAgendas();
     };
-
     const dropDownDiasDaSemana = [
         { label: 'Segunda', value: 'Segunda' },
         { label: 'Terça', value: 'Terça' },
@@ -168,7 +172,7 @@ function AgendaProfissional() {
                                             <div className='col-6' key={index}>
                                                 {booked ? (
                                                     <Card
-                                                        className="bg-info text-center text-light cursor-pointer"
+                                                        className={`bg-info text-center text-light cursor-pointer ${booked ? 'selected' : ''}`}
                                                         onClick={() => deleteAgenda(id)}
                                                     >
                                                         {horario.label}
