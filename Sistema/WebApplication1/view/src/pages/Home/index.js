@@ -6,6 +6,7 @@ import ptLocale from '@fullcalendar/core/locales/pt';
 import { HomeService } from './service/HomeService'
 import { Dialog } from 'primereact/dialog';
 import { Tag } from 'primereact/tag';
+import Modal from '../../components/Modal';
 
 function Home() {
     const navigate = useNavigate();
@@ -107,6 +108,13 @@ function Home() {
         }
     };
 
+    const header = (
+        <>
+            <h2>Detalhes da Consulta</h2>
+            <hr />
+        </>
+    );
+
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
@@ -121,9 +129,7 @@ function Home() {
 
     return (
         <div className="text-center h-screen w-50 m-auto">
-            <h1>Home</h1>
-            <h2>Seja bem-vindo {user.userName}</h2>
-            <h3>{user.idUserRole}</h3>
+            <h2 className='pt-4'>Seja Bem-Vindo {user.userName}</h2>
             <hr />
 
             <FullCalendar
@@ -134,27 +140,41 @@ function Home() {
                 locale={ptLocale}
             />
 
-            <Dialog header="Detalhes da Consulta" visible={consultaDialogVisible} onHide={() => setConsultaDialogVisible(false)}>
+            <Modal
+                header={header}
+                visible={consultaDialogVisible}
+                onHide={() => setConsultaDialogVisible(false)}
+            >
+
                 {consultaSelecionada && (
-                    <div>
-                        <h3>Detalhes da Consulta:</h3>
-                        <p>Profissional:</p>
-                        <p> {consultaSelecionada.profissionais.nome}</p>
+                    <div className='grid'>
+                        <div className='col-12 flex gap-3'>
+                            <h5 className='text-xl'>Profissional:</h5>
+                            <p className='text-xl'> {consultaSelecionada.profissionais.nome}</p>
+                        </div>
                         <hr />
-                        <p>Paciente:</p>
-                        <p>{consultaSelecionada.pacientes.nome}</p>
+                        <div className='col-12 flex gap-3'>
+                            <h5 className='text-xl'>Paciente:</h5>
+                            <p className='text-xl'>{consultaSelecionada.pacientes.nome}</p>
+                        </div>
                         <hr />
-                        <p>Data:</p>
-                        <p> {formatDate(consultaSelecionada.data)}</p>
+                        <div className='col-12 flex gap-3'>
+                            <h5 className='text-xl'>Data:</h5>
+                            <p className='text-xl'> {formatDate(consultaSelecionada.data)}</p>
+                        </div>
                         <hr />
-                        <p>Hora:</p>
-                        <p> {formatTime(consultaSelecionada.hora)}</p>
+                        <div className='col-12 flex gap-3'>
+                            <h5 className='text-xl'>Hora:</h5>
+                            <p className='text-xl'> {formatTime(consultaSelecionada.hora)}</p>
+                        </div>
                         <hr />
-                        <p>Observações:</p>
-                        <p>{consultaSelecionada.observacoes}</p>
+                        <div className='col-12 flex gap-3'>
+                            <h5 className='text-xl'>ObservaÃ§Ãµes:</h5>
+                            <p className='text-xl'>{consultaSelecionada.observacoes}</p>
+                        </div>
                     </div>
                 )}
-            </Dialog>
+            </Modal>
         </div>
     );
 }

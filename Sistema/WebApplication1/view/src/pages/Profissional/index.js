@@ -307,7 +307,10 @@ export default function Profissional() {
     const leftToolbarTemplate = () => {
         return (
             <>
-                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
+                <FloatLabel>
+                    <label htmlFor="globalFilter">Filtro Global</label>
+                    <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
+                </FloatLabel>
             </>
         );
     };
@@ -324,7 +327,6 @@ export default function Profissional() {
         return (
             <>
                 <Button icon="pi pi-pencil" className="border-round p-button-rounded p-button-success mr-2" onClick={() => editProfissional(rowData)} />
-
             </>
         );
     };
@@ -480,9 +482,9 @@ export default function Profissional() {
                             />
                         </div>
 
-                        <div className="field col">
-                            <label htmlFor="ativo">Ativo</label>
+                        <div className=" col-12 flex align-items-center">
                             <Checkbox onChange={onCheckboxChange} checked={checked}></Checkbox>
+                            <label className="ml-2" htmlFor="ativo">Ativo</label>
                         </div>
                     </div>
 

@@ -40,19 +40,17 @@ function Login() {
                 </div>
                 <div>
                     <form onSubmit={handleSubmit}>
-                        <FloatLabel>
-                        <label htmlFor="email" className="block text-500 font-medium mb-3">Email</label>
-                        <InputText id="email" name='email' onChange={handleChange} type="text" placeholder="Email address" className="w-full mb-4" />
-                        </FloatLabel>
-
-                        <div classname="mt-5">
+                        <div className="flex flex-column">
                             <FloatLabel>
-                                <label htmlFor="password" className="block text-500 font-medium mb-2">Password</label>
-                                <InputText id="password" name='password' type="password" onChange={handleChange} placeholder="Password" className="w-full mb-3 mt-2" />
+                                <label htmlFor="email">Email</label>
+                                <InputText id="email" name='email' onChange={handleChange} type="text" className="w-full" />
                             </FloatLabel>
-                         </div>
-                        
-                        
+                            <br />
+                            <FloatLabel>
+                                <label htmlFor="password">Password</label>
+                                <InputText id="password" name='password' type="password" onChange={handleChange} className="w-full" />
+                            </FloatLabel>
+                        </div>
                         <div className="flex align-items-center justify-content-between mb-6">
                             <div className="flex align-items-center">
                             </div>

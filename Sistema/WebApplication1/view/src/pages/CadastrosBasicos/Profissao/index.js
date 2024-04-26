@@ -90,15 +90,15 @@ function Profissao() {
                 setProfissoes(_profissoes);
                 setProfissaoDialog(false);
                 setProfissao(emptyProfissao);
-            }catch (error) {
+            } catch (error) {
                 console.error("Erro ao salvar profissao:", error);
                 if (error.response && error.response.status === 400) {
                     toast.current.show({ severity: 'error', summary: 'Erro', detail: `Usuário não tem permissão para essa operação: ${error}`, life: 3000 });
                 }
-                
+
             }
 
-                
+
         }
     };
 
@@ -146,7 +146,7 @@ function Profissao() {
             toast.current.show({ severity: 'error', summary: 'Erro', detail: 'ID da profissão é indefinido', life: 3000 });
         }
     };*/
-    
+
 
     const findIndexById = (id) => {
         let index = -1;
@@ -171,18 +171,18 @@ function Profissao() {
 
     const leftToolbarTemplate = () => {
         return (
-            <React.Fragment>
+            <>
                 <Button label="Novo" icon="pi pi-plus" className="border-round p-button-success mr-2" onClick={openNew} />
-            </React.Fragment>
+            </>
         );
     };
 
     const actionButtonGroupTemplate = (rowData) => {
         return (
-            <React.Fragment>
+            <>
                 <Button icon="pi pi-bars" className="border-round p-button-rounded p-button-text" onClick={(e) => toggleMenu(rowData, e)} />
                 <Menu model={menuModel} ref={menuRef} popup={true} id="popup_menu" />
-            </React.Fragment>
+            </>
         );
     };
 
@@ -211,10 +211,10 @@ function Profissao() {
     );
 
     /*const deleteProfissaoDialogFooter = (
-        <React.Fragment>
+        <>
             <Button label="Não" icon="pi pi-times" className="border-round p-button-text" onClick={hideDeleteProfissaoDialog} />
             <Button label="Sim" icon="pi pi-check" className="border-round p-button-text" onClick={deleteProfissao} />
-        </React.Fragment>
+        </>
     );
     <Dialog visible={deleteProfissaoDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deleteProfissaoDialogFooter} onHide={hideDeleteProfissaoDialog}>
                     <div className="confirmation-content">
@@ -231,23 +231,23 @@ function Profissao() {
             <Modal header={header} modal={false} visible={profissaoVisible} style={{ width: '30vw' }} onHide={() => setProfissaoVisible(false)}>
                 <div className='card'>
                     <div className='grid'>
-                        <div className="field col-6 mt-5">
+                        <div className="field col-12 mt-5">
                             <FloatLabel>
-                            <label htmlFor="nome">Nome</label>
-                            <InputText className='w-full' id="nome" value={profissao.nome} onChange={(e) => onInputChange(e, 'nome')} />
+                                <label htmlFor="nome">Nome</label>
+                                <InputText className='w-full' id="nome" value={profissao.nome} onChange={(e) => onInputChange(e, 'nome')} />
                             </FloatLabel>
                         </div>
-                        <div className="field col-6">
-                           
-                            <label htmlFor="conselhoProfissional">Conselho Profissional</label>
-                            <Dropdown className='w-full' id="conselhoProfissional" value={profissao.conselhoProfissional} options={conselhoProfissionalOptions} onChange={(e) => onInputChange(e, 'conselhoProfissional')} placeholder="Selecione um conselho profissional" />
-                            
+                        <div className="field col-12">
+                            <FloatLabel>
+                                <label htmlFor="conselhoProfissional">Conselho Profissional</label>
+                                <Dropdown className='w-full' id="conselhoProfissional" value={profissao.conselhoProfissional} options={conselhoProfissionalOptions} onChange={(e) => onInputChange(e, 'conselhoProfissional')}  />
+                            </FloatLabel>
                         </div>
-                        <div className="field col-6">
-                            <label htmlFor="ativo">Ativo</label>
+                        <div className=" col-12 flex align-items-center">
+                            <label className="mr-2" htmlFor="ativo">Ativo</label>
                             <Checkbox onChange={onCheckboxChange} checked={checked}></Checkbox>
                         </div>
-                        <div className="field col">
+                        <div className="field col-12">
                             <Button label="Salvar" icon="pi pi-check" className="border-round p-button-text" onClick={saveProfissao} />
                         </div>
                     </div>
@@ -265,7 +265,7 @@ function Profissao() {
                     </DataTable>
                 </div>
 
-                
+
             </Modal>
         </>
     )
