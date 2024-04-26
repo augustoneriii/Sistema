@@ -18,30 +18,30 @@ namespace app.DAO
         public async Task<List<ConsultaDTO>> GetAll(ConsultaDTO dto)
         {
             var objSelect = new StringBuilder();
-            objSelect.Append("SELECT "                                                                                                             );
-            objSelect.Append("\"Sistema\".\"Consultas\".\"Id\", "                                                                                  );
-            objSelect.Append("\"Sistema\".\"Consultas\".\"Data\", "                                                                                );
-            objSelect.Append("TO_CHAR(\"Sistema\".\"Consultas\".\"Hora\", 'HH24:MI:SS') AS \"Hora\", "                                             );
-            objSelect.Append("\"Sistema\".\"Consultas\".\"PacienteId\", "                                                                          );
+            objSelect.Append("SELECT ");
+            objSelect.Append("\"Sistema\".\"Consultas\".\"Id\", ");
+            objSelect.Append("\"Sistema\".\"Consultas\".\"Data\", ");
+            objSelect.Append("TO_CHAR(\"Sistema\".\"Consultas\".\"Hora\", 'HH24:MI:SS') AS \"Hora\", ");
+            objSelect.Append("\"Sistema\".\"Consultas\".\"PacienteId\", ");
             objSelect.Append("\"Sistema\".\"Consultas\".\"ProfissionalId\", ");
-            objSelect.Append("\"Sistema\".\"Consultas\".\"Atendida\", "                                                                            );
-            objSelect.Append("\"Sistema\".\"Consultas\".\"Status\", "                                                                              );
-            objSelect.Append("\"Sistema\".\"Consultas\".\"Tipo\", "                                                                                );
-            objSelect.Append("\"Sistema\".\"Consultas\".\"Observacoes\", "                                                                         );
-            objSelect.Append("\"Sistema\".\"Consultas\".\"CreatedAt\", "                                                                           );
-            objSelect.Append("\"Sistema\".\"Consultas\".\"UpdatedAt\", "                                                                           );
-            objSelect.Append("\"Pacientes\".\"Nome\" AS \"NomePacientes\", "                                                                       );
-            objSelect.Append("\"Pacientes\".\"Cpf\" AS \"CpfPacientes\", "                                                                         );
-            objSelect.Append("\"Pacientes\".\"Telefone\" AS \"TelefonePacientes\", "                                                               );
-            objSelect.Append("\"Profissionais\".\"Nome\" AS \"NomeProfissionais\", "                                                               );
-            objSelect.Append("\"Profissionais\".\"Email\" AS \"EmailProfissionais\", "                                                              );
-            objSelect.Append("\"Profissionais\".\"Cpf\" AS \"CpfProfissionais\" "                                                               );
-            objSelect.Append("FROM \"Sistema\".\"Consultas\" "                                                                                   );
-            objSelect.Append("LEFT JOIN \"Sistema\".\"Pacientes\"     ON \"Sistema\".\"Consultas\".\"PacienteId\"      = \"Pacientes\".\"Id\" "    );
+            objSelect.Append("\"Sistema\".\"Consultas\".\"Atendida\", ");
+            objSelect.Append("\"Sistema\".\"Consultas\".\"Status\", ");
+            objSelect.Append("\"Sistema\".\"Consultas\".\"Tipo\", ");
+            objSelect.Append("\"Sistema\".\"Consultas\".\"Observacoes\", ");
+            objSelect.Append("\"Sistema\".\"Consultas\".\"CreatedAt\", ");
+            objSelect.Append("\"Sistema\".\"Consultas\".\"UpdatedAt\", ");
+            objSelect.Append("\"Pacientes\".\"Nome\" AS \"NomePacientes\", ");
+            objSelect.Append("\"Pacientes\".\"Cpf\" AS \"CpfPacientes\", ");
+            objSelect.Append("\"Pacientes\".\"Telefone\" AS \"TelefonePacientes\", ");
+            objSelect.Append("\"Profissionais\".\"Nome\" AS \"NomeProfissionais\", ");
+            objSelect.Append("\"Profissionais\".\"Email\" AS \"EmailProfissionais\", ");
+            objSelect.Append("\"Profissionais\".\"Cpf\" AS \"CpfProfissionais\" ");
+            objSelect.Append("FROM \"Sistema\".\"Consultas\" ");
+            objSelect.Append("LEFT JOIN \"Sistema\".\"Pacientes\"     ON \"Sistema\".\"Consultas\".\"PacienteId\"      = \"Pacientes\".\"Id\" ");
             objSelect.Append("LEFT JOIN \"Sistema\".\"Profissionais\" ON \"Sistema\".\"Consultas\".\"ProfissionalId\" = \"Profissionais\".\"Id\"  ");
-            
-            
-            objSelect.Append("WHERE 1 = 1"                                                                                                         );
+
+
+            objSelect.Append("WHERE 1 = 1 ");
 
 
             if (dto.Id > 0)
@@ -57,16 +57,20 @@ namespace app.DAO
             {
                 objSelect.Append($"AND \"Tipo\" = '{dto.Tipo}' ");
             }
-            if (!string.IsNullOrEmpty(dto.Observacoes)) 
-{
-    objSelect.Append($"AND \"Observacoes\" = '{dto.Observacoes}' ");
-}
+            if (!string.IsNullOrEmpty(dto.Observacoes))
+            {
+                objSelect.Append($"AND \"Observacoes\" = '{dto.Observacoes}' ");
+            }
+            if (!string.IsNullOrEmpty(dto.Profissionais.Cpf))
+            {
+                objSelect.Append($"AND \"Profissionais\".\"Cpf\" = '{dto.Profissionais.Cpf}' ");
+            }
 
             var dt = _context.ExecuteQuery(objSelect.ToString());
 
             var lstConsultas = new List<ConsultaDTO>();
 
-            foreach(DataRow row in dt.Rows)
+            foreach (DataRow row in dt.Rows)
             {
                 lstConsultas.Add(new ConsultaDTO()
                 {
@@ -83,20 +87,20 @@ namespace app.DAO
                         Nome = row["NomePacientes"] != DBNull.Value ? row["NomePacientes"].ToString() : string.Empty,
                         Cpf = row["CpfPacientes"] != DBNull.Value ? row["CpfPacientes"].ToString() : string.Empty,
                         Telefone = row["TelefonePacientes"] != DBNull.Value ? row["TelefonePacientes"].ToString() : string.Empty,
-                        
+
                     },
 
-                    
+
 
                     Profissionais = new ProfissionaisDTO
                     {
                         Id = Convert.ToInt32(row["ProfissionalId"] != DBNull.Value ? Convert.ToInt32(row["ProfissionalId"]) : 0),
-                        
+
                         Nome = row["NomeProfissionais"] != DBNull.Value ? row["NomeProfissionais"].ToString() : string.Empty,
                         Email = row["EmailProfissionais"] != DBNull.Value ? row["EmailProfissionais"].ToString() : string.Empty,
-                        Cpf = row["CpfProfissionais"] != DBNull.Value ? row["CpfProfissionais"].ToString() : string.Empty,     
+                        Cpf = row["CpfProfissionais"] != DBNull.Value ? row["CpfProfissionais"].ToString() : string.Empty,
                     }
-                    
+
 
                 }); ;
             }
