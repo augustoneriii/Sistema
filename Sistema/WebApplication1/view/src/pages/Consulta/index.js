@@ -29,7 +29,8 @@ export default function Consulta() {
         pacienteId: null,
         profissionalId: null,
         status: '',
-        tipo: ''
+        tipo: '',
+        
 
     };
 
@@ -44,20 +45,37 @@ export default function Consulta() {
     const [globalFilter, setGlobalFilter] = useState(null);
     const [expandedRows, setExpandedRows] = useState([]);
     const toast = useRef(null);
+    const [dataLoaded, setDataLoaded] = useState(false);
+    const [checked, setChecked] = useState(true);
     const dt = useRef(null);
+    const [activeConsulta, setActiveConsultas] = useState([]);
 
     useEffect(() => {
-        async function fetchConsulta() {
+        async function fetchConsultas() {
             const currentToken = localStorage.getItem('token') || '';
             try {
                 const response = await ConsultaService.getConsultas(currentToken);
-                setConsultas(response.data); // Assuming response.data contains the array of consultas
+                setConsultas(response.data); // Assuming response.data contains the array of convenios
+                setDataLoaded(true); // Marca que os dados foram carregados
             } catch (error) {
-                console.error("Erro ao buscar Consultas:", error);
+                console.error("Erro ao buscar consultas:", error);
             }
         }
-        fetchConsulta();
-    }, []);
+
+        if (consultaVisible && !dataLoaded) {
+            fetchConsultas();
+        }
+        if (consulta.atendida === true) {
+            setChecked(true); 
+        } else {
+            setChecked(false);
+        }
+        if (consultas.length > 0) {
+            const filteredConsultas = consultas.filter(consulta => consulta.atendida === true); // Filtra os convenios ativos
+            setActiveConsultas(filteredConsultas); // Atualiza o estado com os convenios ativos
+        }
+
+    }, [consultaVisible, dataLoaded, consulta.atendida, consultas]);
 
     useEffect(() => {
         const currentToken = localStorage.getItem('token') || '';
@@ -112,35 +130,28 @@ export default function Consulta() {
         setDeleteConsultaDialog(false);
     };
 
+
     const saveConsulta = () => {
         setSubmitted(true);
 
         if (consulta.tipo.trim()) {
-            let _consultas = [...consultas];
-            let _consulta = { ...consulta };
-
-            let postConsulta = {
-                PacienteId: _consulta.paciente.id,
-                ProfissionalId: _consulta.profissional.id,
-                Data: _consulta.data,
-                Hora: _consulta.hora,
-                Status: _consulta.status,
-                Tipo: _consulta.tipo,
-                Observacoes: _consulta.observacoes,
-                Atendida: false
-            };
+          let _consultas = [...consultas];
+          let _consulta = { ...consulta };
 
 
+            /*_consulta.atendida = checked ? 1 : 0;*/ // Atualiza o campo "ativo" com base no estado do checkbox
             const currentToken = localStorage.getItem('token') || '';
             if (consulta.id) {
                 const index = findIndexById(consulta.id);
                 _consultas[index] = _consulta;
-                toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Atualizado', life: 3000 });
-                ConsultaService.updateConsulta(postConsulta, currentToken);
+                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Consulta Atualizado', life: 3000 });
+                ConsultaService.updateConsulta(_consulta, currentToken);
             } else {
-                _consultas.push(postConsulta);
-                toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Criado', life: 3000 });
-                ConsultaService.createConsulta(postConsulta, currentToken);
+                _consultas.push(_consulta);
+                console.log("consulta", _consulta);
+                ConsultaService.createConsulta(_consulta, currentToken);
+                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Convenio Criado', life: 3000 });
+
             }
 
             setConsultas(_consultas);
@@ -148,6 +159,47 @@ export default function Consulta() {
             setConsulta(emptyConsulta);
         }
     };
+
+
+
+    //const saveConsulta = () => {
+    //    setSubmitted(true);
+
+    //   
+
+    //        let postConsulta = {
+    //            ConsultaId:  _consulta.id,
+    //            PacienteId: _consulta.paciente.id,
+    //            ProfissionalId: _consulta.profissional.id,
+    //            Data: _consulta.data,
+    //            Hora: _consulta.hora,
+    //            Status: _consulta.status,
+    //            Tipo: _consulta.tipo,
+    //            Observacoes: _consulta.observacoes,
+    //            Atendida: false
+    //        };
+
+    //        console.log("consulta", postConsulta);
+
+    //        const currentToken = localStorage.getItem('token') || '';
+    //        if (consulta.id) {
+    //            console.log(consulta)
+    //            const index = findIndexById(consulta.id);
+    //            _consultas[index] = _consulta;
+    //            toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Atualizado', life: 3000 });
+    //            ConsultaService.updateConsulta(postConsulta, currentToken);
+    //        } else {
+    //            console.log("create consulta", _consulta);
+    //            _consultas.push(postConsulta);
+    //            toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Criado', life: 3000 });
+    //            ConsultaService.createConsulta(postConsulta, currentToken);
+    //        }
+
+    //        setConsultas(_consultas);
+    //        setConsultaDialog(false);
+    //        setConsulta(emptyConsulta);
+    //    }
+    //};
 
     const editConsulta = (consultaData) => {
         setConsulta({
@@ -157,32 +209,6 @@ export default function Consulta() {
         });
         setConsultaDialog(true);
     };
-
-
-    /*const confirmDeleteConsulta = (consulta) => {
-        setConsulta(consulta);
-        setDeleteConsultaDialog(true);
-    };
-
-    const deleteConsulta = () => {
-        const currentToken = localStorage.getItem('token') || '';
-
-        if (consulta && consulta.id) {
-
-            ConsultaService.deleteConsulta(consulta.id, currentToken)
-                .then(() => {
-                    toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Deletado', life: 3000 });
-                    setConsultas(consultas.filter(val => val.id !== consulta.id));
-                    setDeleteConsultaDialog(false);
-                    setConsulta(emptyConsulta);
-                })
-                .catch(error => {
-                    console.error("Erro ao deletar consulta:", error);
-                });
-        } else {
-            console.error("Erro: id do consulta é undefined");
-        }
-    };*/
 
 
     const exportCSV = (selectionOnly) => {
@@ -204,22 +230,11 @@ export default function Consulta() {
         return Math.random().toString(36).substr(2, 9);
     };
 
-    const onInputChange = (e, name) => {
-        let val;
-        if (name === 'atendida') {
-            // Checkbox retorna um boolean diretamente, então use e.checked para ele
-            val = e.checked;
-        } else if (e.value !== undefined) {
-            // Para Dropdown e componentes que usam e.value
-            val = e.value;
-        } else {
-            // Para componentes de entrada padrão que usam e.target.value
-            val = e.target.value;
-        }
-
-        let _consulta = { ...consulta };
-        _consulta[name] = val;
-        setConsulta(_consulta);
+    const onInputChange = (name, value) => {
+        setConsulta(prevConsulta => ({
+            ...prevConsulta,
+            [name]: value,
+        }));
     };
 
     const formatTime = (timeStr) => {
@@ -241,7 +256,7 @@ export default function Consulta() {
         return (
             <React.Fragment>
                 <Button icon="pi pi-pencil" className="border-round p-button-rounded p-button-secondary mr-2" onClick={() => editConsulta(rowData)} />
-                
+
             </React.Fragment>
         );
     };
@@ -294,32 +309,10 @@ export default function Consulta() {
         </React.Fragment>
     );
 
-    /*const deleteConsultaDialogFooter = (
-        <React.Fragment>
-            <Button label="Não" icon="pi pi-times" className="border-round p-button-text" onClick={hideDeleteConsultaDialog} />
-            <Button label="Sim" icon="pi pi-check" className="border-round p-button-text" onClick={deleteConsulta} />
-        </React.Fragment>
-    );
-    <Dialog visible={deleteConsultaDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deleteConsultaDialogFooter} onHide={hideDeleteConsultaDialog}>
-                    <div className="confirmation-content">
-                        <i className="pi pi-exclamation-triangle mr-2" style={{ fontSize: '2rem' }} />
-                        {consulta && <span>Tem certeza que deseja excluir a consulta de <b>{consulta.NomePaciente}</b> com o profissional <b>{consulta.NomeProfissional}</b>?</span>}
-                    </div>
-                </Dialog>
-    <Button icon="pi pi-trash" className="border-round p-button-rounded p-button-danger" onClick={() => confirmDeleteConsulta(rowData)} />
-    */
-
     return (
         <>
             <Toast ref={toast} />
             <Modal header={header} modal={false} visible={consultaVisible} style={{ width: '50vw' }} onHide={() => setConsultaVisible(false)}>
-                {/* 
-            <Card>
-                <span className="p-text-center p-mb-4" style={{ fontSize: '24px', color: '#333', borderBottom: 'solid 1px #6c757d' }}>
-                    Cadastro de Consulta
-                </span>
-            </Card> */}
-
                 <div className="card">
                     <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
 
@@ -336,21 +329,18 @@ export default function Consulta() {
                         <Column style={{ width: '14.28%' }} field="tipo" header="Tipo" sortable></Column>
                         <Column style={{ width: '14.28%' }} header="Ações" body={actionBodyTemplate}></Column>
                     </DataTable>
-
                 </div>
-
                 <Dialog visible={consultaDialog} style={{ width: '850px', margin: 'auto' }} header="Detalhes do Consulta" modal className="p-fluid" footer={consultaDialogFooter} onHide={hideDialog}>
-
                     <div className='grid'>
                         <div className="field col-6">
                             <label htmlFor="profissional">Profissional</label>
-                            <Dropdown editable id='profissional' value={consulta.profissional} onChange={(e) => onInputChange(e, 'profissional')} options={profissionais} optionLabel="nome"
+                            <Dropdown editable id='profissional' value={consulta.profissional} onChange={(e) => onInputChange('profissional', e.value)} options={profissionais} optionLabel="nome"
                                 placeholder="Selecione o Profissional" className="w-full" />
                         </div>
                         <div className="field col-6">
                             <label htmlFor="email">Paciente</label>
                             <div className="p-inputgroup flex-1">
-                                <Dropdown editable id='paciente' value={consulta.paciente} onChange={(e) => onInputChange(e, 'paciente')} options={pacientes} optionLabel="nome"
+                                <Dropdown editable id='paciente' value={consulta.paciente} onChange={(e) => onInputChange('paciente', e.value)} options={pacientes} optionLabel="nome"
                                     placeholder="Selecione o Paciente" className="w-full" />
                                 <Button icon="pi pi-plus" onClick={() => setPacienteVisible(true)} className="p-button-secondary border-round-right" />
                             </div>
@@ -358,39 +348,39 @@ export default function Consulta() {
 
                         <div className="field col-6">
                             <label htmlFor="status">Status</label>
-                            <Dropdown editable value={consulta.status} onChange={(e) => onInputChange(e, 'status')} options={["Agendada", "Cancelada", "Realizada"]}
+                            <Dropdown editable value={consulta.status} onChange={(e) => onInputChange('status', e.value)} options={["Agendada", "Cancelada", "Realizada"]}
                                 placeholder="Selecione o Status" className="w-full" />
                         </div>
                         <div className="field col-6">
                             <label htmlFor="tipo">Tipo</label>
-                            <Dropdown editable value={consulta.tipo} onChange={(e) => onInputChange(e, 'tipo')} options={["Consulta", "Retorno"]}
+                            <Dropdown editable value={consulta.tipo} onChange={(e) => onInputChange('tipo', e.value)} options={["Consulta", "Retorno"]}
                                 placeholder="Selecione o Tipo" className="w-full" />
                         </div>
                     </div>
                     <div className='grid'>
                         <div className="field col">
                             <label htmlFor="data">Data</label>
-                            <Calendar id="data" value={consulta.data} onChange={(e) => onInputChange(e, 'data')} showIcon />
+                            <Calendar id="data" value={consulta.data} onChange={(e) => onInputChange('data', e.value)} showIcon />
                         </div>
 
                         <div className="field col">
                             <label htmlFor="hora">Hora</label>
-                            <Calendar id="hora" value={consulta.hora} onChange={(e) => onInputChange(e, 'hora')} timeOnly />
+                            <Calendar id="hora" value={consulta.hora} onChange={(e) => onInputChange('hora', e.value)} timeOnly />
                         </div>
                     </div>
                     <div className='grid'>
                         <div className="field col">
                             <FloatLabel>
-                            <label htmlFor="observacoes">Observações</label>
-                            <InputTextarea id="observacoes" value={consulta.observacoes} onChange={(e) => onInputChange(e, 'observacoes')} />
+                                <label htmlFor="observacoes">Observações</label>
+                                <InputTextarea id="observacoes" value={consulta.observacoes} onChange={(e) => onInputChange('observacoes', e.target.value)} />
                             </FloatLabel>
-                        </div>  
+                        </div>
                     </div>
                     <div className="flex align-items-center">
-                        <Checkbox inputId="atendida" value={consulta.atendida} onChange={(e) => onInputChange(e, 'atendida')} />
+                        <Checkbox inputId="atendida" checked={consulta.atendida} onChange={(e) => onInputChange('atendida', e.checked)} />
                         <label className="ml-2" htmlFor="atendida">Atendida</label>
                     </div>
-                </Dialog>    
+                </Dialog>
 
             </Modal>
         </>
