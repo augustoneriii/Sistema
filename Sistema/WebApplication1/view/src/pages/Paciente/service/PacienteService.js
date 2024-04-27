@@ -32,12 +32,17 @@ export class PacienteService {
 
 
     static async updatePaciente(paciente, token) {
-        return await api.patch(`/updatePacientes`, paciente, {
+        return await api.patch(`/updatePacientes`, {
+            ...paciente,
+            ConvenioId: paciente.IdConvenio // Garantir que este campo esteja correto
+        }, {
+
             headers: {
-                Authorization: `Bearer ${JSON.parse(token)}`
+                Authorization: `Bearer ${token}`
             }
         });
     }
+
     /*
     static async deletePaciente(id, token) {
         return await api.delete(`/deletePacientes?id=${id}`, {

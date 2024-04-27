@@ -129,10 +129,11 @@ export default function Paciente() {
         return cpf.replace(/[.-]/g, '');
     }
 
-    const savePaciente = () => {
+    const savePaciente = async() => {
         setSubmitted(true);
 
         if (paciente.nome && paciente.nome.trim()) { // Correção aqui
+            console.log("Paciente antes de salvar:", paciente); // Adiciona este console.log para verificar o objeto paciente antes de enviar
             let _pacientes = [...pacientes];
             let _paciente = { ...paciente };
 
@@ -141,7 +142,7 @@ export default function Paciente() {
             _paciente.ativo = checked ? 1 : 0;
 
 
-            delete _paciente.convenio;
+            //delete _paciente.convenio;
 
             const currentToken = localStorage.getItem('token') || '';
 
@@ -149,7 +150,8 @@ export default function Paciente() {
                 const index = findIndexById(paciente.id);
                 _pacientes[index] = _paciente;
                 toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Atualizado', life: 3000 });
-                PacienteService.updatePaciente(_paciente, currentToken);
+                console.log(_paciente)
+                await PacienteService.updatePaciente(_paciente, currentToken);
             } else {
                 toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Criado', life: 3000 });;
                 PacienteService.createPaciente(_paciente, currentToken);
