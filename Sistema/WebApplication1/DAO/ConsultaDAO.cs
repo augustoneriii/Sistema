@@ -142,6 +142,8 @@ namespace app.DAO
             objUpdate.Append("UPDATE \"Sistema\".\"Consultas\" SET ");
             objUpdate.Append($" \"Data\" = '{dto.Data:yyyy-MM-dd}', ");
             objUpdate.Append($" \"Hora\" = '{dto.Hora}', ");
+            objUpdate.Append($" \"PacienteId\" = '{dto.PacienteId}', ");
+            objUpdate.Append($" \"ProfissionalId\" = '{dto.ProfissionalId}', ");
             objUpdate.Append($" \"Atendida\" = '{dto.Atendida}', ");
             objUpdate.Append($" \"Status\" = '{dto.Status}', ");
             objUpdate.Append($" \"Tipo\" = '{dto.Tipo}', ");

@@ -105,6 +105,33 @@ namespace app.Controllers
             }
         }
 
+        //update user
+        [HttpPatch]
+        [Route("UpdateUser")]
+        public async Task<IActionResult> UpdateUser([FromBody] UserDTO user)
+        {
+            try
+            {
+                var token = ExtractAuthToken();
+                UserValidationResponse userLogado = await authService.CheckUser(token);
+                if (userLogado == null || !userLogado.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
+
+                var response = await authService.UpdateUser(user);
+
+                if (response.ErrorMessages != null || !string.IsNullOrEmpty(response.ErrorMessages))
+                    return BadRequest(response.ErrorMessages);
+
+                return Ok(new { Message = "Usuário atualizado com sucesso!" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }   
+
         [HttpGet]
         [Route("GetAllUsers")]
         public async Task<IActionResult> GetAllUsers()

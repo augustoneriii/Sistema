@@ -26,13 +26,13 @@ export default class UsuarioService {
         });
     }
 
-    //static async updateUsuario(usuario, token) {
-    //    return await api.patch(`/updateUsuarioMedicos`, usuario, {
-    //        headers: {
-    //            Authorization: `Bearer ${token}`
-    //        }
-    //    });
-    //}
+    static async updateUsuario(usuario, token) {
+       return await api.patch(`/UpdateUser`, usuario, {
+           headers: {
+               Authorization: `Bearer ${token}`
+           }
+       });
+    }
 
     //static async deleteUsuario(id, token) {
     //    return await api.delete(`/deleteUsuarioMedicos?id=${id}`, {

@@ -80,6 +80,35 @@ namespace app.BE
 
             return newUser;
         }
+        //update user
+        public async Task<UserDTO> UpdateUser(UserDTO user)
+        {
+            var dao = new AuthDAO(_context);
+
+            var emailExists = await dao.FindByEmail(user.Email);
+            if (emailExists == null)
+            {
+                return new UserDTO
+                {
+                    ErrorMessages = "Email not found"
+                };
+            }
+
+            var result = await dao.UpdateUser(user);
+
+            if (result != null)
+            {
+                return result;
+            }
+            else
+            {
+                return new UserDTO
+                {
+                    ErrorMessages = "Error updating user"
+                };
+            }
+        }
+
 
         public async Task<UserValidationResponse> Authenticate(UserLoginDTO user)
         {

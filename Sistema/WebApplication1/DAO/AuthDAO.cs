@@ -252,6 +252,32 @@ namespace app.DAO
         }
 
 
+        //update AspNetUser 
+        public async Task<UserDTO> UpdateUser(UserDTO dto)
+        {
+            var objUpdate = new StringBuilder();
+            objUpdate.Append("UPDATE \"Sistema\".\"AspNetUsers\" ");
+            objUpdate.Append($"SET username = '{dto.UserName}', ");
+            objUpdate.Append($"email = '{dto.Email}', ");
+            objUpdate.Append($"cpf = '{dto.Cpf}', ");
+            objUpdate.Append($"passwordhash = '{dto.Password}', ");
+            objUpdate.Append($"phonenumber = '{dto.PhoneNumber}' ");
+            objUpdate.Append($"WHERE id = '{dto.Id}'");
+
+            _context.ExecuteNonQuery(objUpdate.ToString());
+
+            UserDTO obj = new UserDTO();
+            obj.Id = dto.Id;
+            obj.UserName = dto.UserName;
+            obj.Email = dto.Email;
+            obj.Cpf = dto.Cpf;
+            obj.Password = dto.Password;
+            obj.PhoneNumber = dto.PhoneNumber;
+
+            return obj;
+        }
+
+
         //change password method
         public async Task<UserChangePasswordDTO> ChangePassword(UserChangePasswordDTO dto)
         {

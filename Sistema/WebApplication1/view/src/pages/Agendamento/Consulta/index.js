@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ConsultaService } from './service/ConsultaService.js';
-import { SidebarContext } from '../../context/SideBarContext';
+import { SidebarContext } from '../../../context/SideBarContext';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { Toolbar } from 'primereact/toolbar';
@@ -13,7 +13,8 @@ import { Calendar } from 'primereact/calendar';
 import { Checkbox } from "primereact/checkbox";
 import { InputTextarea } from 'primereact/inputtextarea';
 import { FilterMatchMode } from 'primereact/api';
-import Modal from '../../components/Modal/index.js';
+import Modal from '../../../components/Modal/index.js';
+import { InputText } from 'primereact/inputtext';
 import { FloatLabel } from 'primereact/floatlabel';
 
 export default function Consulta() {
@@ -47,15 +48,6 @@ export default function Consulta() {
     const dt = useRef(null);
 
     useEffect(() => {
-        async function fetchConsulta() {
-            const currentToken = localStorage.getItem('token') || '';
-            try {
-                const response = await ConsultaService.getConsultas(currentToken);
-                setConsultas(response.data); // Assuming response.data contains the array of consultas
-            } catch (error) {
-                console.error("Erro ao buscar Consultas:", error);
-            }
-        }
         fetchConsulta();
     }, []);
 
@@ -63,7 +55,7 @@ export default function Consulta() {
         const currentToken = localStorage.getItem('token') || '';
         ConsultaService.getPacientes(currentToken)
             .then(response => {
-                setPacientes(response.data); // Acesso à array de pacientes
+                setPacientes(response.data);
             })
             .catch(error => {
                 console.error("Erro ao buscar pacientes:", error);
@@ -74,12 +66,22 @@ export default function Consulta() {
         const currentToken = localStorage.getItem('token') || '';
         ConsultaService.getProfissionais(currentToken)
             .then(response => {
-                setProfissionais(response.data); // Acesso à array de profissionais
+                setProfissionais(response.data);
             })
             .catch(error => {
                 console.error("Erro ao buscar profissionais:", error);
             });
     }, []);
+
+    async function fetchConsulta() {
+        const currentToken = localStorage.getItem('token') || '';
+        try {
+            const response = await ConsultaService.getConsultas(currentToken);
+            setConsultas(response.data);
+        } catch (error) {
+            console.error("Erro ao buscar Consultas:", error);
+        }
+    }
 
     const formatDate = (dateStr) => {
         if (!dateStr) return '';
@@ -112,78 +114,48 @@ export default function Consulta() {
         setDeleteConsultaDialog(false);
     };
 
-    const saveConsulta = () => {
+    const saveConsulta = async () => {
         setSubmitted(true);
-
+    
         if (consulta.tipo.trim()) {
             let _consultas = [...consultas];
             let _consulta = { ...consulta };
-
+    
             let postConsulta = {
-                PacienteId: _consulta.paciente.id,
-                ProfissionalId: _consulta.profissional.id,
-                Data: _consulta.data,
-                Hora: _consulta.hora,
-                Status: _consulta.status,
-                Tipo: _consulta.tipo,
-                Observacoes: _consulta.observacoes,
-                Atendida: false
+                id: _consulta.id,
+                pacienteId: _consulta.paciente.id,
+                profissionalId: _consulta.profissional.id,
+                data: _consulta.data,
+                hora: _consulta.hora,
+                status: _consulta.status,
+                tipo: _consulta.tipo,
+                observacoes: _consulta.observacoes,
+                atendida: false
             };
-
-
+    
             const currentToken = localStorage.getItem('token') || '';
             if (consulta.id) {
                 const index = findIndexById(consulta.id);
                 _consultas[index] = _consulta;
-                toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Atualizado', life: 3000 });
-                ConsultaService.updateConsulta(postConsulta, currentToken);
+                toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Atualizada', life: 3000 });
+                await ConsultaService.updateConsulta(postConsulta, currentToken);
             } else {
-                _consultas.push(postConsulta);
-                toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Criado', life: 3000 });
-                ConsultaService.createConsulta(postConsulta, currentToken);
+                toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Criada', life: 3000 });
+                await ConsultaService.createConsulta(postConsulta, currentToken);
             }
-
+    
+            await fetchConsulta();  
             setConsultas(_consultas);
             setConsultaDialog(false);
             setConsulta(emptyConsulta);
         }
     };
+    
 
     const editConsulta = (consultaData) => {
-        setConsulta({
-            ...consultaData,
-            paciente: pacientes.find(p => p.id === consultaData.IdPaciente),
-            profissional: profissionais.find(p => p.id === consultaData.IdProfissional),
-        });
+        setConsulta({ ...consultaData });
         setConsultaDialog(true);
     };
-
-
-    /*const confirmDeleteConsulta = (consulta) => {
-        setConsulta(consulta);
-        setDeleteConsultaDialog(true);
-    };
-
-    const deleteConsulta = () => {
-        const currentToken = localStorage.getItem('token') || '';
-
-        if (consulta && consulta.id) {
-
-            ConsultaService.deleteConsulta(consulta.id, currentToken)
-                .then(() => {
-                    toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Deletado', life: 3000 });
-                    setConsultas(consultas.filter(val => val.id !== consulta.id));
-                    setDeleteConsultaDialog(false);
-                    setConsulta(emptyConsulta);
-                })
-                .catch(error => {
-                    console.error("Erro ao deletar consulta:", error);
-                });
-        } else {
-            console.error("Erro: id do consulta é undefined");
-        }
-    };*/
-
 
     const exportCSV = (selectionOnly) => {
         dt.current.exportCSV({ selectionOnly });
@@ -200,20 +172,13 @@ export default function Consulta() {
         return index;
     };
 
-    const createId = () => {
-        return Math.random().toString(36).substr(2, 9);
-    };
-
     const onInputChange = (e, name) => {
         let val;
         if (name === 'atendida') {
-            // Checkbox retorna um boolean diretamente, então use e.checked para ele
             val = e.checked;
         } else if (e.value !== undefined) {
-            // Para Dropdown e componentes que usam e.value
             val = e.value;
         } else {
-            // Para componentes de entrada padrão que usam e.target.value
             val = e.target.value;
         }
 
@@ -221,6 +186,7 @@ export default function Consulta() {
         _consulta[name] = val;
         setConsulta(_consulta);
     };
+
 
     const formatTime = (timeStr) => {
         if (!timeStr) return '';
@@ -231,18 +197,25 @@ export default function Consulta() {
 
     const leftToolbarTemplate = () => {
         return (
-            <React.Fragment>
+            <>
+                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Pesquisar..." />
+            </>
+        );
+    };
+
+    const rightToolbarTemplate = () => {
+        return (
+            <>
                 <Button label="Novo" icon="pi pi-plus" className="border-round p-button-secondary mr-2" onClick={openNew} />
-            </React.Fragment>
+            </>
         );
     };
 
     const actionBodyTemplate = (rowData) => {
         return (
-            <React.Fragment>
+            <>
                 <Button icon="pi pi-pencil" className="border-round p-button-rounded p-button-secondary mr-2" onClick={() => editConsulta(rowData)} />
-                
-            </React.Fragment>
+            </>
         );
     };
 
@@ -285,43 +258,20 @@ export default function Consulta() {
     const header = (
         <h1>Gerenciar Consultas</h1>
     );
-    // const header = renderHeader();
 
     const consultaDialogFooter = (
-        <React.Fragment>
+        <>
             <Button label="Cancelar" icon="pi pi-times" className="border-round p-button-text" onClick={hideDialog} />
             <Button label="Salvar" icon="pi pi-check" className="border-round p-button-text" onClick={saveConsulta} />
-        </React.Fragment>
+        </>
     );
-
-    /*const deleteConsultaDialogFooter = (
-        <React.Fragment>
-            <Button label="Não" icon="pi pi-times" className="border-round p-button-text" onClick={hideDeleteConsultaDialog} />
-            <Button label="Sim" icon="pi pi-check" className="border-round p-button-text" onClick={deleteConsulta} />
-        </React.Fragment>
-    );
-    <Dialog visible={deleteConsultaDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deleteConsultaDialogFooter} onHide={hideDeleteConsultaDialog}>
-                    <div className="confirmation-content">
-                        <i className="pi pi-exclamation-triangle mr-2" style={{ fontSize: '2rem' }} />
-                        {consulta && <span>Tem certeza que deseja excluir a consulta de <b>{consulta.NomePaciente}</b> com o profissional <b>{consulta.NomeProfissional}</b>?</span>}
-                    </div>
-                </Dialog>
-    <Button icon="pi pi-trash" className="border-round p-button-rounded p-button-danger" onClick={() => confirmDeleteConsulta(rowData)} />
-    */
 
     return (
         <>
             <Toast ref={toast} />
             <Modal header={header} modal={false} visible={consultaVisible} style={{ width: '50vw' }} onHide={() => setConsultaVisible(false)}>
-                {/* 
-            <Card>
-                <span className="p-text-center p-mb-4" style={{ fontSize: '24px', color: '#333', borderBottom: 'solid 1px #6c757d' }}>
-                    Cadastro de Consulta
-                </span>
-            </Card> */}
-
                 <div className="card">
-                    <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
+                    <Toolbar className="mb-4" right={rightToolbarTemplate} left={leftToolbarTemplate}></Toolbar>
 
                     <DataTable ref={dt} value={consultas} selection={selectedConsultas} onSelectionChange={e => setSelectedConsultas(e.value)}
                         dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} rowGroupMode="subheader" groupRowsBy="profissionais.nome" sortOrder={1}
@@ -381,16 +331,16 @@ export default function Consulta() {
                     <div className='grid'>
                         <div className="field col">
                             <FloatLabel>
-                            <label htmlFor="observacoes">Observações</label>
-                            <InputTextarea id="observacoes" value={consulta.observacoes} onChange={(e) => onInputChange(e, 'observacoes')} />
+                                <label htmlFor="observacoes">Observações</label>
+                                <InputTextarea id="observacoes" value={consulta.observacoes} onChange={(e) => onInputChange(e, 'observacoes')} />
                             </FloatLabel>
-                        </div>  
+                        </div>
                     </div>
                     <div className="flex align-items-center">
-                        <Checkbox inputId="atendida" value={consulta.atendida} onChange={(e) => onInputChange(e, 'atendida')} />
-                        <label className="ml-2" htmlFor="atendida">Atendida</label>
+                        <Checkbox inputId="atendida" checked={consulta.atendida} onChange={(e) => onInputChange(e, 'atendida')} />
+                        <label htmlFor="atendida" className="ml-2">Atendida</label>
                     </div>
-                </Dialog>    
+                </Dialog>
 
             </Modal>
         </>

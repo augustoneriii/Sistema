@@ -167,39 +167,6 @@ export default function Paciente() {
         setPacienteDialog(true);
     };
 
-    /*const confirmDeletePaciente = (paciente) => {
-        setPaciente(paciente);
-        setDeletePacienteDialog(true);
-    };
-
-    const deletePaciente = () => {
-        const currentToken = localStorage.getItem('token') || '';
-
-        if (paciente && paciente.Id) {
-            PacienteService.deletePaciente(paciente.Id, currentToken)
-                .then(() => {
-                    toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Deletado', life: 3000 });
-                    setPacientes(pacientes.filter(val => val.Id !== paciente.Id)); // Corrigido para usar 'Id'
-                    setDeletePacienteDialog(false);
-                    setPaciente(emptyPaciente);
-                })
-                .catch(error => {
-                    toast.current.show({ severity: 'warning', summary: 'Erro', detail: 'Pacientes que possuem consulta marcada não podem ser deletados', life: 3000 });
-                });
-        } else {
-            toast.current.show({ severity: 'warning', summary: 'Erro', detail: 'O Id do Paciente não foi definido', life: 3000 });
-        }
-    };
-    <Button icon="pi pi-trash" className="border-round p-button-rounded p-button-danger" onClick={() => confirmDeletePaciente(rowData)} />
-
-    <Dialog visible={deletePacienteDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deletePacienteDialogFooter} onHide={hideDeletePacienteDialog}>
-                <div className="confirmation-content">
-                    <i className="pi pi-exclamation-triangle mr-2" style={{ fontSize: '2rem' }} />
-                    {paciente && <span>Tem certeza que deseja excluir o paciente <b>{paciente.nome}</b>?</span>}
-                </div>
-            </Dialog>
-    */
-
     const findIndexById = (Id) => {
         let index = -1;
         for (let i = 0; i < pacientes.length; i++) {
@@ -219,7 +186,7 @@ export default function Paciente() {
     };
 
     const onCheckboxChange = (e) => {
-        setChecked(e.checked); // Atualiza o estado do checkbox
+        setChecked(e.checked); 
     };
 
     const formatDate = (dateStr) => {
@@ -246,7 +213,6 @@ export default function Paciente() {
 
         return paciente.nome.toLowerCase().includes(filtro) || cpfNorm.includes(normalizeCPF(filtro));
     };
-
 
 
     const filteredPacientes = pacientes.filter(paciente => pacienteFiltrado(paciente));

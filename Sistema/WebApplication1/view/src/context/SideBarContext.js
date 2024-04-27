@@ -13,6 +13,7 @@ export const SidebarProvider = ({ children }) => {
     const [perfilVisible, setPerfilVisible] = useState(false);
     const [agendaProfissionalVisible, setAgendaProfissionalVisible] = useState(false);
     const [atendimentoVisible, setAtendimentoVisible] = useState(false);
+    const [agendaCalendarioVisible, setAgendaCalendarioVisible] = useState(false);
 
     return (
         <SidebarContext.Provider
@@ -26,7 +27,8 @@ export const SidebarProvider = ({ children }) => {
                 usuarioVisible, setUsuarioVisible,
                 perfilVisible, setPerfilVisible,
                 agendaProfissionalVisible, setAgendaProfissionalVisible,
-                atendimentoVisible, setAtendimentoVisible
+                atendimentoVisible, setAtendimentoVisible,
+                agendaCalendarioVisible, setAgendaCalendarioVisible
             }}
         >
             {children}

@@ -39,11 +39,11 @@ const sidebarItems = [
                 icon: 'pi pi-calendar',
                 link: '',
                 action: 'setAgendaCalendarioVisible',
-                roles: ["f3f629", "f8abf4"],
+                roles: ['c8fffd', 'f3f629', 'f8abf4'],
                 actionValue: true
             }
         ],
-        roles: [ 'f3f629', 'f8abf4']
+        roles: [ 'c8fffd', 'f3f629', 'f8abf4']
     },
     {
         text: 'Cadastros Básicos',
