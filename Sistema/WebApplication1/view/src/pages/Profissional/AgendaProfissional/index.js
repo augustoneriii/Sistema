@@ -110,8 +110,8 @@ function AgendaProfissional() {
         }
         let newAgenda = {
             ...agenda,
-            diaSemana: dia,
-            hora: new Date().toISOString().split('T')[0] + 'T' + horario + ':00Z', // Combina data atual com o horário selecionado
+            diaSemana: new Date().toLocaleDateString('pt-BR', { weekday: 'long' }), // Obtém o dia da semana atual
+            hora: new Date().toISOString().split('T')[0] + 'T' + horario + ':00Z',
             profissionalId: profissionais[0].id,
             ativo: 1
         };

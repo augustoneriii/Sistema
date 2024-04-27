@@ -50,37 +50,58 @@ function ListaAtendimentos() {
             });
     }, []);
 
-    async function fetchConsulta() {
+    useEffect(() => {
+        
+    }, [profissionais]);
+
+    const fetchConsulta = async () => {
         const currentToken = localStorage.getItem('token') || '';
         try {
-            const currentDate = new Date(); // Obt�m a data atual do sistema
+            const currentDate = new Date();
+
             const response = await AtendimentoService.getConsultas(currentToken, `Profissionais.Cpf=${user.cpf}`);
-            // Acessa o array de consultas
-            const consultasComIdProfissional = response.data
+
+            console.log("Consultas:", response.data); // Adiciona este console.log para verificar as consultas recebidas do servidor
+
+            const consultasComIdProfissional = await Promise.all(response.data
                 .filter(consulta => {
-                const consultaDate = new Date(consulta.data);
-                return consultaDate.getDate() === currentDate.getDate() && // Verifica o dia
-                    consultaDate.getMonth() === currentDate.getMonth() && // Verifica o m�s
-                    consultaDate.getFullYear() === currentDate.getFullYear(); // Verifica o ano
-                }).sort((a, b) => {
+                    const consultaDate = new Date(consulta.data);
+                    return consultaDate.getDate() === currentDate.getDate() &&
+                        consultaDate.getMonth() === currentDate.getMonth() &&
+                        consultaDate.getFullYear() === currentDate.getFullYear();
+                })
+                .sort((a, b) => {
+
                     const horaA = new Date(a.hora);
                     const horaB = new Date(b.hora);
                     return horaA.getTime() - horaB.getTime();
                 })
-                .map(consulta => {
-                if (consulta.profissionais.cpf === user.cpf) {
-                    
-                    return { ...consulta, profissionalId: consulta.profissionais.id};
-                } else {
-                    return null;
-                }
-            }).filter(consulta => consulta !== null);
-            setConsultas(consultasComIdProfissional);
+                .map(async consulta => {
+                    if (consulta.profissionais.cpf === user.cpf) {
+                        // Busca os dados completos do paciente
+                        const pacienteResponse = await AtendimentoService.getPacientes(currentToken, `Pacientes.Id=${consulta.pacientes.id}`);
+                        const pacientes = pacienteResponse.data; // Obtenha todos os pacientes
+
+                        // Mapeie cada paciente para extrair o nome do conv�nio
+                        const convenios = pacientes.map(paciente => paciente.convenio?.nome);
+
+                        return { ...consulta, profissionalId: consulta.profissionais.id, pacienteId: consulta.pacientes.id, convenios };
+                    } else {
+                        return null;
+                    }
+                }));
+
+            // Filtra as consultas que n�o s�o nulas
+            const consultasFiltradas = consultasComIdProfissional.filter(consulta => consulta !== null);
+
+            setConsultas(consultasFiltradas);
+
             setDataLoaded(true);
         } catch (error) {
             console.error("Erro ao buscar consulta", error);
         }
-    }
+    };
+
 
   const onHideModal = () => {
     setAtendimentoVisible(false);
@@ -122,32 +143,32 @@ function ListaAtendimentos() {
     };
 
     const itemTemplate = (item) => {
-        // Retorna o layout de cada item da lista
+    // Retorna o layout de cada item da lista
         return (
-
             <div className="flex flex-wrap p-2 align-items-center gap-3">
-               {/* <img className="w-4rem shadow-2 flex-shrink-0 border-round" src={`https://primefaces.org/cdn/primereact/images/product/${item.image}`} alt={item.name} />*/}
                 <div className="flex-1 flex flex-column gap-2 xl:mr-8">
                     <span className="font-bold">Paciente: {item.pacientes.nome}</span>
                     <div className="flex align-items-center gap-2">
                         <i className="pi pi-user"></i>
-                        <span>{item.convenioNome}</span>
+                        {item.convenios.length > 0 ? (
+                            <ul>
+                                {item.convenios.map((convenio, index) => (
+                                    <li key={index}>{convenio}</li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <span>Nenhum conv�nio</span>
+                        )}
                     </div>
                 </div>
                 <Button style={{ width: '14.28%' }} label="Chamar" header="Chamar Paciente" body={actionBodyTemplate}></Button>
                 <span className="font-bold text-900">{formatHora(item.hora)}</span>
             </div>
-            //<div className="p-clearfix">
-
-            //    <div>{item.profissionais.nome}</div>
-            //    <div>{item.pacientes.nome}</div>
-            //    <div>{formatDate(item.data)}</div>
-            //    <div>{formatDate(item.hora)}</div>
-            //    <div>{item.status}</div>
-            //    <div>{item.tipo}</div>
-            //</div>
         );
     };
+
+
+
   const header = (
     <h1>Lista de Atentimentos</h1>
   );

@@ -17,10 +17,12 @@
         public string? Medicamentos { get; set; }
         public string? Cirurgias { get; set; }
         public string? Historico { get; set; }
-        
         public DateTime?  CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
         public int? Ativo { get; set; }
+        public string? ConvenioNome { get; set; } // Adicione a nova propriedade ConvenioNome
+
+
 
     }
 }

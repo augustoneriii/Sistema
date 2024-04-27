@@ -30,7 +30,8 @@ export default function Consulta() {
         pacienteId: null,
         profissionalId: null,
         status: '',
-        tipo: ''
+        tipo: '',
+        
 
     };
 
@@ -45,7 +46,10 @@ export default function Consulta() {
     const [globalFilter, setGlobalFilter] = useState(null);
     const [expandedRows, setExpandedRows] = useState([]);
     const toast = useRef(null);
+    const [dataLoaded, setDataLoaded] = useState(false);
+    const [checked, setChecked] = useState(true);
     const dt = useRef(null);
+    const [activeConsulta, setActiveConsultas] = useState([]);
 
     useEffect(() => {
         fetchConsulta();
@@ -151,6 +155,47 @@ export default function Consulta() {
         }
     };
     
+
+
+
+    //const saveConsulta = () => {
+    //    setSubmitted(true);
+
+    //   
+
+    //        let postConsulta = {
+    //            ConsultaId:  _consulta.id,
+    //            PacienteId: _consulta.paciente.id,
+    //            ProfissionalId: _consulta.profissional.id,
+    //            Data: _consulta.data,
+    //            Hora: _consulta.hora,
+    //            Status: _consulta.status,
+    //            Tipo: _consulta.tipo,
+    //            Observacoes: _consulta.observacoes,
+    //            Atendida: false
+    //        };
+
+    //        console.log("consulta", postConsulta);
+
+    //        const currentToken = localStorage.getItem('token') || '';
+    //        if (consulta.id) {
+    //            console.log(consulta)
+    //            const index = findIndexById(consulta.id);
+    //            _consultas[index] = _consulta;
+    //            toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Atualizado', life: 3000 });
+    //            ConsultaService.updateConsulta(postConsulta, currentToken);
+    //        } else {
+    //            console.log("create consulta", _consulta);
+    //            _consultas.push(postConsulta);
+    //            toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Criado', life: 3000 });
+    //            ConsultaService.createConsulta(postConsulta, currentToken);
+    //        }
+
+    //        setConsultas(_consultas);
+    //        setConsultaDialog(false);
+    //        setConsulta(emptyConsulta);
+    //    }
+    //};
 
     const editConsulta = (consultaData) => {
         setConsulta({ ...consultaData });
@@ -286,21 +331,18 @@ export default function Consulta() {
                         <Column style={{ width: '14.28%' }} field="tipo" header="Tipo" sortable></Column>
                         <Column style={{ width: '14.28%' }} header="Ações" body={actionBodyTemplate}></Column>
                     </DataTable>
-
                 </div>
-
                 <Dialog visible={consultaDialog} style={{ width: '850px', margin: 'auto' }} header="Detalhes do Consulta" modal className="p-fluid" footer={consultaDialogFooter} onHide={hideDialog}>
-
                     <div className='grid'>
                         <div className="field col-6">
                             <label htmlFor="profissional">Profissional</label>
-                            <Dropdown editable id='profissional' value={consulta.profissional} onChange={(e) => onInputChange(e, 'profissional')} options={profissionais} optionLabel="nome"
+                            <Dropdown editable id='profissional' value={consulta.profissional} onChange={(e) => onInputChange('profissional', e.value)} options={profissionais} optionLabel="nome"
                                 placeholder="Selecione o Profissional" className="w-full" />
                         </div>
                         <div className="field col-6">
                             <label htmlFor="email">Paciente</label>
                             <div className="p-inputgroup flex-1">
-                                <Dropdown editable id='paciente' value={consulta.paciente} onChange={(e) => onInputChange(e, 'paciente')} options={pacientes} optionLabel="nome"
+                                <Dropdown editable id='paciente' value={consulta.paciente} onChange={(e) => onInputChange('paciente', e.value)} options={pacientes} optionLabel="nome"
                                     placeholder="Selecione o Paciente" className="w-full" />
                                 <Button icon="pi pi-plus" onClick={() => setPacienteVisible(true)} className="p-button-secondary border-round-right" />
                             </div>
@@ -308,24 +350,24 @@ export default function Consulta() {
 
                         <div className="field col-6">
                             <label htmlFor="status">Status</label>
-                            <Dropdown editable value={consulta.status} onChange={(e) => onInputChange(e, 'status')} options={["Agendada", "Cancelada", "Realizada"]}
+                            <Dropdown editable value={consulta.status} onChange={(e) => onInputChange('status', e.value)} options={["Agendada", "Cancelada", "Realizada"]}
                                 placeholder="Selecione o Status" className="w-full" />
                         </div>
                         <div className="field col-6">
                             <label htmlFor="tipo">Tipo</label>
-                            <Dropdown editable value={consulta.tipo} onChange={(e) => onInputChange(e, 'tipo')} options={["Consulta", "Retorno"]}
+                            <Dropdown editable value={consulta.tipo} onChange={(e) => onInputChange('tipo', e.value)} options={["Consulta", "Retorno"]}
                                 placeholder="Selecione o Tipo" className="w-full" />
                         </div>
                     </div>
                     <div className='grid'>
                         <div className="field col">
                             <label htmlFor="data">Data</label>
-                            <Calendar id="data" value={consulta.data} onChange={(e) => onInputChange(e, 'data')} showIcon />
+                            <Calendar id="data" value={consulta.data} onChange={(e) => onInputChange('data', e.value)} showIcon />
                         </div>
 
                         <div className="field col">
                             <label htmlFor="hora">Hora</label>
-                            <Calendar id="hora" value={consulta.hora} onChange={(e) => onInputChange(e, 'hora')} timeOnly />
+                            <Calendar id="hora" value={consulta.hora} onChange={(e) => onInputChange('hora', e.value)} timeOnly />
                         </div>
                     </div>
                     <div className='grid'>

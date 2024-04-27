@@ -20,7 +20,7 @@ namespace app.DAO
             var objSelect = new StringBuilder();
             objSelect.Append("SELECT ");
             objSelect.Append("\"Sistema\" . \"AgendaProfissional\" . \"Id\", ");
-            objSelect.Append("\"Sistema\".\"AgendaProfissional\".\"Dia\", ");
+            //objSelect.Append("\"Sistema\".\"AgendaProfissional\".\"Dia\", ");
             objSelect.Append("TO_CHAR(\"Sistema\".\"AgendaProfissional\".\"Hora\", 'HH24:MI:SS') AS \"Hora\", ");
             objSelect.Append("\"Sistema\" . \"AgendaProfissional\" . \"DiaSemana\", ");
             objSelect.Append("\"Sistema\" . \"AgendaProfissional\" . \"ProfissionalId\",");
