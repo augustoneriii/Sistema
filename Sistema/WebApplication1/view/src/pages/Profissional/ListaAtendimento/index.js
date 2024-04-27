@@ -58,6 +58,7 @@ function ListaAtendimentos() {
         const currentToken = localStorage.getItem('token') || '';
         try {
             const currentDate = new Date();
+
             const response = await AtendimentoService.getConsultas(currentToken, `Profissionais.Cpf=${user.cpf}`);
 
             console.log("Consultas:", response.data); // Adiciona este console.log para verificar as consultas recebidas do servidor
@@ -70,6 +71,7 @@ function ListaAtendimentos() {
                         consultaDate.getFullYear() === currentDate.getFullYear();
                 })
                 .sort((a, b) => {
+
                     const horaA = new Date(a.hora);
                     const horaB = new Date(b.hora);
                     return horaA.getTime() - horaB.getTime();
@@ -80,7 +82,7 @@ function ListaAtendimentos() {
                         const pacienteResponse = await AtendimentoService.getPacientes(currentToken, `Pacientes.Id=${consulta.pacientes.id}`);
                         const pacientes = pacienteResponse.data; // Obtenha todos os pacientes
 
-                        // Mapeie cada paciente para extrair o nome do convênio
+                        // Mapeie cada paciente para extrair o nome do convï¿½nio
                         const convenios = pacientes.map(paciente => paciente.convenio?.nome);
 
                         return { ...consulta, profissionalId: consulta.profissionais.id, pacienteId: consulta.pacientes.id, convenios };
@@ -89,10 +91,11 @@ function ListaAtendimentos() {
                     }
                 }));
 
-            // Filtra as consultas que não são nulas
+            // Filtra as consultas que nï¿½o sï¿½o nulas
             const consultasFiltradas = consultasComIdProfissional.filter(consulta => consulta !== null);
 
             setConsultas(consultasFiltradas);
+
             setDataLoaded(true);
         } catch (error) {
             console.error("Erro ao buscar consulta", error);
@@ -100,21 +103,11 @@ function ListaAtendimentos() {
     };
 
 
-
-    /*console.log('convenioId:', consulta.pacientes.convenioId);*/
-
-
-
   const onHideModal = () => {
     setAtendimentoVisible(false);
     setDataLoaded(false);
     }
 
-  //const formatDate = (dateStr) => {
-  //   if (!dateStr) return '';
-  //      const date = new Date(dateStr);
-  //      return date instanceof Date && !isNaN(date) ? date.toLocaleDateString() : '';
-  //  };
 
     const formatHora = (dateStr) => {
         if (!dateStr) return '';
@@ -133,13 +126,13 @@ function ListaAtendimentos() {
         } else {
             return (
                 <>
-                    <span className="vertical-align-middle ml-2 font-bold line-height-3">Profissional Não Definido</span>
+                    <span className="vertical-align-middle ml-2 font-bold line-height-3">Profissional Nï¿½o Definido</span>
                 </>
             );
         }
     };
-    const chamaPaciente = (dataRow) =>{//teste de botão
-        toast.current.show({ severity: 'success', summary: 'Sucesso', detail: `Botão de chamar paciente (em teste) `, life: 4000 });
+    const chamaPaciente = (dataRow) =>{//teste de botï¿½o
+        toast.current.show({ severity: 'success', summary: 'Sucesso', detail: `Botï¿½o de chamar paciente (em teste) `, life: 4000 });
     }
     const actionBodyTemplate = (rowData) => {
         return (
@@ -164,7 +157,7 @@ function ListaAtendimentos() {
                                 ))}
                             </ul>
                         ) : (
-                            <span>Nenhum convênio</span>
+                            <span>Nenhum convï¿½nio</span>
                         )}
                     </div>
                 </div>

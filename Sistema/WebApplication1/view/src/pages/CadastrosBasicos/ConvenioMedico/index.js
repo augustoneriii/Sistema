@@ -106,7 +106,6 @@ function ConvenioMedico() {
                 ConvenioService.updateConvenio(_convenio, currentToken);
             } else {
                 _convenios.push(_convenio);
-                console.log("convenio", _convenio);
                 ConvenioService.createConvenio(_convenio, currentToken);
                 toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Convenio Criado', life: 3000 });
             }

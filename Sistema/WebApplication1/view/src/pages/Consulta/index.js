@@ -130,7 +130,6 @@ export default function Consulta() {
                 Atendida: false
             };
 
-            console.log("consulta", postConsulta);
 
             const currentToken = localStorage.getItem('token') || '';
             if (consulta.id) {
@@ -139,7 +138,6 @@ export default function Consulta() {
                 toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Atualizado', life: 3000 });
                 ConsultaService.updateConsulta(postConsulta, currentToken);
             } else {
-                console.log("create consulta", _consulta);
                 _consultas.push(postConsulta);
                 toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Criado', life: 3000 });
                 ConsultaService.createConsulta(postConsulta, currentToken);
@@ -253,7 +251,6 @@ export default function Consulta() {
         consultas.forEach((consulta) => {
             _expandedRows.push(consulta.id);
         });
-        console.log(_expandedRows);
         setExpandedRows(_expandedRows);
     };
 

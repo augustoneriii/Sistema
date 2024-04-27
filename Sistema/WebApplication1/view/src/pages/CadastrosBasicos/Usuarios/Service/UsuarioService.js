@@ -2,7 +2,6 @@
 
 export default class UsuarioService {
     static async getUsuarios(token) {
-        console.log('token', token);
         return await api.get('/GetAllUsers', {
             headers: {
                 Authorization: `Bearer ${token}`

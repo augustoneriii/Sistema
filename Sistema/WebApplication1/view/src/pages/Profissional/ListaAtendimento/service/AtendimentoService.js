@@ -17,7 +17,7 @@ export class AtendimentoService {
         });
     }
     static async getConvenios(token, query) {
-        //console.log('token', token);
+
         return await api.get(`/getAllConvenioMedicos?${query}`, {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
