@@ -3,7 +3,6 @@ import api from '../../../../utils/api';
 
 export class PerfilService {
     static async getDadosPessoais(token) {
-        console.log('token', token);
         return await api.get('/getAllDadosPessoais', {
             headers: {
                 Authorization: `Bearer ${token}`

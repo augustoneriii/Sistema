@@ -120,12 +120,6 @@ export default function Profissional() {
         return rowData.profissoes ? rowData.profissoes.conselhoProfissional : '';
     };
 
-    const findProfissaoById = (id) => {
-        console.log("ID da Profissão:", id);
-        console.log("Profissões:", profissoes);
-        return profissoes.find(profissao => profissao.id === id);
-    };
-
     const convenioBodyTemplate = (rowData) => {
         return rowData.convenioMedicos && rowData.convenioMedicos.length > 0 ? rowData.convenioMedicos[0].nome : '';
     };
@@ -220,53 +214,6 @@ export default function Profissional() {
         setProfissionalDialog(true);
     };
 
-    /*const confirmDeleteProfissional = (profissional) => {
-        setProfissional(profissional);
-        setDeleteProfissionalDialog(true);
-    };
-
-    const deleteProfissional = () => {
-        const currentToken = localStorage.getItem('token') || '';
-
-        if (profissional && profissional.id) {
-            console.log("Profissional antes da exclusão:", profissional);
-
-            ProfissionalService.deleteProfissional(profissional.id, currentToken)
-                .then(() => {
-                    toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Profissional Deletado', life: 3000 });
-
-                    // Filtra o profissional excluído e atualiza o estado profissionais
-                    const updatedProfissionais = profissionais.filter(val => val.id !== profissional.id);
-                    console.log("Profissionais atualizados:", updatedProfissionais);
-                    setProfissionais(updatedProfissionais);
-
-                    setDeleteProfissionalDialog(false);
-                    setProfissional(emptyProfissional);
-                    ProfissionalService.getProfissoes(currentToken);
-                })
-                .catch(error => {
-                    console.error("Erro ao deletar profissional:", error);
-                });
-        } else {
-            console.error("Erro: id do profissional é undefined");
-        }
-    };
-    const deleteProfissionalDialogFooter = (
-        <>
-            <Button label="Não" icon="pi pi-times" className="border-round p-button-text" onClick={hideDeleteProfissionalDialog} />
-            <Button label="Sim" icon="pi pi-check" className="border-round p-button-text" onClick={deleteProfissional} />
-        </>
-    );
-
-    <Dialog visible={deleteProfissionalDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deleteProfissionalDialogFooter} onHide={hideDeleteProfissionalDialog}>
-                    <div className="confirmation-content">
-                        <i className="pi pi-exclamation-triangle mr-2" style={{ fontSize: '2rem' }} />
-                        {profissional && <span>Tem certeza que deseja excluir o profissional <b>{profissional.nome}</b>?</span>}
-                    </div>
-                </Dialog>
-
-                <Button icon="pi pi-trash" className="border-round p-button-rounded p-button-danger" onClick={() => confirmDeleteProfissional(rowData)} />
-    */
 
     const findIndexById = (id) => {
         let index = -1;
@@ -307,7 +254,10 @@ export default function Profissional() {
     const leftToolbarTemplate = () => {
         return (
             <>
-                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
+                <FloatLabel>
+                    <label htmlFor="globalFilter">Filtro Global</label>
+                    <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
+                </FloatLabel>
             </>
         );
     };
@@ -324,7 +274,6 @@ export default function Profissional() {
         return (
             <>
                 <Button icon="pi pi-pencil" className="border-round p-button-rounded p-button-success mr-2" onClick={() => editProfissional(rowData)} />
-
             </>
         );
     };
@@ -480,9 +429,9 @@ export default function Profissional() {
                             />
                         </div>
 
-                        <div className="field col">
-                            <label htmlFor="ativo">Ativo</label>
+                        <div className=" col-12 flex align-items-center">
                             <Checkbox onChange={onCheckboxChange} checked={checked}></Checkbox>
+                            <label className="ml-2" htmlFor="ativo">Ativo</label>
                         </div>
                     </div>
 

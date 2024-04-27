@@ -23,7 +23,7 @@ function Usuarios() {
     const [changePasswordDialog, setChangePasswordDialog] = useState(false);
     const [changePassword, setChangePassword] = useState({ email: "", password: "", confirmPassword: "" });
 
-    
+
     const user = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {
@@ -84,13 +84,13 @@ function Usuarios() {
         const val = (e.target && e.target.value) || '';
         const _usuario = { ...usuario };
 
-     if (name === 'cpf') {
-        _usuario.cpf = Commom.formatCpf(val)
-    } else if (name === "rg") {
-         _usuario.rg = Commom.formatRg(val)
-    } else {
-         _usuario[name] = val;
-    }
+        if (name === 'cpf') {
+            _usuario.cpf = Commom.formatCpf(val)
+        } else if (name === "rg") {
+            _usuario.rg = Commom.formatRg(val)
+        } else {
+            _usuario[name] = val;
+        }
         _usuario[`${name}`] = val;
         setUsuario(_usuario);
     }
@@ -122,55 +122,53 @@ function Usuarios() {
             <Modal header={<h1>Usuario</h1>} modal={false} visible={usuarioVisible} style={{ width: '50vw', height: '80vh' }} onHide={() => { setUsuarioVisible(false); setDataLoaded(false); }}>
                 <div className="card">
                     <div className="grid">
-                        <div className="field col-6">
+                        <div className="col-6">
                             <FloatLabel>
-                                <label htmlFor="userName">userName</label>
+                                <label htmlFor="userName">Nome</label>
                                 <InputText className='w-full' id="userName" value={usuario.userName} onChange={(e) => onInputChange(e, 'userName')} />
                             </FloatLabel>
                         </div>
-                        <div className="field col-6">
+                        <div className="col-6">
                             <FloatLabel>
-                                <label htmlFor="email">email</label>
+                                <label htmlFor="email">E-mail</label>
                                 <InputText className='w-full' id="email" value={usuario.email} onChange={(e) => onInputChange(e, 'email')} />
                             </FloatLabel>
                         </div>
-                        <div className="field col-6">
+                        <div className="col-6">
                             <FloatLabel>
-                                <label htmlFor="cpf">cpf</label>
+                                <label htmlFor="cpf">CPF</label>
                                 <InputText className='w-full' id="cpf" value={usuario.cpf} onChange={(e) => onInputChange(e, 'cpf')} maxLength={14} />
                             </FloatLabel>
                         </div>
-                        <div className="field col-6">
+                        <div className="col-6">
                             <FloatLabel>
                                 <InputText id="password" type="password" className='w-full' value={usuario.password} onChange={(e) => onInputChange(e, 'password')} />
-                                <label htmlFor="password">password</label>
+                                <label htmlFor="password">Senha</label>
                             </FloatLabel>
 
                         </div>
-                        <div className="field col-6">
+                        <div className="col-6">
                             <FloatLabel>
                                 <InputText id="confirmPassword" type="confirmPassword" className='w-full' value={usuario.confirmPassword} onChange={(e) => onInputChange(e, 'confirmPassword')} />
-                                <label htmlFor="confirmPassword">confirmPassword</label>
+                                <label htmlFor="confirmPassword">Confirmar Senha</label>
                             </FloatLabel>
                         </div>
-                        <div className="field col-6">
+                        <div className="col-6">
                             <FloatLabel>
-                                <label htmlFor="phoneNumber">phoneNumber</label>
+                                <label htmlFor="phoneNumber">Telefone</label>
                                 <InputText className='w-full' id="phoneNumber" value={usuario.phoneNumber} onChange={(e) => onInputChange(e, 'phoneNumber')} maxLength={14} />
                             </FloatLabel>
                         </div>
-                        <div className="field col-6">
-                         
-                                <label htmlFor="roleName">Função</label>
-                                <Dropdown className='w-full'
-                                    id="roleName" value={usuario.roleName}
-                                    options={dropDownRoleName}
-                                    onChange={(e) => onInputChange(e, 'roleName')}
-                                    optionLabel="label"
-                                    placeholder="Selecione a Função" />
-                            
+                        <div className="col-6">
+                            <label htmlFor="roleName">Função</label>
+                            <Dropdown className='w-full'
+                                id="roleName" value={usuario.roleName}
+                                options={dropDownRoleName}
+                                onChange={(e) => onInputChange(e, 'roleName')}
+                                optionLabel="label"
+                                placeholder="Selecione a Função" />
                         </div>
-                        <div className="field col">
+                        <div className="col-12">
                             <Button label="Salvar" icon="pi pi-check" className="border-round p-button-text" onClick={saveUsuario} />
                         </div>
                     </div>

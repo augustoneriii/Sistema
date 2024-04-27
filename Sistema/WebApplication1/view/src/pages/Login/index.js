@@ -3,13 +3,14 @@ import React from 'react'
 // import { Link } from 'react-router-dom'
 //components
 import { InputText } from 'primereact/inputtext'
+import { Password } from 'primereact/password'
 import { Button } from 'primereact/button'
 //hooks
 import { useContext, useState } from 'react'
 //context
 import { Context } from '../../context/UserContext'
 import { useNavigate } from 'react-router-dom'
-
+import  style from './style.module.css'
 import Logo from '../../assets/img/logoSysclin.png'
 import { FloatLabel } from 'primereact/floatlabel';
 function Login() {
@@ -36,23 +37,20 @@ function Login() {
         <div style={{ height: '100vh' }} className="login-container flex align-items-center justify-content-center">
             <div className="surface-card p-4 shadow-2 border-round  lg:w-6">
                 <div className="text-center ">
-                    <img src={Logo} alt="hyper" height={200} className="mb-3" />
+                    <img src={Logo} alt="hyper" height={200} className="mb-5" />
                 </div>
                 <div>
                     <form onSubmit={handleSubmit}>
-                        <FloatLabel>
-                        <label htmlFor="email" className="block text-500 font-medium mb-3">Email</label>
-                        <InputText id="email" name='email' onChange={handleChange} type="text" placeholder="Email address" className="w-full mb-4" />
-                        </FloatLabel>
-
-                        <div classname="mt-5">
+                        <div className="flex flex-column gap-5">
                             <FloatLabel>
-                                <label htmlFor="password" className="block text-500 font-medium mb-2">Password</label>
-                                <InputText id="password" name='password' type="password" onChange={handleChange} placeholder="Password" className="w-full mb-3 mt-2" />
+                                <label htmlFor="email">Email</label>
+                                <InputText id="email" name='email' onChange={handleChange} type="text" className="w-full" />
                             </FloatLabel>
-                         </div>
-                        
-                        
+                            <FloatLabel>
+                                <Password inputId="password" name='password' type="password" toggleMask onChange={handleChange} style={style} className="w-full" />
+                                <label htmlFor="password">Password</label>
+                            </FloatLabel>
+                        </div>
                         <div className="flex align-items-center justify-content-between mb-6">
                             <div className="flex align-items-center">
                             </div>

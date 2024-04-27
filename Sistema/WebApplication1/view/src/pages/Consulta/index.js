@@ -151,6 +151,7 @@ export default function Consulta() {
                 console.log("consulta", _consulta);
                 ConsultaService.createConsulta(_consulta, currentToken);
                 toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Convenio Criado', life: 3000 });
+
             }
 
             setConsultas(_consultas);
@@ -265,7 +266,6 @@ export default function Consulta() {
         consultas.forEach((consulta) => {
             _expandedRows.push(consulta.id);
         });
-        console.log(_expandedRows);
         setExpandedRows(_expandedRows);
     };
 

@@ -29,6 +29,7 @@ namespace app.DAO
             objSelect.Append("         \"Sexo\", ");
             objSelect.Append("         \"Sistema\".\"Pacientes\".\"Email\", ");
             objSelect.Append("         \"ConvenioId\", ");
+            objSelect.Append("         \"Sistema\".\"ConvenioMedicos\".\"Nome\" AS \"ConvenioNome\", "); // Adiciona o nome do convênio à consulta
             objSelect.Append("         \"TipoSanguineo\", ");
             objSelect.Append("         \"Alergias\", ");
             objSelect.Append("         \"Medicamentos\", ");
@@ -114,6 +115,8 @@ namespace app.DAO
                     Convenio = new ConvenioMedicosDTO
                     {
                         Id = Convert.ToInt32(row["ConvenioId"] != DBNull.Value ? Convert.ToInt32(row["ConvenioId"]) : 0),
+                        Nome = row["ConvenioNome"].ToString() // Obtém o nome do convênio
+
                     },
                     TipoSanguineo = row["TipoSanguineo"].ToString(),
                     Alergias = row["Alergias"].ToString(),

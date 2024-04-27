@@ -3,7 +3,6 @@ import api from '../../../../utils/api';
 
 export class ConvenioService {
     static async getConvenios(token) {
-        console.log('token', token);
         return await api.get('/getAllConvenioMedicos', {
             headers: {
                 Authorization: `Bearer ${token}`

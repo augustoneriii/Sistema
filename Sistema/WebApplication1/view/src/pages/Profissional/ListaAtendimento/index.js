@@ -51,49 +51,56 @@ function ListaAtendimentos() {
     }, []);
 
     useEffect(() => {
-        console.log(profissionais);
+        
     }, [profissionais]);
 
-    async function fetchConsulta() {
+    const fetchConsulta = async () => {
         const currentToken = localStorage.getItem('token') || '';
         try {
-            const currentDate = new Date(); // Obtém a data atual do sistema
+            const currentDate = new Date();
+
             const response = await AtendimentoService.getConsultas(currentToken, `Profissionais.Cpf=${user.cpf}`);
-            // Acessa o array de consultas
-            const consultasComIdProfissional = response.data
+
+            console.log("Consultas:", response.data); // Adiciona este console.log para verificar as consultas recebidas do servidor
+
+            const consultasComIdProfissional = await Promise.all(response.data
                 .filter(consulta => {
-                const consultaDate = new Date(consulta.data);
-                return consultaDate.getDate() === currentDate.getDate() && // Verifica o dia
-                    consultaDate.getMonth() === currentDate.getMonth() && // Verifica o mês
-                    consultaDate.getFullYear() === currentDate.getFullYear(); // Verifica o ano
-                }).sort((a, b) => {
-                    // Ordena as consultas pelo horário
+                    const consultaDate = new Date(consulta.data);
+                    return consultaDate.getDate() === currentDate.getDate() &&
+                        consultaDate.getMonth() === currentDate.getMonth() &&
+                        consultaDate.getFullYear() === currentDate.getFullYear();
+                })
+                .sort((a, b) => {
+
                     const horaA = new Date(a.hora);
                     const horaB = new Date(b.hora);
                     return horaA.getTime() - horaB.getTime();
                 })
-                .map(consulta => {
-                // Verifica se o CPF do profissional na consulta corresponde ao CPF do usuário logado
-                if (consulta.profissionais.cpf === user.cpf) {
-                    // Retorna a consulta com o id do profissional
-                    
-                    return { ...consulta, profissionalId: consulta.profissionais.id};
-                } else {
-                    // Se o CPF não corresponder, retorna null (ou qualquer outro valor que você queira)
-                    return null;
-                }
-            }).filter(consulta => consulta !== null); // Filtra para remover as consultas que não correspondem ao CPF do usuário logado
-            setConsultas(consultasComIdProfissional);
+                .map(async consulta => {
+                    if (consulta.profissionais.cpf === user.cpf) {
+                        // Busca os dados completos do paciente
+                        const pacienteResponse = await AtendimentoService.getPacientes(currentToken, `Pacientes.Id=${consulta.pacientes.id}`);
+                        const pacientes = pacienteResponse.data; // Obtenha todos os pacientes
+
+                        // Mapeie cada paciente para extrair o nome do convï¿½nio
+                        const convenios = pacientes.map(paciente => paciente.convenio?.nome);
+
+                        return { ...consulta, profissionalId: consulta.profissionais.id, pacienteId: consulta.pacientes.id, convenios };
+                    } else {
+                        return null;
+                    }
+                }));
+
+            // Filtra as consultas que nï¿½o sï¿½o nulas
+            const consultasFiltradas = consultasComIdProfissional.filter(consulta => consulta !== null);
+
+            setConsultas(consultasFiltradas);
+
             setDataLoaded(true);
         } catch (error) {
             console.error("Erro ao buscar consulta", error);
         }
-    }
-
-    console.log('Consulta:', consulta);
-    console.log('Paciente:', consulta.pacientes);
-    /*console.log('convenioId:', consulta.pacientes.convenioId);*/
-
+    };
 
 
   const onHideModal = () => {
@@ -101,11 +108,6 @@ function ListaAtendimentos() {
     setDataLoaded(false);
     }
 
-  //const formatDate = (dateStr) => {
-  //   if (!dateStr) return '';
-  //      const date = new Date(dateStr);
-  //      return date instanceof Date && !isNaN(date) ? date.toLocaleDateString() : '';
-  //  };
 
     const formatHora = (dateStr) => {
         if (!dateStr) return '';
@@ -124,13 +126,13 @@ function ListaAtendimentos() {
         } else {
             return (
                 <>
-                    <span className="vertical-align-middle ml-2 font-bold line-height-3">Profissional Não Definido</span>
+                    <span className="vertical-align-middle ml-2 font-bold line-height-3">Profissional Nï¿½o Definido</span>
                 </>
             );
         }
     };
-    const chamaPaciente = (dataRow) =>{//teste de botão
-        toast.current.show({ severity: 'success', summary: 'Sucesso', detail: `Botão de chamar paciente (em teste) `, life: 4000 });
+    const chamaPaciente = (dataRow) =>{//teste de botï¿½o
+        toast.current.show({ severity: 'success', summary: 'Sucesso', detail: `Botï¿½o de chamar paciente (em teste) `, life: 4000 });
     }
     const actionBodyTemplate = (rowData) => {
         return (
@@ -141,32 +143,32 @@ function ListaAtendimentos() {
     };
 
     const itemTemplate = (item) => {
-        // Retorna o layout de cada item da lista
+    // Retorna o layout de cada item da lista
         return (
-
             <div className="flex flex-wrap p-2 align-items-center gap-3">
-               {/* <img className="w-4rem shadow-2 flex-shrink-0 border-round" src={`https://primefaces.org/cdn/primereact/images/product/${item.image}`} alt={item.name} />*/}
                 <div className="flex-1 flex flex-column gap-2 xl:mr-8">
                     <span className="font-bold">Paciente: {item.pacientes.nome}</span>
                     <div className="flex align-items-center gap-2">
                         <i className="pi pi-user"></i>
-                        <span>{item.convenioNome}</span>
+                        {item.convenios.length > 0 ? (
+                            <ul>
+                                {item.convenios.map((convenio, index) => (
+                                    <li key={index}>{convenio}</li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <span>Nenhum convï¿½nio</span>
+                        )}
                     </div>
                 </div>
                 <Button style={{ width: '14.28%' }} label="Chamar" header="Chamar Paciente" body={actionBodyTemplate}></Button>
                 <span className="font-bold text-900">{formatHora(item.hora)}</span>
             </div>
-            //<div className="p-clearfix">
-
-            //    <div>{item.profissionais.nome}</div>
-            //    <div>{item.pacientes.nome}</div>
-            //    <div>{formatDate(item.data)}</div>
-            //    <div>{formatDate(item.hora)}</div>
-            //    <div>{item.status}</div>
-            //    <div>{item.tipo}</div>
-            //</div>
         );
     };
+
+
+
   const header = (
     <h1>Lista de Atentimentos</h1>
   );
