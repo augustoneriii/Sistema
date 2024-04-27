@@ -121,7 +121,7 @@ namespace app.DAO
             objInsert.Append(") VALUES (");
             objInsert.Append($" '{dto.Data}', ");
             objInsert.Append($" '{dto.Hora}', ");
-            objInsert.Append($" {dto.Atendida}, "); // Removido os caracteres de formatação
+            objInsert.Append($" {dto.Atendida}, "); // Map boolean to integer
             objInsert.Append($" '{dto.Status}', ");
             objInsert.Append($" '{dto.Tipo}', ");
             objInsert.Append($" '{dto.Observacoes}', ");
