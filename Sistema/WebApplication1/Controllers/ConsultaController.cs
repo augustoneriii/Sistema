@@ -98,7 +98,7 @@ namespace app.Controllers
                 _context.BeginTransaction();
                 var response = await _be.Update(consulta);
                 _context.Commit();
-                return Ok();
+                return Ok(new {Message = "Consulta alterada com sucesso!"});
             }
             catch (Exception ex)
             {

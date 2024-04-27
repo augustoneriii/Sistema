@@ -18,6 +18,8 @@
         public string? Cirurgias { get; set; }
         public string? Historico { get; set; }
         public int? Ativo { get; set; }
+        public string? ConvenioNome { get; set; } // Adicione a nova propriedade ConvenioNome
+
 
     }
 }

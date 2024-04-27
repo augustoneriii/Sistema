@@ -101,7 +101,6 @@ function Perfil() {
                 PerfilService.updateDadosPessoais(_perfil, currentToken);
             } else {
                 _perfis.push(_perfil);
-                console.log("perfil", _perfil);
                 PerfilService.createDadosPessoais(_perfil, currentToken);
                 toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Perfil Criado', life: 3000 });
             }

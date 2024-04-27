@@ -4,14 +4,15 @@ import SideBar from '../components/SideBar';
 import ConvenioMedico from '../pages/CadastrosBasicos/ConvenioMedico';
 import Profissao from '../pages/CadastrosBasicos/Profissao';
 import Paciente from '../pages/Paciente';
-import Consulta from '../pages/Consulta';
+import Consulta from '../pages/Agendamento/Consulta';
 import Profissional from '../pages/Profissional';
+import AgendaCalendario from '../pages/Agendamento/AgendaCalendario';
 import Usuarios from '../pages/CadastrosBasicos/Usuarios';
 import Perfil from '../pages/CadastrosBasicos/Perfil';
 import AgendaProfissional from '../pages/Profissional/AgendaProfissional';
 import { SidebarContext } from '../context/SideBarContext';
 import ListaAtendimentos from '../pages/Profissional/ListaAtendimento';
-
+ 
 
 function AuthenticatedComponents() {
     const [token, setToken] = useState(null);
@@ -27,7 +28,8 @@ function AuthenticatedComponents() {
         usuarioVisible,
         perfilVisible,
         agendaProfissionalVisible,
-        atendimentoVisible
+        atendimentoVisible,
+        agendaCalendarioVisible
     } = useContext(SidebarContext);
 
     useEffect(() => {
@@ -50,6 +52,7 @@ function AuthenticatedComponents() {
                     {agendaProfissionalVisible && <AgendaProfissional />}
                     {perfilVisible && <Perfil />}
                     {atendimentoVisible && <ListaAtendimentos />}
+                    {agendaCalendarioVisible && <AgendaCalendario />}
                 </>
             ) : (
                 <>
@@ -62,6 +65,7 @@ function AuthenticatedComponents() {
                     {agendaProfissionalVisible && <AgendaProfissional />}
                     {perfilVisible && <Perfil />}
                     {atendimentoVisible && <ListaAtendimentos />}
+                    {agendaCalendarioVisible && <AgendaCalendario />}
                 </>
             )}
         </>

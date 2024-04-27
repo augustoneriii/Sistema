@@ -1,20 +1,4 @@
-.login-container {
-    background-color: #C4F2EE; /* Cor de fundo clara */
-    color: #164059; /* Cor do texto escuro */
-}
-
-.login-container .inputtext {
-    background-color: #fff; /* Fundo claro para os campos de entrada */
-    border-color: #164059; /* Borda escura */
-    color: #0D0D0D; /* Texto escuro */
-}
-
-.login-container .button {
-    background-color: #17BFAE; /* Cor de fundo do botão */
-    color: #fff; /* Texto do botão claro */
-    border: none; /* Sem borda */
-}
-
-.login-container a {
-    color: #1ED9B7; /* Cor do link 'Esqueceu sua senha?' */
+input[name="password"] {
+    width: 100%;
+    padding-left: 20px;
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { ConsultaService } from './service/ConsultaService.js';
-import { SidebarContext } from '../../context/SideBarContext';
+import { SidebarContext } from '../../../context/SideBarContext';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { Toolbar } from 'primereact/toolbar';
@@ -13,7 +13,8 @@ import { Calendar } from 'primereact/calendar';
 import { Checkbox } from "primereact/checkbox";
 import { InputTextarea } from 'primereact/inputtextarea';
 import { FilterMatchMode } from 'primereact/api';
-import Modal from '../../components/Modal/index.js';
+import Modal from '../../../components/Modal/index.js';
+import { InputText } from 'primereact/inputtext';
 import { FloatLabel } from 'primereact/floatlabel';
 
 export default function Consulta() {
@@ -51,37 +52,14 @@ export default function Consulta() {
     const [activeConsulta, setActiveConsultas] = useState([]);
 
     useEffect(() => {
-        async function fetchConsultas() {
-            const currentToken = localStorage.getItem('token') || '';
-            try {
-                const response = await ConsultaService.getConsultas(currentToken);
-                setConsultas(response.data); // Assuming response.data contains the array of convenios
-                setDataLoaded(true); // Marca que os dados foram carregados
-            } catch (error) {
-                console.error("Erro ao buscar consultas:", error);
-            }
-        }
-
-        if (consultaVisible && !dataLoaded) {
-            fetchConsultas();
-        }
-        if (consulta.atendida === true) {
-            setChecked(true); 
-        } else {
-            setChecked(false);
-        }
-        if (consultas.length > 0) {
-            const filteredConsultas = consultas.filter(consulta => consulta.atendida === true); // Filtra os convenios ativos
-            setActiveConsultas(filteredConsultas); // Atualiza o estado com os convenios ativos
-        }
-
-    }, [consultaVisible, dataLoaded, consulta.atendida, consultas]);
+        fetchConsulta();
+    }, []);
 
     useEffect(() => {
         const currentToken = localStorage.getItem('token') || '';
         ConsultaService.getPacientes(currentToken)
             .then(response => {
-                setPacientes(response.data); // Acesso à array de pacientes
+                setPacientes(response.data);
             })
             .catch(error => {
                 console.error("Erro ao buscar pacientes:", error);
@@ -92,12 +70,22 @@ export default function Consulta() {
         const currentToken = localStorage.getItem('token') || '';
         ConsultaService.getProfissionais(currentToken)
             .then(response => {
-                setProfissionais(response.data); // Acesso à array de profissionais
+                setProfissionais(response.data);
             })
             .catch(error => {
                 console.error("Erro ao buscar profissionais:", error);
             });
     }, []);
+
+    async function fetchConsulta() {
+        const currentToken = localStorage.getItem('token') || '';
+        try {
+            const response = await ConsultaService.getConsultas(currentToken);
+            setConsultas(response.data);
+        } catch (error) {
+            console.error("Erro ao buscar Consultas:", error);
+        }
+    }
 
     const formatDate = (dateStr) => {
         if (!dateStr) return '';
@@ -130,34 +118,43 @@ export default function Consulta() {
         setDeleteConsultaDialog(false);
     };
 
-
-    const saveConsulta = () => {
+    const saveConsulta = async () => {
         setSubmitted(true);
-
+    
         if (consulta.tipo.trim()) {
-          let _consultas = [...consultas];
-          let _consulta = { ...consulta };
-
-
-            /*_consulta.atendida = checked ? 1 : 0;*/ // Atualiza o campo "ativo" com base no estado do checkbox
+            let _consultas = [...consultas];
+            let _consulta = { ...consulta };
+    
+            let postConsulta = {
+                id: _consulta.id,
+                pacienteId: _consulta.paciente.id,
+                profissionalId: _consulta.profissional.id,
+                data: _consulta.data,
+                hora: _consulta.hora,
+                status: _consulta.status,
+                tipo: _consulta.tipo,
+                observacoes: _consulta.observacoes,
+                atendida: false
+            };
+    
             const currentToken = localStorage.getItem('token') || '';
             if (consulta.id) {
                 const index = findIndexById(consulta.id);
                 _consultas[index] = _consulta;
-                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Consulta Atualizado', life: 3000 });
-                ConsultaService.updateConsulta(_consulta, currentToken);
+                toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Atualizada', life: 3000 });
+                await ConsultaService.updateConsulta(postConsulta, currentToken);
             } else {
-                _consultas.push(_consulta);
-                console.log("consulta", _consulta);
-                ConsultaService.createConsulta(_consulta, currentToken);
-                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Convenio Criado', life: 3000 });
+                toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Criada', life: 3000 });
+                await ConsultaService.createConsulta(postConsulta, currentToken);
             }
-
+    
+            await fetchConsulta();  
             setConsultas(_consultas);
             setConsultaDialog(false);
             setConsulta(emptyConsulta);
         }
     };
+    
 
 
 
@@ -201,14 +198,9 @@ export default function Consulta() {
     //};
 
     const editConsulta = (consultaData) => {
-        setConsulta({
-            ...consultaData,
-            paciente: pacientes.find(p => p.id === consultaData.IdPaciente),
-            profissional: profissionais.find(p => p.id === consultaData.IdProfissional),
-        });
+        setConsulta({ ...consultaData });
         setConsultaDialog(true);
     };
-
 
     const exportCSV = (selectionOnly) => {
         dt.current.exportCSV({ selectionOnly });
@@ -225,16 +217,21 @@ export default function Consulta() {
         return index;
     };
 
-    const createId = () => {
-        return Math.random().toString(36).substr(2, 9);
+    const onInputChange = (e, name) => {
+        let val;
+        if (name === 'atendida') {
+            val = e.checked;
+        } else if (e.value !== undefined) {
+            val = e.value;
+        } else {
+            val = e.target.value;
+        }
+
+        let _consulta = { ...consulta };
+        _consulta[name] = val;
+        setConsulta(_consulta);
     };
 
-    const onInputChange = (name, value) => {
-        setConsulta(prevConsulta => ({
-            ...prevConsulta,
-            [name]: value,
-        }));
-    };
 
     const formatTime = (timeStr) => {
         if (!timeStr) return '';
@@ -245,18 +242,25 @@ export default function Consulta() {
 
     const leftToolbarTemplate = () => {
         return (
-            <React.Fragment>
+            <>
+                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Pesquisar..." />
+            </>
+        );
+    };
+
+    const rightToolbarTemplate = () => {
+        return (
+            <>
                 <Button label="Novo" icon="pi pi-plus" className="border-round p-button-secondary mr-2" onClick={openNew} />
-            </React.Fragment>
+            </>
         );
     };
 
     const actionBodyTemplate = (rowData) => {
         return (
-            <React.Fragment>
+            <>
                 <Button icon="pi pi-pencil" className="border-round p-button-rounded p-button-secondary mr-2" onClick={() => editConsulta(rowData)} />
-
-            </React.Fragment>
+            </>
         );
     };
 
@@ -265,7 +269,6 @@ export default function Consulta() {
         consultas.forEach((consulta) => {
             _expandedRows.push(consulta.id);
         });
-        console.log(_expandedRows);
         setExpandedRows(_expandedRows);
     };
 
@@ -300,13 +303,12 @@ export default function Consulta() {
     const header = (
         <h1>Gerenciar Consultas</h1>
     );
-    // const header = renderHeader();
 
     const consultaDialogFooter = (
-        <React.Fragment>
+        <>
             <Button label="Cancelar" icon="pi pi-times" className="border-round p-button-text" onClick={hideDialog} />
             <Button label="Salvar" icon="pi pi-check" className="border-round p-button-text" onClick={saveConsulta} />
-        </React.Fragment>
+        </>
     );
 
     return (
@@ -314,7 +316,7 @@ export default function Consulta() {
             <Toast ref={toast} />
             <Modal header={header} modal={false} visible={consultaVisible} style={{ width: '50vw' }} onHide={() => setConsultaVisible(false)}>
                 <div className="card">
-                    <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
+                    <Toolbar className="mb-4" right={rightToolbarTemplate} left={leftToolbarTemplate}></Toolbar>
 
                     <DataTable ref={dt} value={consultas} selection={selectedConsultas} onSelectionChange={e => setSelectedConsultas(e.value)}
                         dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} rowGroupMode="subheader" groupRowsBy="profissionais.nome" sortOrder={1}
@@ -372,13 +374,13 @@ export default function Consulta() {
                         <div className="field col">
                             <FloatLabel>
                                 <label htmlFor="observacoes">Observações</label>
-                                <InputTextarea id="observacoes" value={consulta.observacoes} onChange={(e) => onInputChange('observacoes', e.target.value)} />
+                                <InputTextarea id="observacoes" value={consulta.observacoes} onChange={(e) => onInputChange(e, 'observacoes')} />
                             </FloatLabel>
                         </div>
                     </div>
                     <div className="flex align-items-center">
-                        <Checkbox inputId="atendida" checked={consulta.atendida} onChange={(e) => onInputChange('atendida', e.checked)} />
-                        <label className="ml-2" htmlFor="atendida">Atendida</label>
+                        <Checkbox inputId="atendida" checked={consulta.atendida} onChange={(e) => onInputChange(e, 'atendida')} />
+                        <label htmlFor="atendida" className="ml-2">Atendida</label>
                     </div>
                 </Dialog>
 

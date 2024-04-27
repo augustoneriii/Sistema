@@ -18,7 +18,6 @@ function useAuth() {
 
     async function authUser(data) {
         setAuthenticated(true)
-        console.log('data', data)
         localStorage.setItem('token', JSON.stringify(data.token))
         localStorage.setItem('user', JSON.stringify(data.user))
         navigate('/')
@@ -33,7 +32,6 @@ function useAuth() {
             toast.current.show({ severity: 'info', summary: 'Registro', detail: data.message, life: 3000 });
             await authUser(data)
         } catch (error) {
-            console.log('Erro ao cadastrar ', error)
             toast.current.show({ severity: 'error', summary: 'Erro de Registro', detail: error.response.data.message, life: 3000 });
         }
     }

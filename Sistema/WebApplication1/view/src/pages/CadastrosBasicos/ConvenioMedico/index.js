@@ -106,7 +106,6 @@ function ConvenioMedico() {
                 ConvenioService.updateConvenio(_convenio, currentToken);
             } else {
                 _convenios.push(_convenio);
-                console.log("convenio", _convenio);
                 ConvenioService.createConvenio(_convenio, currentToken);
                 toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Convenio Criado', life: 3000 });
             }
@@ -238,7 +237,7 @@ function ConvenioMedico() {
         <>
             <Toast ref={toast} />
 
-            <Modal header={header} modal={false} visible={convenioVisible} style={{ width: '80vw', height: '80vh' }} onHide={() => onHideModal()}>
+            <Modal header={header} modal={false} visible={convenioVisible} style={{ width: '50vw', height: '80vh' }} onHide={() => onHideModal()}>
                 <div className='card'>
                     <div className='grid'>
                         
@@ -272,8 +271,8 @@ function ConvenioMedico() {
                         
 
                  
-                        <div className="field col-6">
-                            <label htmlFor="ativo">Ativo</label>
+                        <div className=" col-6 flex align-items-center">
+                            <label className="mr-2" htmlFor="ativo">Ativo</label>
                             <Checkbox onChange={onCheckboxChange} checked={checked}></Checkbox>
                         </div>
                        
