@@ -140,17 +140,11 @@ namespace app.DAO
         {
             var objUpdate = new StringBuilder();
             objUpdate.Append("UPDATE \"Sistema\".\"Consultas\" SET ");
-<<<<<<< HEAD
             objUpdate.Append($" \"Data\" = '{dto.Data:yyyy-MM-dd}', ");
             objUpdate.Append($" \"Hora\" = '{dto.Hora}', ");
             objUpdate.Append($" \"PacienteId\" = '{dto.PacienteId}', ");
             objUpdate.Append($" \"ProfissionalId\" = '{dto.ProfissionalId}', ");
             objUpdate.Append($" \"Atendida\" = '{dto.Atendida}', ");
-=======
-            objUpdate.Append($" \"Data\" = '{dto.Data?.ToString("yyyy-MM-dd")}', ");
-            objUpdate.Append($" \"Hora\" = '{dto.Hora?.ToString("HH:mm:ss")}', ");
-            objUpdate.Append($" \"Atendida\" = {dto.Atendida}, "); // Aqui pode ser necessário verificar se dto.Atendida é true ou false
->>>>>>> dc1629f7891ebffb00054a864982c7c957752609
             objUpdate.Append($" \"Status\" = '{dto.Status}', ");
             objUpdate.Append($" \"Tipo\" = '{dto.Tipo}', ");
             objUpdate.Append($" \"Observacoes\" = '{dto.Observacoes}' ");
