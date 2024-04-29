@@ -23,17 +23,17 @@ function ListaAtendimentos() {
     };
     const user = JSON.parse(localStorage.getItem('user'));
 
- 
-  const [globalFilter, setGlobalFilter] = useState(null);
-  const { atendimentoVisible, setAtendimentoVisible, profissionalId } = useContext(SidebarContext)
-  const [dataLoaded, setDataLoaded] = useState(false);
-  const toast = useRef(null);
-  const [profissionais, setProfissionais] = useState([]);
-  const [selectedConsultas, setSelectedConsultas] = useState(null);
-  //const dt = useRef(null);
-  const [consulta, setConsulta] = useState(emptyConsulta);
-  const [consultas, setConsultas] = useState([]);
-  const [convenios, setConvenios] = useState({});
+
+    const [globalFilter, setGlobalFilter] = useState(null);
+    const { atendimentoVisible, setAtendimentoVisible, profissionalId } = useContext(SidebarContext)
+    const [dataLoaded, setDataLoaded] = useState(false);
+    const toast = useRef(null);
+    const [profissionais, setProfissionais] = useState([]);
+    const [selectedConsultas, setSelectedConsultas] = useState(null);
+    //const dt = useRef(null);
+    const [consulta, setConsulta] = useState(emptyConsulta);
+    const [consultas, setConsultas] = useState([]);
+    const [convenios, setConvenios] = useState({});
 
     useEffect(() => {
         fetchConsulta();
@@ -51,7 +51,7 @@ function ListaAtendimentos() {
     }, []);
 
     useEffect(() => {
-        
+
     }, [profissionais]);
 
     const fetchConsulta = async () => {
@@ -61,7 +61,7 @@ function ListaAtendimentos() {
 
             const response = await AtendimentoService.getConsultas(currentToken, `Profissionais.Cpf=${user.cpf}`);
 
-            console.log("Consultas:", response.data); // Adiciona este console.log para verificar as consultas recebidas do servidor
+            //console.log("Consultas:", response.data); // Adiciona este console.log para verificar as consultas recebidas do servidor
 
             const consultasComIdProfissional = await Promise.all(response.data
                 .filter(consulta => {
@@ -82,8 +82,12 @@ function ListaAtendimentos() {
                         const pacienteResponse = await AtendimentoService.getPacientes(currentToken, `Pacientes.Id=${consulta.pacientes.id}`);
                         const pacientes = pacienteResponse.data; // Obtenha todos os pacientes
 
-                        // Mapeie cada paciente para extrair o nome do conv�nio
-                        const convenios = pacientes.map(paciente => paciente.convenio?.nome);
+                        // Filtra os pacientes que correspondem ao pacienteFiltrado
+                        const pacientesFiltrados = pacientes.filter(paciente => paciente.id === consulta.pacientes.id);
+
+                        // Mapeie cada paciente filtrado para extrair o nome do convênio
+                        const convenios = pacientesFiltrados.map(pacienteFiltrado => pacienteFiltrado.convenio.nome);
+                        //console.log("convenios: ", convenios);
 
                         return { ...consulta, profissionalId: consulta.profissionais.id, pacienteId: consulta.pacientes.id, convenios };
                     } else {
@@ -93,7 +97,6 @@ function ListaAtendimentos() {
 
             // Filtra as consultas que n�o s�o nulas
             const consultasFiltradas = consultasComIdProfissional.filter(consulta => consulta !== null);
-
             setConsultas(consultasFiltradas);
 
             setDataLoaded(true);
@@ -103,9 +106,9 @@ function ListaAtendimentos() {
     };
 
 
-  const onHideModal = () => {
-    setAtendimentoVisible(false);
-    setDataLoaded(false);
+    const onHideModal = () => {
+        setAtendimentoVisible(false);
+        setDataLoaded(false);
     }
 
 
@@ -131,33 +134,34 @@ function ListaAtendimentos() {
             );
         }
     };
-    const chamaPaciente = (dataRow) =>{//teste de bot�o
+    const chamaPaciente = (dataRow) => {//teste de bot�o
         toast.current.show({ severity: 'success', summary: 'Sucesso', detail: `Bot�o de chamar paciente (em teste) `, life: 4000 });
     }
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
-                <Button icon="pi pi-check" className="border-round  p-button-primary mr-2" onClick={() => chamaPaciente()} />{/*editConsulta(rowData)*/ }
+                <Button icon="pi pi-check" className="border-round  p-button-primary mr-2" onClick={() => chamaPaciente()} />{/*editConsulta(rowData)*/}
             </React.Fragment>
         );
     };
 
     const itemTemplate = (item) => {
-    // Retorna o layout de cada item da lista
+        // Retorna o layout de cada item da lista
         return (
             <div className="flex flex-wrap p-2 align-items-center gap-3">
                 <div className="flex-1 flex flex-column gap-2 xl:mr-8">
                     <span className="font-bold">Paciente: {item.pacientes.nome}</span>
                     <div className="flex align-items-center gap-2">
                         <i className="pi pi-user"></i>
+                        Convênio do Paciente: 
                         {item.convenios.length > 0 ? (
                             <ul>
                                 {item.convenios.map((convenio, index) => (
-                                    <li key={index}>{convenio}</li>
+                                    <span><li key={index}>{convenio}</li></span>
                                 ))}
                             </ul>
                         ) : (
-                            <span>Nenhum conv�nio</span>
+                            <span>Nenhum convênio</span>
                         )}
                     </div>
                 </div>
@@ -169,35 +173,35 @@ function ListaAtendimentos() {
 
 
 
-  const header = (
-    <h1>Lista de Atentimentos</h1>
-  );
+    const header = (
+        <h1>Lista de Atentimentos</h1>
+    );
 
 
-  return (
-    <>
-      <Toast ref={toast} />
-      <Modal header='' modal={false} visible={atendimentoVisible} style={{ width: '80vw', height: '80vh' }} onHide={() => onHideModal()}>
+    return (
+        <>
+            <Toast ref={toast} />
+            <Modal header='' modal={false} visible={atendimentoVisible} style={{ width: '80vw', height: '80vh' }} onHide={() => onHideModal()}>
 
-              {/*<DataTable ref={dt} value={consultas} selection={selectedConsultas} onSelectionChange={e => setSelectedConsultas(e.value)}*/}
-              {/*dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} rowGroupMode="subheader" groupRowsBy="profissionais.nome" sortOrder={1}*/}
-              {/*sortField="profissionais.nome" paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"*/}
-              {/*expandableRowGroups expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)} sortMode="single" rowGroupHeaderTemplate={headerTemplate}*/}
-              {/*currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} consultas" globalFilter={globalFilter}>*/}
-              {/*<Column style={{ width: '14.28%' }} field="profissionais.nome" header="Profissional" sortable></Column>*/}
-              {/*<Column style={{ width: '14.28%' }} field="pacientes.nome" header="Paciente" sortable></Column>*/}
-              {/*<Column style={{ width: '14.28%' }} field="data" header="Data" body={(rowData) => formatDate(rowData.data)} sortable></Column>*/}
-              {/*<Column style={{ width: '14.28%' }} field="hora" header="Hora" body={(rowData) => formatDate(rowData.hora)} sortable></Column>*/}
-              {/*<Column style={{ width: '14.28%' }} field="status" header="Status" sortable></Column>*/}
-              {/*<Column style={{ width: '14.28%' }} field="tipo" header="Tipo" sortable></Column>*/}
-              {/*<Button style={{ width: '14.28%' }} label="Chamar" header="Chamar Paciente" body={actionBodyTemplate}></Button>*/}
-              {/*</DataTable>*/}
+                {/*<DataTable ref={dt} value={consultas} selection={selectedConsultas} onSelectionChange={e => setSelectedConsultas(e.value)}*/}
+                {/*dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} rowGroupMode="subheader" groupRowsBy="profissionais.nome" sortOrder={1}*/}
+                {/*sortField="profissionais.nome" paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"*/}
+                {/*expandableRowGroups expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)} sortMode="single" rowGroupHeaderTemplate={headerTemplate}*/}
+                {/*currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} consultas" globalFilter={globalFilter}>*/}
+                {/*<Column style={{ width: '14.28%' }} field="profissionais.nome" header="Profissional" sortable></Column>*/}
+                {/*<Column style={{ width: '14.28%' }} field="pacientes.nome" header="Paciente" sortable></Column>*/}
+                {/*<Column style={{ width: '14.28%' }} field="data" header="Data" body={(rowData) => formatDate(rowData.data)} sortable></Column>*/}
+                {/*<Column style={{ width: '14.28%' }} field="hora" header="Hora" body={(rowData) => formatDate(rowData.hora)} sortable></Column>*/}
+                {/*<Column style={{ width: '14.28%' }} field="status" header="Status" sortable></Column>*/}
+                {/*<Column style={{ width: '14.28%' }} field="tipo" header="Tipo" sortable></Column>*/}
+                {/*<Button style={{ width: '14.28%' }} label="Chamar" header="Chamar Paciente" body={actionBodyTemplate}></Button>*/}
+                {/*</DataTable>*/}
 
-              <OrderList value={consultas} dragdrop={false} itemTemplate={itemTemplate} header={header} onChange={(e) => setConsultas(e.value)}></OrderList>
+                <OrderList value={consultas} dragdrop={false} itemTemplate={itemTemplate} header={header} onChange={(e) => setConsultas(e.value)}></OrderList>
 
-      </Modal>
-    </>
-  )
+            </Modal>
+        </>
+    )
 }
 
 export default ListaAtendimentos
