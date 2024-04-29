@@ -36,6 +36,9 @@ function Profissao() {
     const menuRef = useRef(null);
     const [errorMessage, setErrorMessage] = useState(''); // Novo estado para controlar a mensagem de erro
 
+    const [activeProfissoes, setActiveProfissoes] = useState([]);
+    const [dataLoaded, setDataLoaded] = useState(false);
+
     const [checked, setChecked] = useState(true); // Estado para controlar o valor do checkbox
 
     useEffect(() => {
@@ -43,19 +46,27 @@ function Profissao() {
             const currentToken = localStorage.getItem('token') || '';
             try {
                 const response = await ProfissaoService.getProfissoes(currentToken);
-                setProfissoes(response.data); // Assuming response.data contains the array of profissoes
+                setProfissoes(response.data); // Assuming response.data contains the array of convenios
+                setDataLoaded(true); // Marca que os dados foram carregados
             } catch (error) {
                 console.error("Erro ao buscar profissoes:", error);
             }
         }
 
-        fetchProfissoes();
+        if (profissaoVisible && !dataLoaded) {
+            fetchProfissoes();
+        }
         if (profissao.ativo === 1) {
             setChecked(true); // Marca o checkbox se o campo "ativo" for igual a 1
         } else {
             setChecked(false);
         }
-    }, [profissao.ativo]);
+        if (profissoes.length > 0) {
+            const filteredProfissoes = profissoes.filter(profissao => profissao.ativo === 1); // Filtra os convenios ativos
+            setActiveProfissoes(filteredProfissoes); // Atualiza o estado com os convenios ativos
+        }
+
+    }, [profissaoVisible, dataLoaded, profissao.ativo, profissoes]);
 
     const openNew = () => {
         setProfissao(emptyProfissao);
@@ -254,16 +265,19 @@ function Profissao() {
                 </div>
 
                 <div className="card">
-                    <DataTable ref={dt} value={profissoes} selection={selectedProfissoes} onSelectionChange={e => setSelectedProfissoes(e.value)}
+                    <DataTable ref={dt} value={activeProfissoes} selection={selectedProfissoes} onSelectionChange={e => setSelectedProfissoes(e.value)}
                         dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} scrollable scrollHeight="200px"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} profissoes" globalFilter={globalFilter}>
+                        <Column body={actionButtonGroupTemplate}></Column>
                         <Column body={actionButtonGroupTemplate}></Column>
                         <Column field="nome" header="Nome" sortable></Column>
                         <Column field="conselhoProfissional" header="Conselho Profissional" sortable></Column>
                         <Column field="ativo" header="Ativo" body={(rowData) => rowData.ativo !== null ? rowData.ativo : ''} sortable></Column>
                     </DataTable>
                 </div>
+
+              
 
 
             </Modal>

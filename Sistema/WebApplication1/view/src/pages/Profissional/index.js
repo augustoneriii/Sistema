@@ -52,23 +52,36 @@ export default function Profissional() {
     const [conselho, setConselho] = useState("");
     const toast = useRef(null);
     const dt = useRef(null);
+    const [activeProfissionais, setActiveProfissionais] = useState([]);
+    const [dataLoaded, setDataLoaded] = useState(false);
     const [checked, setChecked] = useState(true); // Estado para controlar o valor do checkbox
 
     useEffect(() => {
-        const currentToken = localStorage.getItem('token') || '';
-        ProfissionalService.getProfissionais(currentToken)
-            .then(response => {
-                setProfissionais(response.data);
-            })
-            .catch(error => {
+        async function fetchProfissionais() {
+            const currentToken = localStorage.getItem('token') || '';
+            try {
+                const response = await ProfissionalService.getProfissionais(currentToken);
+                setProfissionais(response.data); 
+                setDataLoaded(true); 
+            } catch (error) {
                 console.error("Erro ao buscar profissionais:", error);
-            });
+            }
+        }
+
+        if (profissionalVisible && !dataLoaded) {
+            fetchProfissionais();
+        }
         if (profissional.ativo === 1) {
             setChecked(true); // Marca o checkbox se o campo "ativo" for igual a 1
         } else {
             setChecked(false);
         }
-    }, [profissional.ativo]);
+        if (convenios.length > 0) {
+            const filteredProfissionais = profissionais.filter(profissional => profissional.ativo === 1); 
+            setActiveProfissionais(filteredProfissionais); 
+        }
+
+    }, [profissionalVisible, dataLoaded, profissional.ativo, profissionais]);
 
     useEffect(() => {
         if (profissional.conselho) {
@@ -165,10 +178,17 @@ export default function Profissional() {
     const saveProfissional = () => {
         setSubmitted(true);
 
-        if (profissional.nome.trim()) {
-
-
-
+        // Verifica se todos os campos obrigatórios estão preenchidos
+        if (
+            profissional.nome.trim() &&
+            profissional.cpf.trim() &&
+            profissional.email.trim() &&
+            profissional.endereco.trim() &&
+            profissional.nascimento &&
+            profissional.sexo &&
+            profissional.profissaoId &&
+            profissional.convenioId
+        ) {
             let _profissionais = [...profissionais];
             let _profissional = {
                 id: profissional.id,
@@ -205,15 +225,24 @@ export default function Profissional() {
             setProfissionais(_profissionais);
             setProfissionalDialog(false);
             setProfissional(emptyProfissional);
+        } else {
+            // Exibe mensagem de toast informando que todos os campos são obrigatórios
+            toast.current.show({ severity: 'warn', summary: 'Atenção', detail: 'Todos os campos são obrigatórios' });
         }
     };
 
     const editProfissional = (profissional) => {
-        setProfissional({ ...profissional });
-        setConselho(profissional.conselho || ''); // Garante que o conselho seja preenchido mesmo que seja nulo
+      
+        setProfissional({
+            ...profissional,
+            nascimento: profissional.nascimento ? new Date(profissional.nascimento) : null, 
+            profissaoId: profissional.profissaoId ? profissional.profissaoId : null, 
+            conselho: profissional.conselho ? profissional.conselho : '', 
+            convenioId: profissional.convenioId ? profissional.convenioId : null 
+        });
+        setConselho(profissional.conselho || ''); 
         setProfissionalDialog(true);
     };
-
 
     const findIndexById = (id) => {
         let index = -1;
@@ -320,7 +349,7 @@ export default function Profissional() {
                 <div className="card">
                     <Toolbar className="mb-4" right={rightToolbarTemplate} left={leftToolbarTemplate}></Toolbar>
 
-                    <DataTable ref={dt} value={profissionais} selection={selectedProfissionais} onSelectionChange={e => setSelectedProfissionais(e.value)}
+                    <DataTable ref={dt} value={activeProfissionais} selection={selectedProfissionais} onSelectionChange={e => setSelectedProfissionais(e.value)}
                         dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} profissionais" globalFilter={globalFilter} header={header}>

@@ -134,6 +134,11 @@ export default function Consulta() {
     const saveConsulta = async () => {
         setSubmitted(true);
 
+        if (!consulta.profissional || !consulta.paciente) {
+            toast.current.show({ severity: 'error', summary: 'Erro', detail: 'Por favor, selecione um Profissional e(ou) Paciente.' });
+            return; // Retorna para impedir o salvamento
+        }
+
         if (consulta.tipo.trim()) {
             let _consultas = [...consultas];
             let _consulta = { ...consulta };
@@ -157,6 +162,7 @@ export default function Consulta() {
                 toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Atualizada', life: 3000 });
                 await ConsultaService.updateConsulta(postConsulta, currentToken);
             } else {
+                _consultas.push(postConsulta);
                 toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Criada', life: 3000 });
                 await ConsultaService.createConsulta(postConsulta, currentToken);
             }
