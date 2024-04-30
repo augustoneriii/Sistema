@@ -34,6 +34,13 @@ namespace app.Controllers
         }
 
 
+        [Route("api/teste")]
+        [HttpGet]
+        public async Task<IActionResult> TesteWeb(ConvenioMedicosDTO dto)
+        {
+            return (Ok(new { Message = "Olá" }));
+        }
+
         // GET: ConvenioMedicos
 
         [Route("getAllConvenioMedicos")]
