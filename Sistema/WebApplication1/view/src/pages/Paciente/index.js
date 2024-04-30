@@ -18,6 +18,7 @@ import Modal from '../../components/Modal/index.js'
 
 export default function Paciente() {
     const { pacienteVisible, setPacienteVisible } = useContext(SidebarContext);
+    const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
 
     let emptyPaciente = {
         Id: null,
@@ -274,7 +275,7 @@ export default function Paciente() {
     );
 
     return (
-        <Modal modal={false} header={headerTela} visible={pacienteVisible} style={{ width: '70vw' }} onHide={() => setPacienteVisible(false)}>
+        <Modal  modalKey={modalIdRef.current} modal={false} header={headerTela} visible={pacienteVisible} style={{ width: '70vw' }} onHide={() => setPacienteVisible(false)}>
             <Toast ref={toast} />
 
             <div className="card">

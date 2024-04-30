@@ -9,6 +9,8 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { OrderList } from 'primereact/orderlist';
 function ListaAtendimentos() {
+    const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
+
     let emptyConsulta = {
         id: null,
         atendida: false,
@@ -181,7 +183,7 @@ function ListaAtendimentos() {
     return (
         <>
             <Toast ref={toast} />
-            <Modal header='' modal={false} visible={atendimentoVisible} style={{ width: '80vw', height: '80vh' }} onHide={() => onHideModal()}>
+            <Modal  modalKey={modalIdRef.current} header='' modal={false} visible={atendimentoVisible} style={{ width: '80vw', height: '80vh' }} onHide={() => onHideModal()}>
 
                 {/*<DataTable ref={dt} value={consultas} selection={selectedConsultas} onSelectionChange={e => setSelectedConsultas(e.value)}*/}
                 {/*dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} rowGroupMode="subheader" groupRowsBy="profissionais.nome" sortOrder={1}*/}

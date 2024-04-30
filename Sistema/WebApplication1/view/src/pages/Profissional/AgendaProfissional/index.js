@@ -11,6 +11,8 @@ import { Card } from 'primereact/card';
 
 function AgendaProfissional() {
     const { agendaProfissionalVisible, setAgendaProfissionalVisible } = useContext(SidebarContext);
+    const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
+
 
     let emptyAgenda = {
         id: null,
@@ -155,7 +157,7 @@ function AgendaProfissional() {
     );
 
     return (
-        <Modal modal={false} header={headerTela} visible={agendaProfissionalVisible} style={{ width: '80vw' }} onHide={() => setAgendaProfissionalVisible(false)}>
+        <Modal  modalKey={modalIdRef.current} modal={false} header={headerTela} visible={agendaProfissionalVisible} style={{ width: '80vw' }} onHide={() => setAgendaProfissionalVisible(false)}>
             <Toast ref={toast} />
 
             <Splitter className='p-3	'>

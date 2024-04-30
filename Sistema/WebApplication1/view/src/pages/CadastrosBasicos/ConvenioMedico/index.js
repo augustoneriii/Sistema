@@ -16,6 +16,8 @@ import { Commom } from '../../../utils/Commom.js';
 function ConvenioMedico() {
     const { convenioVisible, setConvenioVisible } = useContext(SidebarContext);
     // const [convenioVisible, setConvenioVisible] = useState(true);
+    const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
+
 
     const emptyConvenio = {
         id: null,
@@ -237,7 +239,7 @@ function ConvenioMedico() {
         <>
             <Toast ref={toast} />
 
-            <Modal header={header} modal={false} visible={convenioVisible} style={{ width: '50vw', height: '80vh' }} onHide={() => onHideModal()}>
+            <Modal modalKey={modalIdRef.current}  header={header} modal={false} visible={convenioVisible} style={{ width: '50vw', height: '80vh' }} onHide={() => onHideModal()}>
                 <div className='card'>
                     <div className='grid'>
                         

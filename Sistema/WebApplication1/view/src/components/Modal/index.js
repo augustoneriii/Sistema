@@ -1,12 +1,31 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Dialog } from 'primereact/dialog';
-import styles from './style.module.css';
+import { useZIndex } from '../../context/ZIndexContext';
 
-function Modal({ children, header, modal, visible, style, onHide }) {
+function Modal({ modalKey, children, header, modal, visible, style, onHide }) {
     const [isExpanded, setIsExpanded] = useState(true);
+    const { zIndex, incrementZIndex } = useZIndex();
+
+    let modalId = `modal-${modalKey}`;
+
+
+    const handleClick = () => {
+        console.log(modalId);
+        let modalContainer = document.getElementById(modalId)?.parentNode;
+        console.log("modalContainer", modalContainer)
+        if (modalContainer) {
+            modalContainer.style.zIndex = zIndex;
+        }
+        incrementZIndex();
+    };
 
     const onMinimize = () => {
         setIsExpanded(!isExpanded);
+    };
+
+    const dynamicStyles = {
+        ...style,
+        position: 'relative'
     };
 
     const headerContent = (
@@ -26,24 +45,32 @@ function Modal({ children, header, modal, visible, style, onHide }) {
     );
 
     return (
-        <Dialog
-            header={headerContent}
-            modal={modal}
-            className={`${isExpanded ? '' : styles.minimized}`}
-            visible={visible}
-            onHide={onHide}
-            baseZIndex={0}
-            style={style}
-            maximizable
-            resizable={true}
-            closeOnEscape
-            contentClassName="pt-3"
-            focusOnShow={false}
-            headerStyle={isExpanded ? { backgroundColor: '#f9fafb' } : { backgroundColor: '#f9fafb', display: 'block', height: '20px', overflow: 'hidden' }}
-            icons={headerIcon}
-        >
-            {isExpanded && children}
-        </Dialog>
+        <>
+            {
+                !modalKey ? (null) : (
+                    <>
+                        <Dialog
+                            header={headerContent}
+                            modal={modal}
+                            visible={visible}
+                            id={`${modalId}`}
+                            onHide={onHide}
+                            maximizable
+                            resizable={true}
+                            closeOnEscape
+                            contentClassName="pt-3"
+                            focusOnShow={false}
+                            headerStyle={isExpanded ? { backgroundColor: '#f9fafb' } : { backgroundColor: '#f9fafb', display: 'block', height: '20px', overflow: 'hidden' }}
+                            icons={headerIcon}
+                            style={dynamicStyles}
+                            onClick={handleClick}
+                        >
+                            {isExpanded && children}
+                        </Dialog >
+                    </>
+                )
+            }
+        </>
     );
 }
 

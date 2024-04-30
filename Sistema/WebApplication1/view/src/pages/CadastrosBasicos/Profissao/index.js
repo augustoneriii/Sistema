@@ -15,6 +15,8 @@ import { Checkbox } from 'primereact/checkbox';
 import { FloatLabel } from 'primereact/floatlabel';
 function Profissao() {
     const { profissaoVisible, setProfissaoVisible } = useContext(SidebarContext);
+    const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
+
 
     let emptyProfissao = {
         id: null,
@@ -239,7 +241,7 @@ function Profissao() {
         <>
             <Toast ref={toast} />
 
-            <Modal header={header} modal={false} visible={profissaoVisible} style={{ width: '30vw' }} onHide={() => setProfissaoVisible(false)}>
+            <Modal modalKey={modalIdRef.current} header={header} modal={false} visible={profissaoVisible} style={{ width: '30vw' }} onHide={() => setProfissaoVisible(false)}>
                 <div className='card'>
                     <div className='grid'>
                         <div className="field col-12 mt-5">
