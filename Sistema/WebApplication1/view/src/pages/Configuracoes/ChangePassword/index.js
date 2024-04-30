@@ -8,6 +8,8 @@ import ChangePassWordService from './service/ChangePasswordService'
 
 function ChangePassword({ changePassword, setChangePassword, changePasswordDialog, setChangePasswordDialog, token }) {
     const toast = useRef(null);
+    const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
+
 
     const savePassword = () => {
         const currentToken = localStorage.getItem('token') || '';
@@ -26,7 +28,7 @@ function ChangePassword({ changePassword, setChangePassword, changePasswordDialo
     }
 
     return (
-        <Modal header="Change Password" modal={false} visible={changePasswordDialog} style={{ width: '37vw', height: '55vh' }} onHide={() => setChangePasswordDialog(false)}>
+        <Modal  modalKey={modalIdRef.current}  header="Change Password" modal={false} visible={changePasswordDialog} style={{ width: '37vw', height: '55vh' }} onHide={() => setChangePasswordDialog(false)}>
             <Toast ref={toast} />
             <div className="card">
                 <div className="grid">

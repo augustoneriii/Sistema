@@ -20,6 +20,8 @@ import { FloatLabel } from 'primereact/floatlabel';
 import { Commom } from '../../utils/Commom.js';
 
 export default function Profissional() {
+    const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
+
     let emptyProfissional = {
         id: null,
         nome: "",
@@ -344,7 +346,7 @@ export default function Profissional() {
     return (
         <>
             <Toast ref={toast} />
-            <Modal header={header} modal={false} visible={profissionalVisible} style={{ width: '50vw' }} onHide={() => setProfissionalVisible(false)}>
+            <Modal  modalKey={modalIdRef.current} header={header} modal={false} visible={profissionalVisible} style={{ width: '50vw' }} onHide={() => setProfissionalVisible(false)}>
 
                 <div className="card">
                     <Toolbar className="mb-4" right={rightToolbarTemplate} left={leftToolbarTemplate}></Toolbar>

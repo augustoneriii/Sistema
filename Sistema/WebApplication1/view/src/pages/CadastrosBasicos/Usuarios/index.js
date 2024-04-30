@@ -22,6 +22,8 @@ function Usuarios() {
     const [usuarioDialog, setUsuarioDialog] = useState(false);
     const [changePasswordDialog, setChangePasswordDialog] = useState(false);
     const [changePassword, setChangePassword] = useState({ email: "", password: "", confirmPassword: "" });
+    const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
+
 
 
     const user = JSON.parse(localStorage.getItem('user'));
@@ -119,7 +121,7 @@ function Usuarios() {
     return (
         <>
             <Toast ref={toast} />
-            <Modal header={<h1>Usuario</h1>} modal={false} visible={usuarioVisible} style={{ width: '50vw', height: '80vh' }} onHide={() => { setUsuarioVisible(false); setDataLoaded(false); }}>
+            <Modal  modalKey={modalIdRef.current}  header={<h1>Usuario</h1>} modal={false} visible={usuarioVisible} style={{ width: '50vw', height: '80vh' }} onHide={() => { setUsuarioVisible(false); setDataLoaded(false); }}>
                 <div className="card">
                     <div className="grid">
                         <div className="col-6">

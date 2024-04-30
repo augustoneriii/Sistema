@@ -19,6 +19,7 @@ import { FloatLabel } from 'primereact/floatlabel';
 export default function Consulta() {
     const { setPacienteVisible } = useContext(SidebarContext);
     const { consultaVisible, setConsultaVisible } = useContext(SidebarContext);
+    const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
 
     let emptyConsulta = {
         id: null,
@@ -33,6 +34,7 @@ export default function Consulta() {
 
 
     };
+    
 
     const [consultas, setConsultas] = useState([]);
     const [pacientes, setPacientes] = useState([]);
@@ -239,9 +241,7 @@ export default function Consulta() {
         return index;
     };
 
-    const createId = () => {
-        return Math.random().toString(36).substr(2, 9);
-    };
+
 
     const onInputChange = (name, value) => {
         setConsulta(prevConsulta => ({
@@ -326,7 +326,7 @@ export default function Consulta() {
     return (
         <>
             <Toast ref={toast} />
-            <Modal header={header} modal={false} visible={consultaVisible} style={{ width: '50vw' }} onHide={() => setConsultaVisible(false)}>
+            <Modal modalKey={modalIdRef.current} header={header} modal={false} visible={consultaVisible} style={{ width: '50vw' }} onHide={() => setConsultaVisible(false)}>
                 <div className="card">
                     <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
 
