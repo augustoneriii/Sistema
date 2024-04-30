@@ -84,7 +84,7 @@ function Home() {
             }
 
             return {
-                title: 'Consulta',
+                title:  consulta.profissionais.nome,
                 start: moment(consulta.data).toDate(),
                 end: moment(consulta.data).add(1, 'hour').toDate(), // Adicione a duração da consulta, se aplicável
                 backgroundColor: backgroundColor,
