@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import ptLocale from '@fullcalendar/core/locales/pt';
-import { HomeService } from './service/HomeService'
-import { Dialog } from 'primereact/dialog';
-import { Tag } from 'primereact/tag';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { HomeService } from './service/HomeService';
 import Modal from '../../components/Modal';
 
+
+
+
+const localizer = momentLocalizer(moment);
 function Home() {
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('user'));
@@ -49,6 +51,7 @@ function Home() {
             console.error("Erro ao buscar consulta", error);
         }
     }
+    
 
 
     useEffect(() => {
@@ -62,51 +65,48 @@ function Home() {
             });
     }, []);
 
-    const handleConsultaClick = (info) => {
-        const consulta = consultas.find(consulta => new Date(consulta.data).toISOString() === info.event.start.toISOString());
-        setConsultaSelecionada(consulta);
+    const formatConsultasForCalendar = () => {
+        return consultas.map(consulta => {
+            let backgroundColor;
+            switch (consulta.status) {
+                case 'Agendada':
+                    backgroundColor = '#76BFAC';
+                    break;
+                case 'Cancelada':
+                    backgroundColor = ' #EA5846';
+                    break;
+                case 'Realizada':
+                    backgroundColor = '#6161EB';
+                    break;
+                default:
+                    backgroundColor = 'gray';
+                    break;
+            }
+
+            return {
+                title: 'Consulta',
+                start: moment(consulta.data).toDate(),
+                end: moment(consulta.data).add(1, 'hour').toDate(), // Adicione a duração da consulta, se aplicável
+                backgroundColor: backgroundColor,
+                consultaData: consulta // Adiciona os dados da consulta ao evento
+            };
+        });
+    };
+
+
+    const handleConsultaClick = (event) => {
+        const consultaData = event.consultaData; // Obtém os dados da consulta associados ao evento clicado
+        setConsultaSelecionada(consultaData);
         setConsultaDialogVisible(true);
     };
 
-    const formatConsultasForCalendar = () => {
-        if ((user.idUserRole === "f8abf4" || user.idUserRole == "f8abf4") || (user.idUserRole === "f3f629" || user.idUserRole == "f3f629")) {
-            const todasAsConsultas = consultas;
-            return todasAsConsultas.map(consulta => ({
-                title: 'Consulta',
-                start: new Date(consulta.data).toISOString(),
-                backgroundColor: getEventColor(consulta.status)
-            }));
-
-        } else {
-            const consultasDoProfissional = consultas.filter(consulta => {
-                if (Array.isArray(consulta.profissionais)) {
-                    return consulta.profissionais.some(profissional => profissional.cpf === user.cpf);
-                } else {
-                    return consulta.profissionais.cpf === user.cpf;
-                }
-            });
-
-            return consultasDoProfissional.map(consulta => ({
-                title: 'Consulta',
-                start: new Date(consulta.data).toISOString(),
-                backgroundColor: getEventColor(consulta.status)
-            }));
-        }
-    }
+    
 
 
-    const getEventColor = (status) => {
-        switch (status) {
-            case 'Agendada':
-                return 'green';
-            case 'Cancelada':
-                return 'red';
-            case 'Realizada':
-                return 'blue';
-            default:
-                return 'gray';
-        }
-    };
+
+
+
+    
 
     const header = (
         <>
@@ -132,20 +132,31 @@ function Home() {
             <h2 className='pt-4'>Seja Bem-Vindo {user.userName}</h2>
             <hr />
 
-            <FullCalendar
-                plugins={[dayGridPlugin]}
-                initialView="dayGridMonth"
+            <Calendar
+                localizer={localizer}
                 events={formatConsultasForCalendar()}
-                eventClick={handleConsultaClick}
-                locale={ptLocale}
+                startAccessor="start"
+                endAccessor="end"
+                defaultView="month"
+                BackgroundWrapper=""
+                onSelectEvent={handleConsultaClick}
+                eventPropGetter={(event) => {
+                    return {
+                        style: {
+                            backgroundColor: event.backgroundColor,
+                            color: event.color
+                        }
+                    };
+                }}
             />
 
+
+
             <Modal
-                header={header}
+                header={<h2>Detalhes da Consulta</h2>}
                 visible={consultaDialogVisible}
                 onHide={() => setConsultaDialogVisible(false)}
             >
-
                 {consultaSelecionada && (
                     <div className='grid'>
                         <div className='col-12 flex gap-3'>
@@ -160,18 +171,24 @@ function Home() {
                         <hr />
                         <div className='col-12 flex gap-3'>
                             <h5 className='text-xl'>Data:</h5>
-                            <p className='text-xl'> {formatDate(consultaSelecionada.data)}</p>
+                            <p className='text-xl'> {moment(consultaSelecionada.data).format('DD-MM-YYYY')}</p>
                         </div>
                         <hr />
                         <div className='col-12 flex gap-3'>
                             <h5 className='text-xl'>Hora:</h5>
-                            <p className='text-xl'> {formatTime(consultaSelecionada.hora)}</p>
+                            <p className='text-xl'> {moment(consultaSelecionada.hora).format('HH:mm:ss')}</p>
                         </div>
                         <hr />
+                        <hr />
+                        <div className='col-12 flex gap-3'>
+                            <h5 className='text-xl'>Status:</h5>
+                            <p className='text-xl'>{consultaSelecionada.status}</p>
+                        </div>
                         <div className='col-12 flex gap-3'>
                             <h5 className='text-xl'>Observações:</h5>
                             <p className='text-xl'>{consultaSelecionada.observacoes}</p>
                         </div>
+                        
                     </div>
                 )}
             </Modal>
