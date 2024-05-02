@@ -4,10 +4,18 @@ const sidebarItems = [
         icon: 'pi pi-fw pi-user',
         items: [
             {
-                text: 'Lista de Atentimentos',
+                text: 'Lista de Atendimentos',
                 icon: 'pi pi-user',
                 link: '',
                 action: 'setAtendimentoVisible',
+                roles: ['c8fffd', 'f3f629', 'f8abf4'],
+                actionValue: true
+            },
+            {
+                text: 'Relatorios',
+                icon: 'pi pi-user',
+                link: '',
+                action: 'setRelatorioVisible',
                 roles: ['c8fffd', 'f3f629', 'f8abf4'],
                 actionValue: true
             },
