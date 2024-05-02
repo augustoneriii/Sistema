@@ -35,6 +35,7 @@
     <Folder Include="view\src\pages\ChamarPaciente\service\" />
     <Folder Include="view\src\pages\Home\service\" />
     <Folder Include="view\src\pages\Profissional\ListaAtendimento\service\" />
+    <Folder Include="view\src\pages\Profissional\Relatorio\service\" />
   </ItemGroup>
 
 </Project>

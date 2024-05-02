@@ -1,5 +1,5 @@
-// ConsultaService.js
-import api from '../../../../utils/api';
+    // ConsultaService.js
+    import api from '../../../../utils/api';
 
 export class AgendaProfissionalService {
 
