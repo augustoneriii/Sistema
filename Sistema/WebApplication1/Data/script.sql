@@ -225,6 +225,18 @@ CREATE TABLE IF NOT EXISTS "Sistema"."PreAgendamento" (
   UNIQUE ("Data", "Hora")
 );
 
+-- Table "Sistema"."DadosPessoais"
+CREATE TABLE IF NOT EXISTS "Sistema"."ProntuarioMedico" (
+  "Id" BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  "PacienteId" BIGINT,
+  "ProfissionalId" BIGINT,
+  "PrescricaoMedicamentos" TEXT,
+  "EvolucaoPaciente" TEXT,
+  "CreatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  "UpdatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  
+);
+
 
 -- Adicionando a coluna "Ativo" à tabela "ConvenioMedicos"
 ALTER TABLE "Sistema"."ConvenioMedicos"
