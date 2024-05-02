@@ -25,7 +25,8 @@ function Modal({ modalKey, children, header, modal, visible, style, onHide }) {
 
     const dynamicStyles = {
         ...style,
-        position: 'relative'
+        position: 'absolute',
+       
     };
 
     const headerContent = (
