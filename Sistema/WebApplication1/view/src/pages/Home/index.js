@@ -4,12 +4,14 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { HomeService } from './service/HomeService';
-import Modal from '../../components/Modal';
+import 'moment-timezone'
+import 'moment/locale/pt-br';
+import { Dialog } from 'primereact/dialog';
 
 
 
 
-const localizer = momentLocalizer(moment);
+
 function Home() {
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('user'));
@@ -22,6 +24,12 @@ function Home() {
     useEffect(() => {
         fetchConsulta();
     }, []);
+
+    moment.tz.setDefault('America/Cuiaba')
+    moment.locale('pt-br');
+
+
+    const localizer = momentLocalizer(moment)
 
     async function fetchConsulta() {
         const currentToken = localStorage.getItem('token') || '';
@@ -51,8 +59,21 @@ function Home() {
             console.error("Erro ao buscar consulta", error);
         }
     }
-    
 
+    const messages = {
+        allDay: 'Todo o dia',
+        previous: 'Anterior',
+        next: 'Próximo',
+        today: 'Hoje',
+        month: 'Mês',
+        week: 'Semana',
+        day: 'Dia',
+        agenda: 'Agenda',
+        date: 'Data',
+        time: 'Hora',
+        event: 'Consulta',
+        showMore: total => `+ Ver mais (${total})`
+    };
 
     useEffect(() => {
         const currentToken = localStorage.getItem('token') || '';
@@ -73,7 +94,7 @@ function Home() {
                     backgroundColor = '#76BFAC';
                     break;
                 case 'Cancelada':
-                    backgroundColor = ' #EA5846';
+                    backgroundColor = '#EA5846';
                     break;
                 case 'Realizada':
                     backgroundColor = '#6161EB';
@@ -83,61 +104,51 @@ function Home() {
                     break;
             }
 
+            const startDate = consulta.data;
+            const startTime = consulta.hora;
+
+            const fullStartDate = moment.tz(startDate, 'America/Cuiaba').set({
+                hour: moment(startTime).hour(),
+                minute: moment(startTime).minute(),
+                second: moment(startTime).second()
+            });
+
+            const startDateTime = fullStartDate.toDate();
+            const endDateTime = moment(startDateTime).add(1, 'hour').toDate();
+
             return {
-                title:  consulta.profissionais.nome,
-                start: moment(consulta.data).toDate(),
-                end: moment(consulta.data).add(1, 'hour').toDate(), // Adicione a duração da consulta, se aplicável
+
+                title: `Paciente: ${consulta.pacientes.nome}`, 
+                start: startDateTime,
+                end: endDateTime,
                 backgroundColor: backgroundColor,
-                consultaData: consulta // Adiciona os dados da consulta ao evento
+                consultaData: consulta
             };
         });
     };
 
 
+
     const handleConsultaClick = (event) => {
-        const consultaData = event.consultaData; // Obtém os dados da consulta associados ao evento clicado
+        const consultaData = event.consultaData;
         setConsultaSelecionada(consultaData);
         setConsultaDialogVisible(true);
     };
 
-    
 
-
-
-
-
-    
-
-    const header = (
-        <>
-            <h2>Detalhes da Consulta</h2>
-            <hr />
-        </>
-    );
-
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
-        return formattedDate;
-    };
-
-    const formatTime = (timeString) => {
-        const time = new Date(timeString);
-        const formattedTime = `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
-        return formattedTime;
-    };
 
     return (
         <div className="text-center h-screen w-50 m-auto">
             <h2 className='pt-4'>Seja Bem-Vindo {user.userName}</h2>
             <hr />
-
             <Calendar
                 localizer={localizer}
+                style={{ height: '70vh' }}
                 events={formatConsultasForCalendar()}
                 startAccessor="start"
                 endAccessor="end"
                 defaultView="month"
+                messages={messages}
                 BackgroundWrapper=""
                 onSelectEvent={handleConsultaClick}
                 eventPropGetter={(event) => {
@@ -148,11 +159,16 @@ function Home() {
                         }
                     };
                 }}
+                tooltipAccessor={(event) => {
+                    const consultaData = event.consultaData;
+                    return `${moment(consultaData.hora).format('HH:mm')} - ${consultaData.tipo} - DR: ${consultaData.profissionais.nome}`;
+                }}
             />
 
 
 
-            <Modal
+
+            <Dialog
                 header={<h2>Detalhes da Consulta</h2>}
                 visible={consultaDialogVisible}
                 onHide={() => setConsultaDialogVisible(false)}
@@ -188,10 +204,10 @@ function Home() {
                             <h5 className='text-xl'>Observações:</h5>
                             <p className='text-xl'>{consultaSelecionada.observacoes}</p>
                         </div>
-                        
+
                     </div>
                 )}
-            </Modal>
+            </Dialog>
         </div>
     );
 }

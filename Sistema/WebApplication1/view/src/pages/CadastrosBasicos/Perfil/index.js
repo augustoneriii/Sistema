@@ -18,6 +18,8 @@ import { Calendar } from 'primereact/calendar';
 function Perfil() {
     const { perfilVisible, setPerfilVisible } = useContext(SidebarContext);
     const [dataLoaded, setDataLoaded] = useState(false);
+    const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
+
 
     const emptyPerfil = {
         id: null,
@@ -188,7 +190,7 @@ function Perfil() {
         <>
         <Toast ref={toast} />
 
-        <Modal header={header} modal={false} visible={perfilVisible} style={{ width: '80vw', height: '80vh' }} onHide={() => onHideModal()}>
+        <Modal modalKey={modalIdRef.current} header={header} modal={false} visible={perfilVisible} style={{ width: '80vw', height: '80vh' }} onHide={() => onHideModal()}>
                 <div className='card'>
                     <div className='grid'>
 
