@@ -54,7 +54,7 @@ namespace app.DAO
                 }
             }
 
-            var dt = _context.ExecuteQuery(objSelect.ToString());
+            var dt = await _context.ExecuteQuery(objSelect.ToString(), null);
 
             var lstAgendas = new List<AgendaProfissionalDTO>();
 
@@ -105,7 +105,7 @@ namespace app.DAO
 
             objInsert.Append(" ); ");
 
-            var id = _context.ExecuteNonQuery(objInsert.ToString());
+            var id = await _context.ExecuteNonQuery(objInsert.ToString(), null);
 
             return id;
         }
@@ -122,7 +122,7 @@ namespace app.DAO
             objUpdate.Append($" \"Ativo\" = '{dto.Ativo}' ");
             objUpdate.Append($"WHERE \"Id\" = {dto.Id}; ");
 
-            var id = _context.ExecuteNonQuery(objUpdate.ToString());
+            var id = await _context.ExecuteNonQuery(objUpdate.ToString(), null);
 
             return id;
         }
@@ -134,7 +134,7 @@ namespace app.DAO
             objDelete.Append("DELETE FROM \"Sistema\".\"AgendaProfissional\" ");
             objDelete.Append($" WHERE \"Id\" = {id} ");
 
-            _context.ExecuteNonQuery(objDelete.ToString());
+            await _context.ExecuteNonQuery(objDelete.ToString(), null);
         }
     }
 }

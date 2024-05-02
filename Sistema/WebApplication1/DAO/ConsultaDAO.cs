@@ -66,7 +66,7 @@ namespace app.DAO
                 objSelect.Append($"AND \"Profissionais\".\"Cpf\" = '{dto.Profissionais.Cpf}' ");
             }
 
-            var dt = _context.ExecuteQuery(objSelect.ToString());
+            var dt = await _context.ExecuteQuery(objSelect.ToString(), null);
 
             var lstConsultas = new List<ConsultaDTO>();
 
@@ -129,7 +129,7 @@ namespace app.DAO
             objInsert.Append($" '{dto.ProfissionalId}' ");
             objInsert.Append(" ); ");
 
-            var id = _context.ExecuteNonQuery(objInsert.ToString());
+            var id = await _context.ExecuteNonQuery(objInsert.ToString(), null);
 
             return id;
         }
@@ -150,7 +150,7 @@ namespace app.DAO
             objUpdate.Append($" \"Observacoes\" = '{dto.Observacoes}' ");
             objUpdate.Append($" WHERE \"Id\" = {dto.Id} ");
 
-            var id = _context.ExecuteNonQuery(objUpdate.ToString());
+            var id = await _context.ExecuteNonQuery(objUpdate.ToString(), null);
 
             return id;
         }

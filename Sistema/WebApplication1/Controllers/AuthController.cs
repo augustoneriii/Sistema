@@ -41,12 +41,12 @@ namespace app.Controllers
         {
             try
             {
-                var token = ExtractAuthToken();
-                UserValidationResponse userLogado = await authService.CheckUser(token);
-                if (userLogado == null || !userLogado.IsAuthenticated)
-                {
-                    return BadRequest(new { Message = "Usuário não autenticado!" });
-                }
+                //var token = ExtractAuthToken();
+                //UserValidationResponse userLogado = await authService.CheckUser(token);
+                //if (userLogado == null || !userLogado.IsAuthenticated)
+                //{
+                //    return BadRequest(new { Message = "Usuário não autenticado!" });
+                //}
                 
                 var response = await authService.RegisterNewUser(user);
 

@@ -66,7 +66,7 @@ namespace app.DAO
                 objSelect.Append($"AND \"EvolucaoPaciente\" = '{dto.EvolucaoPaciente}' ");
             }    
 
-            var dt = _context.ExecuteQuery(objSelect.ToString());
+            var dt = await _context.ExecuteQuery(objSelect.ToString(), null);
 
             var lstProntuarios = new List<ProntuarioMedicoDTO>();
 
@@ -140,7 +140,7 @@ namespace app.DAO
             objInsert.Append($" '{dto.EvolucaoPaciente}' ");
             objInsert.Append(" )RETURNING \"Id\"; ");
 
-            var id = _context.ExecuteNonQuery(objInsert.ToString());
+            var id = await _context.ExecuteNonQuery(objInsert.ToString(), null);
 
             return id;
         }
@@ -156,7 +156,7 @@ namespace app.DAO
             objUpdate.Append($"\"EvolucaoPaciente\" = '{dto.EvolucaoPaciente}' ");
             objUpdate.Append($"WHERE \"Id\" = {dto.Id};");
 
-            var id = _context.ExecuteNonQuery(objUpdate.ToString());
+            var id = await _context.ExecuteNonQuery(objUpdate.ToString(), null);
             return id;
 
         }

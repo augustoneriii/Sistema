@@ -59,7 +59,7 @@ namespace app.Data
                 _connection.Close();
         }
 
-        public DataTable ExecuteQuery(string sql)
+        public async Task<DataTable> ExecuteQuery(string sql, Array? param)
         {
             OpenConnection();  // Ensure connection is open
             using (var cmd = new NpgsqlCommand(sql, _connection, _transaction))
@@ -73,7 +73,7 @@ namespace app.Data
             }
         }
 
-        public int ExecuteNonQuery(string sql)
+        public async Task<int> ExecuteNonQuery(string sql, object? param)
         {
             OpenConnection();  // Ensure connection is open
             using (var cmd = new NpgsqlCommand(sql, _connection, _transaction))
@@ -81,5 +81,7 @@ namespace app.Data
                 return cmd.ExecuteNonQuery();
             }
         }
+
+
     }
 }

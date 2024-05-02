@@ -52,7 +52,7 @@ namespace app.DAO
             objInsert.Append(");");
 
 
-            _context.ExecuteNonQuery(objInsert.ToString());
+            await _context.ExecuteNonQuery(objInsert.ToString(), null);
 
             UserRegisterDTO obj = new UserRegisterDTO();
             obj.Id = genId;
@@ -71,7 +71,7 @@ namespace app.DAO
             var objSelect = new StringBuilder();
             objSelect.Append("SELECT * FROM \"Sistema\".\"AspNetUsers\"");
 
-            var result = _context.ExecuteQuery(objSelect.ToString());
+            var result = await _context.ExecuteQuery(objSelect.ToString(), null);
 
             List<GetAllUserResponse> list = new List<GetAllUserResponse>();
 
@@ -97,7 +97,7 @@ namespace app.DAO
             objSelect.Append("SELECT * FROM \"Sistema\".\"AspNetUsers\" ");
             objSelect.Append($"WHERE cpf = '{cpf}'");
 
-            var result = _context.ExecuteQuery(objSelect.ToString());
+            var result = await _context.ExecuteQuery(objSelect.ToString(), null);
 
             if (result.Rows.Count == 0)
                 return null;
@@ -120,7 +120,7 @@ namespace app.DAO
             objSelect.Append("SELECT * FROM \"Sistema\".\"AspNetUsers\" ");
             objSelect.Append($"WHERE email = '{email}'");
 
-            var result = _context.ExecuteQuery(objSelect.ToString());
+            var result = await _context.ExecuteQuery(objSelect.ToString(), null);
 
             if (result.Rows.Count == 0)
                 return null;
@@ -144,7 +144,7 @@ namespace app.DAO
             objSelect.Append("SELECT id, name, normalizedname, concurrencystamp\r\n\tFROM \"Sistema\".\"AspNetRoles\"");
             objSelect.Append($"WHERE normalizedname = '{nome}'");
 
-            var result = _context.ExecuteQuery(objSelect.ToString());
+            var result = await _context.ExecuteQuery(objSelect.ToString(), null);
 
             if (result.Rows.Count == 0)
                 return null;
@@ -176,7 +176,7 @@ namespace app.DAO
             objInsert.Append($"'{Guid.NewGuid().ToString()}'");
             objInsert.Append(");");
 
-            _context.ExecuteNonQuery(objInsert.ToString());
+            await _context.ExecuteNonQuery(objInsert.ToString(), null);
 
             UserRolesDTO obj = new UserRolesDTO();
             obj.Id = dto.Id;
@@ -191,7 +191,7 @@ namespace app.DAO
             var objSelect = new StringBuilder();
             objSelect.Append("SELECT id, name, normalizedname, concurrencystamp\r\n\tFROM \"Sistema\".\"AspNetRoles\"");
 
-            var result = _context.ExecuteQuery(objSelect.ToString());
+            var result = await _context.ExecuteQuery(objSelect.ToString(), null);
 
             List<UserRolesDTO> list = new List<UserRolesDTO>();
 
@@ -218,7 +218,7 @@ namespace app.DAO
                 objInsert.Append($"'{roleId}'");
                 objInsert.Append(");");
 
-                _context.ExecuteNonQuery(objInsert.ToString());
+                await _context.ExecuteNonQuery(objInsert.ToString(), null);
                 return true;
             }
             catch
@@ -237,7 +237,7 @@ namespace app.DAO
             objSelect.Append("LEFT JOIN \"Sistema\".\"AspNetUsers\" ON \"AspNetUserRoles\".userid = \"AspNetUsers\".id\r\n");
             objSelect.Append($"WHERE \"AspNetUsers\".email = '{email}'");
 
-            var result = _context.ExecuteQuery(objSelect.ToString());
+            var result = await _context.ExecuteQuery(objSelect.ToString(), null);
 
             if (result.Rows.Count == 0)
                 return null;
@@ -264,7 +264,7 @@ namespace app.DAO
             objUpdate.Append($"phonenumber = '{dto.PhoneNumber}' ");
             objUpdate.Append($"WHERE id = '{dto.Id}'");
 
-            _context.ExecuteNonQuery(objUpdate.ToString());
+            await _context.ExecuteNonQuery(objUpdate.ToString(), null);
 
             UserDTO obj = new UserDTO();
             obj.Id = dto.Id;
@@ -286,7 +286,7 @@ namespace app.DAO
             objUpdate.Append($"SET passwordhash = '{dto.NewPassword}' ");
             objUpdate.Append($"WHERE email = '{dto.Email}'");
 
-            _context.ExecuteNonQuery(objUpdate.ToString());
+            await _context.ExecuteNonQuery(objUpdate.ToString(), null);
 
             UserChangePasswordDTO obj = new UserChangePasswordDTO();
             obj.Email = dto.Email;

@@ -72,7 +72,7 @@ namespace app.DAO
                 objSelect.Append($"AND \"Profissionais\".\"Cpf\" = '{dto.Profissionais.Cpf}' ");
             }
 
-            var dt = _context.ExecuteQuery(objSelect.ToString());
+            var dt = await _context.ExecuteQuery(objSelect.ToString(), null);
 
             var lstRelatorios = new List<RelatorioDTO>();
 

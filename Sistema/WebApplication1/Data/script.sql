@@ -144,7 +144,6 @@ CREATE TABLE IF NOT EXISTS "Sistema"."Pacientes" (
   "ConvenioId" BIGINT,
   "TipoSanguineo" VARCHAR(5) NOT NULL,
   "Alergias" TEXT,
-  "Ativo" INTEGER,
   "Medicamentos" TEXT,
   "Cirurgias" TEXT,
   "Historico" TEXT,
@@ -177,14 +176,24 @@ CREATE TABLE IF NOT EXISTS "Sistema"."Profissionais" (
   "Sexo" VARCHAR(1) NOT NULL,
   "Email" VARCHAR(255) NOT NULL,
   "ProfissaoId" BIGINT,
+  "ProfissionalConveniosId" BIGINT,
   "Conselho" VARCHAR(20),
-  "ConvenioId" BIGINT,
   "Observacoes" TEXT,
   "Image" VARCHAR(255),
   "CreatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  "UpdatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  "UpdatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-
+-- -----------------------------------------------------
+-- Table "Sistema"."ProfissionalConvenios"
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "Sistema"."ProfissionalConvenios" (
+  "Id" BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  "ProfissionalId" BIGINT,
+  "ConvenioId" BIGINT,
+  "CreatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  "UpdatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE ("ProfissionalId", "ConvenioId")
+);
 -- -----------------------------------------------------
 -- Table "Sistema"."Consultas"
 -- -----------------------------------------------------
@@ -200,8 +209,7 @@ CREATE TABLE IF NOT EXISTS "Sistema"."Consultas" (
   "Tipo" VARCHAR(50) NOT NULL,
   "Observacoes" TEXT,
   "CreatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  "UpdatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE ("Data", "Hora", "ProfissionalId"),
+  "UpdatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
   );
 
 
@@ -233,10 +241,9 @@ CREATE TABLE IF NOT EXISTS "Sistema"."ProntuarioMedico" (
   "PrescricaoMedicamentos" TEXT,
   "EvolucaoPaciente" TEXT,
   "CreatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  "UpdatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  "UpdatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
   
 );
-
 
 -- Adicionando a coluna "Ativo" à tabela "ConvenioMedicos"
 ALTER TABLE "Sistema"."ConvenioMedicos"
