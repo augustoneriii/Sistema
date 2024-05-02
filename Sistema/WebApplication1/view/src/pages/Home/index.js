@@ -117,6 +117,7 @@ function Home() {
             const endDateTime = moment(startDateTime).add(1, 'hour').toDate();
 
             return {
+
                 title: `Paciente: ${consulta.pacientes.nome}`, 
                 start: startDateTime,
                 end: endDateTime,
