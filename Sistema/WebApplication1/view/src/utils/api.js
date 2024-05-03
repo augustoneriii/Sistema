@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 export default axios.create({
-    baseURL: 'http://vps50878.publiccloud.com.br:5000', //URL da api
+    baseURL: 'https://vps50878.publiccloud.com.br:5001', //URL da api
     headers: {
         'Content-Type': 'application/json'
     }
