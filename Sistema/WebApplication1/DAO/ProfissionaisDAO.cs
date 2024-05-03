@@ -1,4 +1,5 @@
-﻿using app.Data;
+﻿using app.BE;
+using app.Data;
 using app.DTO;
 using app.DTO.Request;
 using Npgsql;
@@ -20,79 +21,86 @@ namespace app.DAO
         public async Task<List<ProfissionaisDTO>> GetAll(ProfissionaisDTO filter)
         {
             var objSelect = new StringBuilder();
-            objSelect.Append("SELECT p.*, pc.\"ProfissionalConveniosId\" ");
-            objSelect.Append("FROM \"Sistema\".\"Profissionais\" p ");
-            objSelect.Append("LEFT JOIN \"Sistema\".\"ProfissionalConvenios\" pc ON p.\"Id\" = pc.\"ProfissionalId\" ");
-            objSelect.Append("WHERE 1 = 1 ");
+            objSelect.Append("SELECT");
+            objSelect.Append("    p.\"Id\" AS \"Id\",");
+            objSelect.Append("    p.\"Nome\" AS \"Nome\",");
+            objSelect.Append("    p.\"Cpf\" AS \"Cpf\",");
+            objSelect.Append("    p.\"Rg\" AS \"Rg\",");
+            objSelect.Append("    p.\"Telefone\" AS \"Telefone\",");
+            objSelect.Append("    p.\"Endereco\" AS \"Endereco\",");
+            objSelect.Append("    p.\"Nascimento\" AS \"Nascimento\",");
+            objSelect.Append("    p.\"Sexo\" AS \"Sexo\",");
+            objSelect.Append("    p.\"Email\" AS \"Email\",");
+            objSelect.Append("    p.\"Conselho\" AS \"Conselho\",");
+            objSelect.Append("    p.\"Observacoes\" AS \"Observacoes\",");
+            objSelect.Append("    p.\"Ativo\" AS \"Ativo\",");
+            objSelect.Append("    c.\"Id\" AS \"ConvenioId\",");
+            objSelect.Append("    c.\"Nome\" AS \"ConvenioNome\",");
+            objSelect.Append("    c.\"Telefone\" AS \"ConvenioTelefone\",");
+            objSelect.Append("    c.\"Email\" AS \"ConvenioEmail\",");
+            objSelect.Append("   pr.\"Id\" AS \"ProfissaoId\",");
+            objSelect.Append("   pr.\"Nome\" AS \"ProfissaoNome\",");
+            objSelect.Append("   pr.\"ConselhoProfissional\" AS \"ConselhoProfissional\"");
+            objSelect.Append("FROM");
+            objSelect.Append("    \"Sistema\".\"Profissionais\" p ");
+            objSelect.Append("LEFT JOIN \"Sistema\".\"ProfissionalConvenios\" pc ON p.\"Id\" = pc.\"ProfissionalId\"");
+            objSelect.Append("LEFT JOIN \"Sistema\".\"ConvenioMedicos\" c ON pc.\"ConvenioId\" = c.\"Id\"");
+            objSelect.Append("LEFT JOIN \"Sistema\".\"Profissoes\" pr ON p.\"ProfissaoId\" = pr.\"Id\";");
 
-            var parameters = new List<NpgsqlParameter>();
+            var dt = await _context.ExecuteQuery(objSelect.ToString(), null);
 
-            if (filter.Id != null)
+            var list = new List<ProfissionaisDTO>();
+
+            if (dt != null)
             {
-                objSelect.Append(" AND p.\"Id\" = @Id ");
-                parameters.Add(new NpgsqlParameter("@Id", filter.Id));
-            }
-
-            if (!string.IsNullOrEmpty(filter.Nome))
-            {
-                objSelect.Append(" AND p.\"Nome\" LIKE @Nome ");
-                parameters.Add(new NpgsqlParameter("@Nome", $"%{filter.Nome}%"));
-            }
-
-            if (!string.IsNullOrEmpty(filter.Cpf))
-            {
-                objSelect.Append(" AND p.\"Cpf\" LIKE @Cpf ");
-                parameters.Add(new NpgsqlParameter("@Cpf", $"%{filter.Cpf}%"));
-            }
-
-            if (!string.IsNullOrEmpty(filter.Email))
-            {
-                objSelect.Append(" AND p.\"Email\" LIKE @Email ");
-                parameters.Add(new NpgsqlParameter("@Email", $"%{filter.Email}%"));
-            }
-
-            var dt = await _context.ExecuteQuery(objSelect.ToString(), parameters.ToArray());
-
-            var lstProfissionais = new List<ProfissionaisDTO>();
-            var profissionalConvenios = new Dictionary<long, List<long>>();
-
-            foreach (DataRow row in dt.Rows)
-            {
-                long profissionalId = Convert.ToInt64(row["Id"]);
-                if (!lstProfissionais.Any(p => p.Id == profissionalId))
+                foreach (DataRow row in dt.Rows)
                 {
-                    lstProfissionais.Add(new ProfissionaisDTO
+                    int profissionalId = Convert.ToInt32(row["Id"]);
+                    var profissional = list.FirstOrDefault(p => p.Id == profissionalId);
+
+                    if (profissional == null)
                     {
-                        Id = profissionalId,
-                        Nome = row["Nome"].ToString(),
-                        Cpf = row["Cpf"].ToString(),
-                        Rg = row["Rg"].ToString(),
-                        Telefone = row["Telefone"].ToString(),
-                        Endereco = row["Endereco"].ToString(),
-                        Nascimento = Convert.ToDateTime(row["Nascimento"]),
-                        Sexo = row["Sexo"].ToString(),
-                        Email = row["Email"].ToString(),
-                        Observacoes = row["Observacoes"].ToString(),
-                        Image = row["Image"].ToString(),
-                        Ativo = Convert.ToInt32(row["Ativo"]),
-                        ConvenioMedicos = new List<ConvenioMedicosDTO>()
+                        profissional = new ProfissionaisDTO
+                        {
+                            Id = profissionalId,
+                            Nome = row["Nome"].ToString(),
+                            Cpf = row["Cpf"].ToString(),
+                            Rg = row["Rg"].ToString(),
+                            Telefone = row["Telefone"].ToString(),
+                            Endereco = row["Endereco"].ToString(),
+                            Nascimento = Convert.ToDateTime(row["Nascimento"]),
+                            Sexo = row["Sexo"].ToString(),
+                            Email = row["Email"].ToString(),
+                            Conselho = row["Conselho"].ToString(),
+                            Observacoes = row["Observacoes"].ToString(),
+                            Ativo = Convert.ToInt32(row["Ativo"]),
+                            ConvenioMedicos = new List<ConvenioMedicosDTO>(),
+                            Profissoes = new ProfissoesDTO
+                            {
+                                Id = Convert.ToInt32(row["ProfissaoId"]),
+                                Nome = row["ProfissaoNome"].ToString(),
+                                ConselhoProfissional = row["ConselhoProfissional"].ToString()
+                            }
+                        };
+                        list.Add(profissional);
+                    }
+
+                    // Adicionando convenio ao profissional já existente na lista
+                    profissional.ConvenioMedicos.Add(new ConvenioMedicosDTO
+                    {
+                        Id = Convert.ToInt32(row["ConvenioId"]),
+                        Nome = row["ConvenioNome"].ToString(),
+                        Telefone = row["ConvenioTelefone"].ToString(),
+                        Email = row["ConvenioEmail"].ToString()
                     });
                 }
-
-                if (row["ProfissionalConveniosId"] != DBNull.Value)
-                {
-                    long convenioId = Convert.ToInt64(row["ProfissionalConveniosId"]);
-                    profissionalConvenios[profissionalId] ??= new List<long>();
-                    if (!profissionalConvenios[profissionalId].Contains(convenioId))
-                    {
-                        profissionalConvenios[profissionalId].Add(convenioId);
-                        lstProfissionais.First(p => p.Id == profissionalId).ConvenioMedicos.Add(new ConvenioMedicosDTO { Id = convenioId });
-                    }
-                }
             }
 
-            return lstProfissionais;
+            return list;
         }
+
+
+
 
 
         //get ProfissionalConvenios by profissionalId
@@ -160,7 +168,7 @@ namespace app.DAO
 
             if (dto.ProfissionalConveniosId != null && dto.ProfissionalConveniosId.Any())
             {
-                 await InsertProfissionaiConvenios(dto);
+                await InsertProfissionaiConvenios(dto);
             }
 
             return Convert.ToInt32(dto.Id);
