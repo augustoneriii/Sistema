@@ -2,6 +2,7 @@
 using System.Data;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
+using System.Threading.Tasks;
 
 namespace app.Data
 {
@@ -13,8 +14,8 @@ namespace app.Data
 
         public AppDbContext(IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
-            _connection = new NpgsqlConnection(connectionString);
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connection = new NpgsqlConnection(_connectionString);
         }
 
         public void OpenConnection()
@@ -78,10 +79,25 @@ namespace app.Data
             OpenConnection();  // Ensure connection is open
             using (var cmd = new NpgsqlCommand(sql, _connection, _transaction))
             {
-                return cmd.ExecuteNonQuery();
+                return await cmd.ExecuteNonQueryAsync();
             }
         }
 
-
+        public async Task<object?> ExecuteScalar(string sql, object? param = null)
+        {
+            OpenConnection();  // Ensure connection is open
+            using (var cmd = new NpgsqlCommand(sql, _connection, _transaction))
+            {
+                if (param != null)
+                {
+                    // Assuming 'param' is an IEnumerable<KeyValuePair<string, object>>
+                    foreach (var p in param as IEnumerable<KeyValuePair<string, object>>)
+                    {
+                        cmd.Parameters.AddWithValue(p.Key, p.Value ?? DBNull.Value);
+                    }
+                }
+                return await cmd.ExecuteScalarAsync();
+            }
+        }
     }
 }

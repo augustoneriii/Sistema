@@ -163,8 +163,11 @@ namespace app.DAO
             objInsert.Append($" '{dto.Ativo}'                             ");
             objInsert.Append(") RETURNING \"Id\";                         ");
 
-            // Execute the command and get the new ID
-            dto.Id = await _context.ExecuteNonQuery(objInsert.ToString(), null);
+            var result = await _context.ExecuteScalar(objInsert.ToString());
+            if (result != null)
+            {
+                dto.Id = Convert.ToInt32(result);
+            }
 
             if (dto.ProfissionalConveniosId != null && dto.ProfissionalConveniosId.Any())
             {
@@ -185,9 +188,10 @@ namespace app.DAO
                 objInsert.Append("INSERT INTO \"Sistema\".\"ProfissionalConvenios\" (");
                 objInsert.Append("\"ProfissionalId\", \"ConvenioId\") ");
                 objInsert.Append("VALUES ");
-                objInsert.Append($"( '{request.Id}', '{item}' )");
+                objInsert.Append($"('{request.Id}', '{item}') ");
+                objInsert.Append("RETURNING \"Id\";");
 
-                var id = await _context.ExecuteNonQuery(objInsert.ToString(), null);
+                var id = Convert.ToInt32(await _context.ExecuteScalar(objInsert.ToString()));
 
                 lstProfissionalConvenios.Add(new ProfissionalConvenios
                 {
@@ -199,6 +203,7 @@ namespace app.DAO
 
             return lstProfissionalConvenios;
         }
+
 
 
 
