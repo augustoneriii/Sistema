@@ -18,9 +18,12 @@ import { SidebarContext } from '../../context/SideBarContext.js';
 import { Checkbox } from 'primereact/checkbox';
 import { FloatLabel } from 'primereact/floatlabel';
 import { Commom } from '../../utils/Commom.js';
+import { MultiSelect } from 'primereact/multiselect';
+
 
 export default function Profissional() {
     const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
+    const modalIdRef2 = useRef(Math.random().toString(36).substr(2, 9));
 
     let emptyProfissional = {
         id: null,
@@ -35,7 +38,7 @@ export default function Profissional() {
         observacoes: "",
         image: "",
         profissaoId: null,
-        convenioId: null,
+        profissionalConveniosId: [],
         ativo: null
     };
 
@@ -56,15 +59,16 @@ export default function Profissional() {
     const dt = useRef(null);
     const [activeProfissionais, setActiveProfissionais] = useState([]);
     const [dataLoaded, setDataLoaded] = useState(false);
-    const [checked, setChecked] = useState(true); // Estado para controlar o valor do checkbox
+    const [checked, setChecked] = useState(true);
+    const [selectedConvenios, setSelectedConvenios] = useState([]); 
 
     useEffect(() => {
         async function fetchProfissionais() {
             const currentToken = localStorage.getItem('token') || '';
             try {
                 const response = await ProfissionalService.getProfissionais(currentToken);
-                setProfissionais(response.data); 
-                setDataLoaded(true); 
+                setProfissionais(response.data);
+                setDataLoaded(true);
             } catch (error) {
                 console.error("Erro ao buscar profissionais:", error);
             }
@@ -79,8 +83,8 @@ export default function Profissional() {
             setChecked(false);
         }
         if (convenios.length > 0) {
-            const filteredProfissionais = profissionais.filter(profissional => profissional.ativo === 1); 
-            setActiveProfissionais(filteredProfissionais); 
+            const filteredProfissionais = profissionais.filter(profissional => profissional.ativo === 1);
+            setActiveProfissionais(filteredProfissionais);
         }
 
     }, [profissionalVisible, dataLoaded, profissional.ativo, profissionais]);
@@ -188,8 +192,7 @@ export default function Profissional() {
             profissional.endereco.trim() &&
             profissional.nascimento &&
             profissional.sexo &&
-            profissional.profissaoId &&
-            profissional.convenioId
+            profissional.profissaoId
         ) {
             let _profissionais = [...profissionais];
             let _profissional = {
@@ -206,7 +209,8 @@ export default function Profissional() {
                 observacoes: profissional.observacoes,
                 // image: "string",
                 profissaoId: profissional.profissaoId,
-                convenioId: profissional.convenioId
+                profissionalConveniosId: selectedConvenios,
+                ativo: checked ? 1 : 0
             }
             //let _profissional = { ...profissional, conselho: conselho }; // atualiza o conselho com o valor digitado
 
@@ -234,15 +238,15 @@ export default function Profissional() {
     };
 
     const editProfissional = (profissional) => {
-      
+
         setProfissional({
             ...profissional,
-            nascimento: profissional.nascimento ? new Date(profissional.nascimento) : null, 
-            profissaoId: profissional.profissaoId ? profissional.profissaoId : null, 
-            conselho: profissional.conselho ? profissional.conselho : '', 
-            convenioId: profissional.convenioId ? profissional.convenioId : null 
+            nascimento: profissional.nascimento ? new Date(profissional.nascimento) : null,
+            profissaoId: profissional.profissaoId ? profissional.profissaoId : null,
+            conselho: profissional.conselho ? profissional.conselho : '',
+            convenioId: profissional.convenioId ? profissional.convenioId : null
         });
-        setConselho(profissional.conselho || ''); 
+        setConselho(profissional.conselho || '');
         setProfissionalDialog(true);
     };
 
@@ -346,8 +350,7 @@ export default function Profissional() {
     return (
         <>
             <Toast ref={toast} />
-            <Modal  modalKey={modalIdRef.current} header={header} modal={false} visible={profissionalVisible} style={{ width: '50vw' }} onHide={() => setProfissionalVisible(false)}>
-
+            <Modal modalKey={modalIdRef.current} header={header} modal={false} visible={profissionalVisible} style={{ width: '50vw' }} onHide={() => setProfissionalVisible(false)}>
                 <div className="card">
                     <Toolbar className="mb-4" right={rightToolbarTemplate} left={leftToolbarTemplate}></Toolbar>
 
@@ -368,39 +371,49 @@ export default function Profissional() {
                     </DataTable>
                 </div>
 
-                <Dialog visible={profissionalDialog} style={{ width: '850px', margin: 'auto' }} header="Detalhes do Profissional" modal className="p-fluid" footer={profissionalDialogFooter} onHide={hideDialog}>
-                    <div className="field mt-4">
-                        <FloatLabel>
-                            <label htmlFor="email">E-mail</label>
-                            <InputText id="email" value={profissional.email} onChange={(e) => onInputChange(e, 'email')} />
-                        </FloatLabel>
-                    </div>
-                    <div className="field mt-4">
-                        <FloatLabel>
-                            <label htmlFor="nome">Nome</label>
-                            <InputText id="nome" value={profissional.nome} onChange={(e) => onInputChange(e, 'nome')} required autoFocus className={classNames({ 'p-invalid': submitted && !profissional.nome })} />
-                            {submitted && !profissional.nome && <small className="p-error">Nome é obrigatório.</small>}
-                        </FloatLabel>
+                <Modal
+                    modalKey={modalIdRef2.current}
+                    header="Detalhes do Profissional"
+                    modal={false}
+                    visible={profissionalDialog}
+                    style={{ width: '850px', margin: 'auto' }}
+                    onHide={hideDialog}
+                    footer={profissionalDialogFooter}
+                >
+                    <div class="row">
+                        <div className="field mt-4 col">
+                            <FloatLabel className="w-full">
+                                <label htmlFor="email">E-mail</label>
+                                <InputText className="w-full" id="email" value={profissional.email} onChange={(e) => onInputChange(e, 'email')} />
+                            </FloatLabel>
+                        </div>
+                        <div className="field mt-4 col">
+                            <FloatLabel className="w-full">
+                                <label htmlFor="nome">Nome</label>
+                                <InputText id="nome" value={profissional.nome} onChange={(e) => onInputChange(e, 'nome')} required autoFocus className={`w-full ${classNames({ 'p-invalid': submitted && !profissional.nome })} `} />
+                                {submitted && !profissional.nome && <small className="p-error">Nome é obrigatório.</small>}
+                            </FloatLabel>
+                        </div>
                     </div>
 
                     <div className='grid'>
                         <div className="field col mt-3">
-                            <FloatLabel>
+                            <FloatLabel className="w-full">
                                 <label htmlFor="cpf">CPF</label>
-                                <InputText id="cpf" value={profissional.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={classNames({ 'p-invalid': submitted && !profissional.cpf })} maxLength={14} />
+                                <InputText id="cpf" value={profissional.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={`w-full ${classNames({ 'p-invalid': submitted && !profissional.cpf })} maxLength={14}`} />
                                 {submitted && !profissional.cpf && <small className="p-error">CPF é obrigatório.</small>}
                             </FloatLabel>
                         </div>
 
                         <div className="field col mt-3">
-                            <FloatLabel>
+                            <FloatLabel className="w-full">
                                 <label htmlFor="rg">RG</label>
-                                <InputText id="rg" value={profissional.rg} onChange={(e) => onInputChange(e, 'rg')} maxLength={9} />
+                                <InputText className="w-full" id="rg" value={profissional.rg} onChange={(e) => onInputChange(e, 'rg')} maxLength={9} />
                             </FloatLabel>
                         </div>
 
                         <div className="field col mt-3">
-                            <FloatLabel>
+                            <FloatLabel className="w-full">
                                 <label htmlFor="telefone">Telefone</label>
                                 <InputText className='w-full' id="telefone" value={profissional.telefone} onChange={(e) => onInputChange(e, 'telefone')} maxLength={14} />
                             </FloatLabel>
@@ -408,9 +421,9 @@ export default function Profissional() {
                     </div>
 
                     <div className="field mt-3">
-                        <FloatLabel>
+                        <FloatLabel className="w-full">
                             <label htmlFor="endereco">Endereço</label>
-                            <InputText id="endereco" value={profissional.endereco} onChange={(e) => onInputChange(e, 'endereco')} />
+                            <InputText className="w-full" id="endereco" value={profissional.endereco} onChange={(e) => onInputChange(e, 'endereco')} />
                         </FloatLabel>
                     </div>
 
@@ -418,17 +431,18 @@ export default function Profissional() {
 
                         <div className="field col">
                             <label htmlFor="nascimento">Nascimento</label>
-                            <Calendar id="nascimento" value={profissional.nascimento} onChange={(e) => onInputChange(e, 'nascimento')} showIcon />
+                            <Calendar className='w-full' id="nascimento" value={profissional.nascimento} onChange={(e) => onInputChange(e, 'nascimento')} showIcon />
                         </div>
 
                         <div className="field col">
                             <label htmlFor="sexo">Sexo</label>
-                            <Dropdown id="sexo" value={profissional.sexo} options={dropdownSexo} onChange={(e) => onInputChange(e, 'sexo')} placeholder="Selecione um sexo" />
+                            <Dropdown className='w-full' id="sexo" value={profissional.sexo} options={dropdownSexo} onChange={(e) => onInputChange(e, 'sexo')} placeholder="Selecione um sexo" />
                         </div>
 
                         <div className="field col">
                             <label htmlFor="profissao">Especialidade</label>
                             <Dropdown
+                                className='w-full'
                                 id="profissao"
                                 value={profissional.profissaoId}
                                 options={dropdownProfissoes}
@@ -440,24 +454,24 @@ export default function Profissional() {
 
                     <div className='grid'>
                         <div className="field col">
-                            <label htmlFor="conselho">{profissional.conselho ? `Conselho (${profissional.conselho})` : "Conselho"}</label>
-                            <InputText
-                                id="conselho"
-                                disabled={!profissional.conselho}
-                                value={conselho}
-                                onChange={(e) => setConselho(e.target.value)}
-                            />
+                            <FloatLabel className="w-full">
+                                <label htmlFor="conselho">{profissional.conselho ? `Conselho (${profissional.conselho})` : "Conselho"}</label>
+                                <InputText
+                                    className='w-full'
+                                    id="conselho"
+                                    disabled={!profissional.conselho}
+                                    value={conselho}
+                                    onChange={(e) => setConselho(e.target.value)}
+                                />
+                            </FloatLabel>
                         </div>
 
                         <div className="field col">
-                            <label htmlFor="convenio">Convênio</label>
-                            <Dropdown
-                                id="convenio"
-                                value={profissional.convenioId}
-                                options={dropdownConvenios}
-                                onChange={(e) => onInputChange(e, 'convenio')}
-                                placeholder="Selecione um convênio"
-                            />
+                            <FloatLabel className="w-full">
+                                <MultiSelect value={selectedConvenios} onChange={(e) => setSelectedConvenios(e.value)} options={dropdownConvenios} optionLabel="label"
+                                    placeholder="Convenios" maxSelectedLabels={10} className="w-full md:w-20rem" />
+                                <label htmlFor="convenio">Convênio</label>
+                            </FloatLabel>
                         </div>
 
                         <div className=" col-12 flex align-items-center">
@@ -467,13 +481,13 @@ export default function Profissional() {
                     </div>
 
                     <div className="field mt-3">
-                        <FloatLabel>
+                        <FloatLabel className="w-full">
                             <label htmlFor="observacoes">Observações</label>
-                            <InputTextarea id="observacoes" value={profissional.observacoes} onChange={(e) => onInputChange(e, 'observacoes')} rows={4} cols={30} />
+                            <InputTextarea className="w-full" id="observacoes" value={profissional.observacoes} onChange={(e) => onInputChange(e, 'observacoes')} rows={4} cols={30} />
                         </FloatLabel>
 
                     </div>
-                </Dialog>
+                </Modal>
 
             </Modal>
         </>
