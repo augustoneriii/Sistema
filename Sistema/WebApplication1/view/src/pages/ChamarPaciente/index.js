@@ -4,36 +4,8 @@ import { ChamarPacienteService } from '../ChamarPaciente/service/ChamarPacienteS
 import styles from './ChamarPaciente.module.css'; // Certifique-se de criar este arquivo CSS
 
 function ChamarPaciente() {
-    const [consultas, setConsultas] = useState([]);
-    const [pacientes, setPacientes] = useState([]);
-    const [dataLoaded, setDataLoaded] = useState(false);
-    const [profissionais, setProfissionais] = useState([]);
     const [horarioAtual, setHorarioAtual] = useState(new Date());
 
-    useEffect(() => {
-        async function fetchConsultas() {
-            const currentToken = localStorage.getItem('token') || '';
-            try {
-                const response = await ChamarPacienteService.getConsultas(currentToken);
-                setConsultas(response.data); // Assuming response.data contains the array of convenios
-                setDataLoaded(true); // Marca que os dados foram carregados
-            } catch (error) {
-                console.error("Erro ao buscar consultas:", error);
-            }
-        }
-
-    }, [dataLoaded, consultas]);
-
-    useEffect(() => {
-        const currentToken = localStorage.getItem('token') || '';
-        ChamarPacienteService.getProfissionais(currentToken)
-            .then(response => {
-                setProfissionais(response.data); // Acesso à array de profissionais
-            })
-            .catch(error => {
-                console.error("Erro ao buscar profissionais:", error);
-            });
-    }, []);
 
     // Atualiza o horário atual a cada segundo
     useEffect(() => {
