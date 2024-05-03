@@ -40,12 +40,12 @@ namespace app.Controllers
         {
             try
             {
-                //var token = ExtractAuthToken();
-                //UserValidationResponse userLogado = await _auth.CheckUser(token);
-                //if (userLogado == null || !userLogado.IsAuthenticated)
-                //{
-                //    return BadRequest(new { Message = "Usuário não autenticado!" });
-                //}
+                var token = ExtractAuthToken();
+                UserValidationResponse userLogado = await _auth.CheckUser(token);
+                if (userLogado == null || !userLogado.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
 
                 _context.BeginTransaction();
                 var response = await _be.GetAll(dto);
@@ -65,13 +65,13 @@ namespace app.Controllers
         {
             try
             {
-                //var token = ExtractAuthToken();
+                var token = ExtractAuthToken();
 
-                //UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
-                //if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
-                //{
-                //    return BadRequest(new { Message = "Usuário não autenticado!" });
-                //}
+                UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
 
                 _context.BeginTransaction();
                 var response = await _be.Insert(profissionais);
