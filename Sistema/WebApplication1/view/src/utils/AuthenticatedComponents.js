@@ -10,6 +10,7 @@ import AgendaCalendario from '../pages/Agendamento/AgendaCalendario';
 import Usuarios from '../pages/CadastrosBasicos/Usuarios';
 import Perfil from '../pages/CadastrosBasicos/Perfil';
 import AgendaProfissional from '../pages/Profissional/AgendaProfissional';
+import Prontuario from '../pages/Profissional/Prontuario/index';
 import { SidebarContext } from '../context/SideBarContext';
 import ListaAtendimentos from '../pages/Profissional/ListaAtendimento';
 import Relatorio from '../pages/Profissional/Relatorio/index';
@@ -31,7 +32,8 @@ function AuthenticatedComponents() {
         agendaProfissionalVisible,
         atendimentoVisible,
         agendaCalendarioVisible,
-        relatorioVisible
+        relatorioVisible,
+        prontuarioVisible
     } = useContext(SidebarContext);
 
     useEffect(() => {
@@ -69,6 +71,7 @@ function AuthenticatedComponents() {
                     {perfilVisible && <Perfil />}
                     {atendimentoVisible && <ListaAtendimentos />}
                     {agendaCalendarioVisible && <AgendaCalendario />}
+                    {prontuarioVisible && <Prontuario/> }
                 </>
             )}
         </>

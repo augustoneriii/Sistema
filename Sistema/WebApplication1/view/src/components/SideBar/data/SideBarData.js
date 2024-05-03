@@ -20,6 +20,14 @@ const sidebarItems = [
                 actionValue: true
             },
             {
+                text: 'Prontuários',
+                icon: 'pi-book',
+                link: '',
+                action: 'setProntuarioVisible',
+                roles: ['c8fffd', 'f3f629', 'f8abf4'],
+                actionValue: true
+            },
+            {
                 text: 'Agenda Profissional',
                 icon: 'pi pi-calendar',
                 link: '',

@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="view\src\pages\Profissional\NovaPasta1\**" />
+    <Content Remove="view\src\pages\Profissional\NovaPasta1\**" />
+    <EmbeddedResource Remove="view\src\pages\Profissional\NovaPasta1\**" />
+    <None Remove="view\src\pages\Profissional\NovaPasta1\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="DTO\Request\RelatorioRequest.cs" />
   </ItemGroup>
 
@@ -35,6 +42,7 @@
     <Folder Include="view\src\pages\ChamarPaciente\service\" />
     <Folder Include="view\src\pages\Home\service\" />
     <Folder Include="view\src\pages\Profissional\ListaAtendimento\service\" />
+    <Folder Include="view\src\pages\Profissional\Prontuario\service\" />
     <Folder Include="view\src\pages\Profissional\Relatorio\service\" />
   </ItemGroup>
 
