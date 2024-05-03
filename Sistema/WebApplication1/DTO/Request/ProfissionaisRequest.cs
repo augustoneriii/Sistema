@@ -15,7 +15,7 @@
         public string? Observacoes { get; set; }
         public string? Image { get; set; }
         public long? ProfissaoId { get; set; }
-        public List<long?> ConvenioId { get; set; }
+        public List<long?> ProfissionalConveniosId { get; set; }
         public int? Ativo { get; set; }
     }
 

@@ -20,7 +20,7 @@ namespace app.DAO
         public async Task<List<ProfissionaisDTO>> GetAll(ProfissionaisDTO filter)
         {
             var objSelect = new StringBuilder();
-            objSelect.Append("SELECT p.*, pc.\"ConvenioId\" ");
+            objSelect.Append("SELECT p.*, pc.\"ProfissionalConveniosId\" ");
             objSelect.Append("FROM \"Sistema\".\"Profissionais\" p ");
             objSelect.Append("LEFT JOIN \"Sistema\".\"ProfissionalConvenios\" pc ON p.\"Id\" = pc.\"ProfissionalId\" ");
             objSelect.Append("WHERE 1 = 1 ");
@@ -79,9 +79,9 @@ namespace app.DAO
                     });
                 }
 
-                if (row["ConvenioId"] != DBNull.Value)
+                if (row["ProfissionalConveniosId"] != DBNull.Value)
                 {
-                    long convenioId = Convert.ToInt64(row["ConvenioId"]);
+                    long convenioId = Convert.ToInt64(row["ProfissionalConveniosId"]);
                     profissionalConvenios[profissionalId] ??= new List<long>();
                     if (!profissionalConvenios[profissionalId].Contains(convenioId))
                     {
@@ -125,37 +125,42 @@ namespace app.DAO
         public async Task<int> Insert(ProfissionaisRequest dto)
         {
             var objInsert = new StringBuilder();
-            objInsert.Append("INSERT INTO \"Sistema\".\"Profissionais\" (");
-            objInsert.Append("\"Nome\", \"Cpf\", \"Rg\", \"Telefone\", \"Endereco\", \"Nascimento\", ");
-            objInsert.Append("\"Sexo\", \"Email\", \"Conselho\", \"ProfissaoId\", \"Observacoes\", \"Image\", \"Ativo\") ");
-            objInsert.Append("VALUES (");
-            objInsert.Append($"@Nome, @Cpf, @Rg, @Telefone, @Endereco, @Nascimento, @Sexo, @Email, ");
-            objInsert.Append($"@Conselho, @ProfissaoId, @Observacoes, @Image, @Ativo) RETURNING \"Id\";");
-
-            // Usando parâmetros para evitar SQL Injection
-            var param = new
-            {
-                Nome = dto.Nome,
-                Cpf = dto.Cpf,
-                Rg = dto.Rg,
-                Telefone = dto.Telefone,
-                Endereco = dto.Endereco,
-                Nascimento = dto.Nascimento,
-                Sexo = dto.Sexo,
-                Email = dto.Email,
-                Conselho = dto.Conselho,
-                ProfissaoId = dto.ProfissaoId,
-                Observacoes = dto.Observacoes,
-                Image = dto.Image,
-                Ativo = dto.Ativo ?? 1  // Definir padrão como ativo se não for fornecido
-            };
+            objInsert.Append("INSERT INTO \"Sistema\".\"Profissionais\" ( ");
+            objInsert.Append("  \"Nome\"                                  ");
+            objInsert.Append(", \"Cpf\"                                   ");
+            objInsert.Append(", \"Rg\"                                    ");
+            objInsert.Append(", \"Telefone\"                              ");
+            objInsert.Append(", \"Endereco\"                              ");
+            objInsert.Append(", \"Nascimento\"                            ");
+            objInsert.Append(", \"Sexo\"                                  ");
+            objInsert.Append(", \"Email\"                                 ");
+            objInsert.Append(", \"Conselho\"                              ");
+            objInsert.Append(", \"ProfissaoId\"                           ");
+            objInsert.Append(", \"Observacoes\"                           ");
+            objInsert.Append(", \"Image\"                                 ");
+            objInsert.Append(", \"Ativo\"                                 ");
+            objInsert.Append(") VALUES (                                  ");
+            objInsert.Append($" '{dto.Nome}',                             ");
+            objInsert.Append($" '{dto.Cpf}',                              ");
+            objInsert.Append($" '{dto.Rg}',                               ");
+            objInsert.Append($" '{dto.Telefone}',                         ");
+            objInsert.Append($" '{dto.Endereco}',                         ");
+            objInsert.Append($" '{dto.Nascimento:yyyy-MM-dd}',            ");
+            objInsert.Append($" '{dto.Sexo}',                             ");
+            objInsert.Append($" '{dto.Email}',                            ");
+            objInsert.Append($" '{dto.Conselho}',                         ");
+            objInsert.Append($" '{dto.ProfissaoId}',                      ");
+            objInsert.Append($" '{dto.Observacoes}',                      ");
+            objInsert.Append($" '{dto.Image}',                            ");
+            objInsert.Append($" '{dto.Ativo}'                             ");
+            objInsert.Append(") RETURNING \"Id\";                         ");
 
             // Execute the command and get the new ID
-            dto.Id = await _context.ExecuteNonQuery(objInsert.ToString(), param);
+            dto.Id = await _context.ExecuteNonQuery(objInsert.ToString(), null);
 
-            if (dto.ConvenioId != null && dto.ConvenioId.Any())
+            if (dto.ProfissionalConveniosId != null && dto.ProfissionalConveniosId.Any())
             {
-                await InsertProfissionaiConvenios(dto);
+                 await InsertProfissionaiConvenios(dto);
             }
 
             return Convert.ToInt32(dto.Id);
@@ -166,21 +171,15 @@ namespace app.DAO
         {
             var lstProfissionalConvenios = new List<ProfissionalConvenios>();
 
-            foreach (var item in request.ConvenioId)
+            foreach (var item in request.ProfissionalConveniosId)
             {
                 var objInsert = new StringBuilder();
-                objInsert.Append("INSERT INTO \"Sistema\".\"ProfissionalConvenios\"(");
+                objInsert.Append("INSERT INTO \"Sistema\".\"ProfissionalConvenios\" (");
                 objInsert.Append("\"ProfissionalId\", \"ConvenioId\") ");
                 objInsert.Append("VALUES ");
-                objInsert.Append($"(@ProfissionalId, @ConvenioId);");
+                objInsert.Append($"( '{request.Id}', '{item}' )");
 
-                var param = new
-                {
-                    ProfissionalId = request.Id,
-                    ConvenioId = item
-                };
-
-                var id = await _context.ExecuteNonQuery(objInsert.ToString(), param);
+                var id = await _context.ExecuteNonQuery(objInsert.ToString(), null);
 
                 lstProfissionalConvenios.Add(new ProfissionalConvenios
                 {
@@ -210,31 +209,13 @@ namespace app.DAO
             objUpdate.Append($" \"Email\" = '{dto.Email}', ");
             objUpdate.Append($" \"Conselho\" = '{dto.Conselho}', ");
             objUpdate.Append($" \"ProfissaoId\" = '{dto.ProfissaoId}', ");
-            objUpdate.Append($" \"ConvenioId\" = '{dto.ConvenioId}', ");
+            objUpdate.Append($" \"ProfissionalConveniosId\" = '{dto.ProfissionalConveniosId}', ");
             objUpdate.Append($" \"Observacoes\" = '{dto.Observacoes}', ");
             objUpdate.Append($" \"Image\" = '{dto.Image}', ");
             objUpdate.Append($" \"Ativo\" = '{dto.Ativo}' ");
             objUpdate.Append($" WHERE \"Id\" = '{dto.Id}' ");
 
-            var param = new
-            {
-                Nome = dto.Nome,
-                Cpf = dto.Cpf,
-                Rg = dto.Rg,
-                Telefone = dto.Telefone,
-                Endereco = dto.Endereco,
-                Nascimento = dto.Nascimento,
-                Sexo = dto.Sexo,
-                Email = dto.Email,
-                Conselho = dto.Conselho,
-                ProfissaoId = dto.ProfissaoId,
-                ConvenioId = dto.ConvenioId,
-                Observacoes = dto.Observacoes,
-                Image = dto.Image,
-                Ativo = dto.Ativo ?? 1  // Definir padrão como ativo se não for fornecido
-            };
-
-            var id = await _context.ExecuteNonQuery(objUpdate.ToString(), param);
+            var id = await _context.ExecuteNonQuery(objUpdate.ToString(), null);
 
             return id;
         }
@@ -257,7 +238,7 @@ namespace app.DAO
             // Preparando para re-inserir os novos vínculos
             var objInsert = new StringBuilder();
             int lastInsertedId = 0;  // Variável para armazenar o último ID inserido
-            foreach (var convenioId in request.ConvenioId)
+            foreach (var convenioId in request.ProfissionalConveniosId)
             {
                 objInsert.Clear();
                 objInsert.Append("INSERT INTO \"Sistema\".\"ProfissionalConvenios\" (\"ProfissionalId\", \"ConvenioId\") ");
@@ -279,7 +260,7 @@ namespace app.DAO
             {
                 Id = lastInsertedId,  // Este ID pode não ser significativo se não houver inserções novas
                 ProfissionalId = request.Id,
-                ConvenioId = request.ConvenioId.FirstOrDefault()  // Retorna o primeiro ID de convenio, se existir
+                ConvenioId = request.ProfissionalConveniosId.FirstOrDefault()  // Retorna o primeiro ID de convenio, se existir
             };
         }
 
