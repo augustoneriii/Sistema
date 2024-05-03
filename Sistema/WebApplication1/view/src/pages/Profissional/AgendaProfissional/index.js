@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { SidebarContext } from '../../../context/SideBarContext';
 import { AgendaProfissionalService } from './service/AgendaProfissionalService.js';
@@ -7,12 +6,11 @@ import { Button } from 'primereact/button';
 import Modal from '../../../components/Modal/index.js'
 import { Splitter, SplitterPanel } from 'primereact/splitter';
 import { Card } from 'primereact/card';
-
+import { Dropdown } from 'primereact/dropdown';
 
 function AgendaProfissional() {
     const { agendaProfissionalVisible, setAgendaProfissionalVisible } = useContext(SidebarContext);
     const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
-
 
     let emptyAgenda = {
         id: null,
@@ -25,19 +23,14 @@ function AgendaProfissional() {
     const user = JSON.parse(localStorage.getItem('user'));
 
     const [agendas, setAgendas] = useState([]);
-
     const [profissionais, setProfissionais] = useState([]);
     const [agenda, setAgenda] = useState(emptyAgenda);
-    const [submitted, setSubmitted] = useState(false);
     const toast = useRef(null);
-    const [dataLoaded, setDataLoaded] = useState(false);
-    const [checked, setChecked] = useState(false);
-    const [activeAgendas, setActiveAgendas] = useState([]);
+    const [selectedDay, setSelectedDay] = useState('Segunda'); // Estado para o dia selecionado
 
-
-    //useEffect para quando a página carregar, buscar as agendas
     useEffect(() => {
         getAgendas();
+        getProfissionais();
     }, []);
 
     async function getAgendas() {
@@ -45,31 +38,28 @@ function AgendaProfissional() {
         try {
             const response = await AgendaProfissionalService.getAgendas(currentToken, `Profissionais.Cpf=${user.cpf}`);
             setAgendas(response.data);
-            setDataLoaded(true);
         } catch (error) {
             console.error("Erro ao buscar agendas:", error);
         }
     }
 
-    useEffect(() => {
+    async function getProfissionais() {
         const currentToken = localStorage.getItem('token') || '';
-        AgendaProfissionalService.getProfissionais(currentToken, `Cpf=${user.cpf}`)
-            .then(response => {
-                setProfissionais(response.data);
-            })
-            .catch(error => {
-                console.error("Erro ao buscar profissionais:", error);
-            });
-    }, []);
+        try {
+            const response = await AgendaProfissionalService.getProfissionais(currentToken, `Cpf=${user.cpf}`);
+            setProfissionais(response.data);
+        } catch (error) {
+            console.error("Erro ao buscar profissionais:", error);
+        }
+    }
 
-    const isScheduled = (day, time) => {
+    const isScheduled = (time) => {
         const found = agendas.find(agenda =>
-            agenda.diaSemana.toLowerCase() === day.toLowerCase() &&
+            agenda.diaSemana.toLowerCase() === selectedDay.toLowerCase() &&
             new Date(agenda.hora).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) === time
         );
         return found ? { booked: true, id: found.id } : { booked: false, id: null };
     };
-
 
 
     const saveAgenda = (newAgenda) => {
@@ -126,6 +116,12 @@ function AgendaProfissional() {
         saveAgenda(newAgenda);
         getAgendas();
     };
+
+
+    const onDayChange = (day) => {
+        setSelectedDay(day.value);
+    };
+
     const dropDownDiasDaSemana = [
         { label: 'Segunda', value: 'Segunda' },
         { label: 'Terça', value: 'Terça' },
@@ -136,18 +132,7 @@ function AgendaProfissional() {
     ];
 
     const horariosAtendimento = [
-        { label: '08:00', value: '08:00' },
-        { label: '09:00', value: '09:00' },
-        { label: '10:00', value: '10:00' },
-        { label: '11:00', value: '11:00' },
-        { label: '12:00', value: '12:00' },
-        { label: '13:00', value: '13:00' },
-        { label: '14:00', value: '14:00' },
-        { label: '15:00', value: '15:00' },
-        { label: '16:00', value: '16:00' },
-        { label: '17:00', value: '17:00' },
-        { label: '18:00', value: '18:00' },
-        { label: '19:00', value: '19:00' }
+        '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'
     ];
 
     const headerTela = (
@@ -157,42 +142,43 @@ function AgendaProfissional() {
     );
 
     return (
-        <Modal  modalKey={modalIdRef.current} modal={false} header={headerTela} visible={agendaProfissionalVisible} style={{ width: '80vw' }} onHide={() => setAgendaProfissionalVisible(false)}>
+        <Modal modalKey={modalIdRef.current} modal={false} header={headerTela} visible={agendaProfissionalVisible} style={{ width: '80vw' }} onHide={() => setAgendaProfissionalVisible(false)}>
             <Toast ref={toast} />
 
-            <Splitter className='p-3	'>
-                {dropDownDiasDaSemana.map((dia, index) => {
-                    return (
-                        <SplitterPanel key={index} size={200} minSize={200} maxSize={300} className="flex align-items-center justify-content-center">
-                            <div className='p-3 mr-3'>
-                                <h4 className='text-center'>{dia.label}</h4>
-                                <hr />
-                                <div className='grid'>
-                                    {horariosAtendimento.map((horario, index) => {
-                                        const { booked, id } = isScheduled(dia.label, horario.label);
-                                        return (
-                                            <div className='col-6' key={index}>
-                                                {booked ? (
-                                                    <Card
-                                                        className={`bg-info text-center text-light cursor-pointer ${booked ? 'selected' : ''}`}
-                                                        onClick={() => deleteAgenda(id)}
-                                                    >
-                                                        {horario.label}
-                                                    </Card>
-                                                ) : (
-                                                    <Card className="bg-light text-center  cursor-pointer"
-                                                        onClick={() => onButtonClick(dia.label, horario.value)}>
-                                                        {horario.label}
-                                                    </Card>
-                                                )}
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        </SplitterPanel>
-                    );
-                })}
+            <div className="p-field">
+                <label htmlFor="day">Dia da Semana</label>
+                <Dropdown id="day" value={selectedDay} options={dropDownDiasDaSemana} onChange={onDayChange} optionLabel="label" placeholder="Selecione o dia" />
+            </div>
+
+            <Splitter className='p-3'>
+                <SplitterPanel size={200} minSize={200} maxSize={300} className="flex align-items-center justify-content-center">
+                    <div className='p-3 mr-3'>
+                        <h4 className='text-center'>{selectedDay}</h4>
+                        <hr />
+                        <div className='grid'>
+                            {horariosAtendimento.map((horario, index) => {
+                                const { booked, id } = isScheduled(horario);
+                                return (
+                                    <div className='col-6' key={index}>
+                                        {booked ? (
+                                            <Card
+                                                className={`bg-info text-center text-light cursor-pointer ${booked ? 'selected' : ''}`}
+                                                onClick={() => deleteAgenda(id)}
+                                            >
+                                                {horario}
+                                            </Card>
+                                        ) : (
+                                            <Card className="bg-light text-center  cursor-pointer"
+                                                onClick={() => onButtonClick(selectedDay, horario)}>
+                                                {horario}
+                                            </Card>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </SplitterPanel>
             </Splitter>
         </Modal>
     );

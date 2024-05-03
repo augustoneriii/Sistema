@@ -43,7 +43,7 @@ namespace app.DAO
                 objSelect.Append($"AND \"Site\" = '{dto.Site}' ");
             }
 
-            var dt = _context.ExecuteQuery(objSelect.ToString());
+            var dt =await _context.ExecuteQuery(objSelect.ToString(), null);
 
             var lstConvenioMedicos = new List<ConvenioMedicosDTO>();
 
@@ -71,7 +71,7 @@ namespace app.DAO
             objInsert.Append("VALUES ");
             objInsert.Append($"('{convenioMedicos.Nome}', '{convenioMedicos.Telefone}', '{convenioMedicos.Email}', '{convenioMedicos.Site}', 1) ");
 
-            var id = _context.ExecuteNonQuery(objInsert.ToString());
+            var id = await _context.ExecuteNonQuery(objInsert.ToString(), null);
             
             convenioMedicos.Id = id;
             return convenioMedicos;
@@ -90,7 +90,7 @@ namespace app.DAO
             objUpdate.Append($"\"Ativo\" = '{convenioMedicos.Ativo}' ");
             objUpdate.Append($"WHERE \"Id\" = {convenioMedicos.Id} ");
 
-            _context.ExecuteNonQuery(objUpdate.ToString());
+           await _context.ExecuteNonQuery(objUpdate.ToString(), null);
             return convenioMedicos;
         }
 

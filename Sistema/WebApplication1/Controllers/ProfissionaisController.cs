@@ -76,7 +76,7 @@ namespace app.Controllers
                 _context.BeginTransaction();
                 var response = await _be.Insert(profissionais);
                 _context.Commit();
-                return Ok();
+                return Ok(new { Message = "Profissional cadastrado com sucesso."});
             }
             catch (Exception ex)
             {

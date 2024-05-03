@@ -40,7 +40,7 @@ namespace app.DAO
                 objSelect.Append($" AND \"PhoneNumber\" = '{dto.PhoneNumber}' ");
             }
 
-            var dt = _context.ExecuteQuery(objSelect.ToString());
+            var dt = await _context.ExecuteQuery(objSelect.ToString(), null);
 
             var lstUsers = new List<UserDTO>();
 
@@ -70,7 +70,7 @@ namespace app.DAO
             
             objUpdate.Append($"WHERE \"Id\" = {users.Id}; ");
 
-            _context.ExecuteNonQuery(objUpdate.ToString());
+            await _context.ExecuteNonQuery(objUpdate.ToString(), null);
             return users;
         }
 
@@ -83,7 +83,7 @@ namespace app.DAO
             objDelete.Append("DELETE FROM \"public\".\"AspNetUsers\" ");
             objDelete.Append($"WHERE \"Id\" = {id} ");
 
-            _context.ExecuteNonQuery(objDelete.ToString());
+          await  _context.ExecuteNonQuery(objDelete.ToString(), null);
         }
 
         

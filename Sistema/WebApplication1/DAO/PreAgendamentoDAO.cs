@@ -35,7 +35,7 @@ namespace app.DAO
                 objSelect.Append($"AND \"Status\" = '{dto.Status}' ");
             }
 
-            var dt = _context.ExecuteQuery(objSelect.ToString());
+            var dt = await _context.ExecuteQuery(objSelect.ToString(), null);
 
             var lstPreAgendamento = new List<PreAgendamentoDTO>();
 
@@ -71,7 +71,7 @@ namespace app.DAO
             objInsert.Append($"'{preAgendamento.Email}', '{preAgendamento.Telefone}', '{preAgendamento.PlanoDeSaude}', ");
             objInsert.Append($"'{preAgendamento.Especialidade}', '{preAgendamento.Status}', '{preAgendamento.Observacoes}') ");
 
-            var id = _context.ExecuteNonQuery(objInsert.ToString());
+            var id = await _context.ExecuteNonQuery(objInsert.ToString(), null);
 
             preAgendamento.Id = id;
             return preAgendamento;
@@ -93,7 +93,7 @@ namespace app.DAO
             objUpdate.Append($" \"Observacoes\" = '{dto.Observacoes}' ");
             objUpdate.Append($"WHERE \"Id\" = {dto.Id}; ");
 
-            var id = _context.ExecuteNonQuery(objUpdate.ToString());
+            var id = await _context.ExecuteNonQuery(objUpdate.ToString(), null);
 
             return id;
         }

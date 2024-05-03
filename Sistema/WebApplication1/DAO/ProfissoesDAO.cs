@@ -38,7 +38,7 @@ namespace app.DAO
 
 
 
-            var dt = _context.ExecuteQuery(objSelect.ToString());
+            var dt = await _context.ExecuteQuery(objSelect.ToString(), null);
 
             var lstProfissoes = new List<ProfissoesDTO>();
 
@@ -66,7 +66,7 @@ namespace app.DAO
             objInsert.Append("VALUES ");
             objInsert.Append($"('{profissoes.Nome}', '{profissoes.ConselhoProfissional}', 1) ");
 
-            var id = _context.ExecuteNonQuery(objInsert.ToString());
+            var id = await _context.ExecuteNonQuery(objInsert.ToString(), null);
 
             profissoes.Id = id;
             return profissoes;
@@ -84,7 +84,7 @@ namespace app.DAO
             objUpdate.Append($"\"Ativo\" = '{profissoes.Ativo}' ");
             objUpdate.Append($"WHERE \"Id\" = {profissoes.Id}; ");
 
-            _context.ExecuteNonQuery(objUpdate.ToString());
+            await _context.ExecuteNonQuery(objUpdate.ToString(), null);
             return profissoes;
         }
 

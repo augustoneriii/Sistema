@@ -2,12 +2,13 @@
 import { Dialog } from 'primereact/dialog';
 import { useZIndex } from '../../context/ZIndexContext';
 
-function Modal({ modalKey, children, header, modal, visible, style, onHide }) {
+function Modal({ modalKey, children, header, modal, visible, style, onHide, footer }) {
     const [isExpanded, setIsExpanded] = useState(true);
     const { zIndex, incrementZIndex } = useZIndex();
 
     let modalId = `modal-${modalKey}`;
 
+    //passar classe para o elemento pai do modalId
 
     const handleClick = () => {
         console.log(modalId);
@@ -65,6 +66,7 @@ function Modal({ modalKey, children, header, modal, visible, style, onHide }) {
                             icons={headerIcon}
                             style={dynamicStyles}
                             onClick={handleClick}
+                            footer={footer}
                         >
                             {isExpanded && children}
                         </Dialog >

@@ -67,7 +67,7 @@ namespace app.DAO
                 objSelect.Append($"AND \"Sexo\" = '{dto.Sexo}' ");
             }
 
-            var dt = _context.ExecuteQuery(objSelect.ToString());
+            var dt = await _context.ExecuteQuery(objSelect.ToString(), null);
 
             var lstDadosPessoais = new List<DadosPessoaisDTO>();
 
@@ -117,7 +117,7 @@ namespace app.DAO
 
             objInsert.Append(" )RETURNING \"Id\"; ");
 
-            var id = _context.ExecuteNonQuery(objInsert.ToString());
+            var id = await _context.ExecuteNonQuery(objInsert.ToString(), null);
 
             return id;
         }
@@ -138,7 +138,7 @@ namespace app.DAO
      
             objUpdate.Append($"WHERE \"Id\" = {dto.Id}; ");
 
-            var id = _context.ExecuteNonQuery(objUpdate.ToString());
+            var id = await _context.ExecuteNonQuery(objUpdate.ToString(), null);
 
             return id;
         }
