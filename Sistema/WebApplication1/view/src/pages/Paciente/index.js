@@ -14,6 +14,7 @@ import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
 import { Checkbox } from 'primereact/checkbox';
 import { FloatLabel } from 'primereact/floatlabel';
+import { Commom } from '../../utils/Commom.js';
 import Modal from '../../components/Modal/index.js'
 
 export default function Paciente() {
@@ -184,7 +185,18 @@ export default function Paciente() {
     const onInputChange = (e, name) => {
         const val = (e.target && e.target.value) || '';
         let _paciente = { ...paciente };
-        _paciente[name] = val;
+        if (name === 'convenio') {
+            _paciente.convenioId = val;
+        } else if (name === 'telefone') {
+            _paciente.telefone = Commom.formatPhone(val)
+        } else if (name === 'cpf') {
+            _paciente.cpf = Commom.formatCpf(val)
+        } else if (name === "rg") {
+            _paciente.rg = Commom.formatRg(val)
+        } else {
+            _paciente[name] = val;
+        }
+        
         setPaciente(_paciente);
     };
 
@@ -317,7 +329,7 @@ export default function Paciente() {
                         <div className="field col">
                             <FloatLabel>
                                 <label htmlFor="cpf">CPF</label>
-                                <InputText id="cpf" value={paciente.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={classNames({ 'p-invalid': submitted && !paciente.cpf })} />
+                                <InputText id="cpf" value={paciente.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={classNames({ 'p-invalid': submitted && !paciente.cpf })} maxLength={14} />
                                 {submitted && !paciente.cpf && <small className="p-error">CPF é obrigatório.</small>}
                             </FloatLabel>
                         </div>
@@ -325,7 +337,7 @@ export default function Paciente() {
                         <div className="field col">
                             <FloatLabel>
                                 <label htmlFor="telefone">Telefone</label>
-                                <InputText id="telefone" value={paciente.telefone} onChange={(e) => onInputChange(e, 'telefone')} />
+                                <InputText id="telefone" value={paciente.telefone} onChange={(e) => onInputChange(e, 'telefone')} maxLength={14} />
                             </FloatLabel>
 
                         </div>
@@ -333,7 +345,7 @@ export default function Paciente() {
                         <div className="field col">
                             <FloatLabel>
                                 <label htmlFor="rg">RG</label>
-                                <InputText id="rg" value={paciente.rg} onChange={(e) => onInputChange(e, 'rg')} />
+                                <InputText id="rg" value={paciente.rg} onChange={(e) => onInputChange(e, 'rg')} maxLength={9} />
                             </FloatLabel>
                         </div>
 

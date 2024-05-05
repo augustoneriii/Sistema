@@ -8,6 +8,7 @@ import { AtendimentoService } from './service/AtendimentoService.js'
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { OrderList } from 'primereact/orderlist';
+import { useSharedState } from '../../../context/SharedState'
 function ListaAtendimentos() {
     const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
 
@@ -25,7 +26,7 @@ function ListaAtendimentos() {
     };
     const user = JSON.parse(localStorage.getItem('user'));
 
-
+    const { setModal, modalData } = useSharedState();
     const [globalFilter, setGlobalFilter] = useState(null);
     const { atendimentoVisible, setAtendimentoVisible, profissionalId } = useContext(SidebarContext)
     const [dataLoaded, setDataLoaded] = useState(false);
@@ -136,13 +137,20 @@ function ListaAtendimentos() {
             );
         }
     };
-    const chamaPaciente = (dataRow) => {//teste de bot�o
-        toast.current.show({ severity: 'success', summary: 'Sucesso', detail: `Bot�o de chamar paciente (em teste) `, life: 4000 });
-    }
+    const chamaPaciente = (consultaSelecionada) => {
+        setModal(consultaSelecionada); // Define os dados da consulta como o modalData
+        console.log("botão ta sendo clicado");
+        console.log(consultaSelecionada);
+    };
+
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
-                <Button icon="pi pi-check" className="border-round  p-button-primary mr-2" onClick={() => chamaPaciente()} />{/*editConsulta(rowData)*/}
+                <Button
+                    icon="pi pi-check"
+                    className="border-round p-button-primary mr-2"
+                    onClick={() => chamaPaciente(rowData)} // Passa a consulta atual para a função chamaPaciente
+                />
             </React.Fragment>
         );
     };
@@ -155,7 +163,7 @@ function ListaAtendimentos() {
                     <span className="font-bold">Paciente: {item.pacientes.nome}</span>
                     <div className="flex align-items-center gap-2">
                         <i className="pi pi-user"></i>
-                        Convênio do Paciente: 
+                        Convênio do Paciente:
                         {item.convenios.length > 0 ? (
                             <ul>
                                 {item.convenios.map((convenio, index) => (
@@ -167,11 +175,17 @@ function ListaAtendimentos() {
                         )}
                     </div>
                 </div>
-                <Button style={{ width: '14.28%' }} label="Chamar" header="Chamar Paciente" body={actionBodyTemplate}></Button>
+                <Button
+                    style={{ width: '14.28%' }}
+                    label="Chamar"
+                    header="Chamar Paciente"
+                    onClick={() => chamaPaciente(item)} // Passa os dados da consulta como argumento para chamaPaciente
+                />
                 <span className="font-bold text-900">{formatHora(item.hora)}</span>
             </div>
         );
     };
+
 
 
 

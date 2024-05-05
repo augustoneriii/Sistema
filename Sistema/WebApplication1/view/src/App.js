@@ -5,6 +5,7 @@ import AppRoutes from './Routes/Routes';
 import AuthenticatedComponents from './utils/AuthenticatedComponents';
 import { ToastProvider } from './context/ToastContext';
 import { ZIndexProvider } from "./context/ZIndexContext";
+import { SharedStateProvider } from './context/SharedState';
 
 const App = () => {
     return (
@@ -14,10 +15,12 @@ const App = () => {
                     <ToastProvider>
                         <UserProvider>
                             <SidebarProvider>
-                                <AuthenticatedComponents />
-                                <main className="relative w-full m-auto" style={{ height: '100vh' }}>
-                                    <AppRoutes />
-                                </main>
+                                <SharedStateProvider> {/* Adicione o SharedStateProvider aqui */}
+                                    <AuthenticatedComponents />
+                                    <main className="relative w-full m-auto" style={{ height: '100vh' }}>
+                                        <AppRoutes />
+                                    </main>
+                                </SharedStateProvider>
                             </SidebarProvider>
                         </UserProvider>
                     </ToastProvider>
