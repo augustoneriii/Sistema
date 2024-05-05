@@ -26,7 +26,7 @@ function ChamarPaciente() {
         return null; // Retorna null ou algum outro conteúdo de fallback caso não haja consulta selecionada
     }
 
-    const { pacientes, profissionais, hora, convenios } = modalData;
+    const { pacientes, profissionais, hora, convenios, numeroSala } = modalData;
 
     return (
         <div className={styles.chamarPacienteContainer}>
@@ -43,13 +43,13 @@ function ChamarPaciente() {
                 </div>
                 <div className={styles.sala}>
                     <div className={styles.titulo}>Sala:</div>
-                    <div className={styles.numeroSala}>5</div>
+                    <div className={styles.numeroSala}>{numeroSala}</div>
                 </div>
             </div>
-            <div className={styles.chamadosAnteriormente}>
-                <div className={styles.tituloTabela}>Chamados Anteriormente</div>
-                {/* Aqui você pode adicionar a lógica para exibir os pacientes chamados anteriormente */}
-            </div>
+            {/*<div className={styles.chamadosAnteriormente}>*/}
+            {/*    <div className={styles.tituloTabela}>Chamados Anteriormente</div>*/}
+            {/*    */}{/* Aqui você pode adicionar a lógica para exibir os pacientes chamados anteriormente */}
+            {/*</div>*/}
         </div>
     );
 }
