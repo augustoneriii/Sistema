@@ -43,15 +43,23 @@ const sidebarItems = [
                 actionValue: true
             },
             {
-                text: 'Agenda Calendário',
+                text: 'Confirmar Consulta',
                 icon: 'pi pi-calendar',
                 link: '',
-                action: 'setAgendaCalendarioVisible',
+                action: 'setConfirmaConsultaVisible',
                 roles: ['c8fffd', 'f3f629', 'f8abf4'],
                 actionValue: true
             }
+            // {
+                // text: 'Agenda Calendário',
+                // icon: 'pi pi-calendar',
+                // link: '',
+                // action: 'setAgendaCalendarioVisible',
+                // roles: ['c8fffd', 'f3f629', 'f8abf4'],
+                // actionValue: true
+            // }
         ],
-        roles: [ 'c8fffd', 'f3f629', 'f8abf4']
+        roles: ['c8fffd', 'f3f629', 'f8abf4']
     },
     {
         text: 'Cadastros Básicos',
@@ -90,7 +98,7 @@ const sidebarItems = [
                 actionValue: true
             },
         ],
-        roles: [ 'f3f629', 'f8abf4']
+        roles: ['f3f629', 'f8abf4']
     },
     {
         text: 'Configurações',

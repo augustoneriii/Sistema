@@ -5,6 +5,7 @@ import AppRoutes from './Routes/Routes';
 import AuthenticatedComponents from './utils/AuthenticatedComponents';
 import { ToastProvider } from './context/ToastContext';
 import { ZIndexProvider } from "./context/ZIndexContext";
+import { PacienteChamadoProvider } from "./context/PacienteChamadoContext ";
 
 const App = () => {
     return (
@@ -13,12 +14,14 @@ const App = () => {
                 <ZIndexProvider>
                     <ToastProvider>
                         <UserProvider>
-                            <SidebarProvider>
-                                <AuthenticatedComponents />
-                                <main className="relative w-full m-auto" style={{ height: '100vh' }}>
-                                    <AppRoutes />
-                                </main>
-                            </SidebarProvider>
+                            <PacienteChamadoProvider>
+                                <SidebarProvider>
+                                    <AuthenticatedComponents />
+                                    <main className="relative w-full m-auto" style={{ height: '100vh' }}>
+                                        <AppRoutes />
+                                    </main>
+                                </SidebarProvider>
+                            </PacienteChamadoProvider>
                         </UserProvider>
                     </ToastProvider>
                 </ZIndexProvider>

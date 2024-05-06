@@ -20,6 +20,7 @@ export default function Consulta() {
     const { setPacienteVisible } = useContext(SidebarContext);
     const { consultaVisible, setConsultaVisible } = useContext(SidebarContext);
     const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
+    const modalIdRef2 = useRef(Math.random().toString(36).substr(2, 9));
 
     let emptyConsulta = {
         id: null,
@@ -34,7 +35,7 @@ export default function Consulta() {
 
 
     };
-    
+
 
     const [consultas, setConsultas] = useState([]);
     const [pacientes, setPacientes] = useState([]);
@@ -344,7 +345,16 @@ export default function Consulta() {
                         <Column style={{ width: '14.28%' }} header="Ações" body={actionBodyTemplate}></Column>
                     </DataTable>
                 </div>
-                <Dialog visible={consultaDialog} style={{ width: '850px', margin: 'auto' }} header="Detalhes do Consulta" modal className="p-fluid" footer={consultaDialogFooter} onHide={hideDialog}>
+                <Modal
+                    modalKey={modalIdRef2.current}
+                    header="Detalhes da Consulta"
+                    modal={false}
+                    visible={consultaDialog}
+                    style={{ width: '850px', margin: 'auto' }}
+                    onHide={hideDialog}
+                    footer={consultaDialogFooter}
+                >
+
                     <div className='grid'>
                         <div className="field col-6">
                             <label htmlFor="profissional">Profissional</label>
@@ -394,8 +404,7 @@ export default function Consulta() {
                         <Checkbox inputId="atendida" checked={consulta.atendida} onChange={(e) => onInputChange('atendida', e.checked)} />
                         <label className="ml-2" htmlFor="atendida">Atendida</label>
                     </div>
-                </Dialog>
-
+                </Modal>
             </Modal>
         </>
     );

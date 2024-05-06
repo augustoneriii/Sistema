@@ -245,6 +245,24 @@ CREATE TABLE IF NOT EXISTS "Sistema"."ProntuarioMedico" (
   
 );
 
+
+-- -----------------------------------------------------
+-- Table "Sistema"."ConfirmarConsulta"
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS "Sistema"."ConfirmarConsulta" (
+  "Id" BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  "Nome" VARCHAR(60),
+  "Cpf" VARCHAR(14),
+  "ConvenioMedico" VARCHAR(100),
+  "Especialidade" VARCHAR(100),
+  "Chamado" int NOT NULL,
+  "CreatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  "UpdatedAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+
 -- Adicionando a coluna "Ativo" à tabela "ConvenioMedicos"
 ALTER TABLE "Sistema"."ConvenioMedicos"
 ADD COLUMN "Ativo" INTEGER;

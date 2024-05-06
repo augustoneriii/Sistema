@@ -85,17 +85,17 @@ namespace app.Controllers
         {
             try
             {
-                //var token = ExtractAuthToken();
-                //UserValidationResponse userLogado = await authService.CheckUser(token);
-                //if (userLogado == null || !userLogado.IsAuthenticated)
-                //{
-                //    return BadRequest(new { Message = "Usuário não autenticado!" });
-                //}
+                var token = ExtractAuthToken();
+                UserValidationResponse userLogado = await authService.CheckUser(token);
+                if (userLogado == null || !userLogado.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
 
                 var response = await authService.ChangePassword(user);
 
-                //if (response.Succeeded == false)
-                //    return BadRequest(response.Errors);
+                if (response.Succeeded == false)
+                    return BadRequest(response.Errors);
 
                 return Ok(response);
             }

@@ -253,7 +253,7 @@ function ConvenioMedico() {
                         <div className="field col-6">
                             <FloatLabel>
                             <label htmlFor="telefone">Telefone</label>
-                                <InputText className='w-full' id="telefone" value={convenio.telefone} onChange={(e) => onInputChange(e, 'telefone')} maxLength={14} />
+                                <InputText className='w-full' id="telefone" value={convenio.telefone} onChange={(e) => onInputChange(e, 'telefone')} maxLength={15} />
                             </FloatLabel>
                         </div>
                         

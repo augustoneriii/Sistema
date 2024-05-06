@@ -272,16 +272,11 @@ function Profissao() {
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} profissoes" globalFilter={globalFilter}>
                         <Column body={actionButtonGroupTemplate}></Column>
-                        <Column body={actionButtonGroupTemplate}></Column>
                         <Column field="nome" header="Nome" sortable></Column>
                         <Column field="conselhoProfissional" header="Conselho Profissional" sortable></Column>
                         <Column field="ativo" header="Ativo" body={(rowData) => rowData.ativo !== null ? rowData.ativo : ''} sortable></Column>
                     </DataTable>
                 </div>
-
-              
-
-
             </Modal>
         </>
     )

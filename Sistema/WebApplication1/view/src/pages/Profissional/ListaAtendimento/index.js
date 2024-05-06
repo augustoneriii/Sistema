@@ -8,8 +8,12 @@ import { AtendimentoService } from './service/AtendimentoService.js'
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { OrderList } from 'primereact/orderlist';
+import { usePacienteChamado } from '../../../context/PacienteChamadoContext .js'
+
 function ListaAtendimentos() {
     const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
+    const { setPacienteChamado } = usePacienteChamado();
+
 
     let emptyConsulta = {
         id: null,
@@ -136,13 +140,14 @@ function ListaAtendimentos() {
             );
         }
     };
-    const chamaPaciente = (dataRow) => {//teste de bot�o
-        toast.current.show({ severity: 'success', summary: 'Sucesso', detail: `Bot�o de chamar paciente (em teste) `, life: 4000 });
+    const chamaPaciente = (dataRow) => {
+        setPacienteChamado(dataRow);
+        toast.current.show({ severity: 'success', summary: 'Sucesso', detail: `Paciente ${dataRow.pacientes.nome} chamado`, life: 4000 });
     }
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
-                <Button icon="pi pi-check" className="border-round  p-button-primary mr-2" onClick={() => chamaPaciente()} />{/*editConsulta(rowData)*/}
+                <Button icon="pi pi-check" className="border-round p-button-primary mr-2" onClick={() => chamaPaciente(rowData)} />
             </React.Fragment>
         );
     };
@@ -155,7 +160,7 @@ function ListaAtendimentos() {
                     <span className="font-bold">Paciente: {item.pacientes.nome}</span>
                     <div className="flex align-items-center gap-2">
                         <i className="pi pi-user"></i>
-                        Convênio do Paciente: 
+                        Convênio do Paciente:
                         {item.convenios.length > 0 ? (
                             <ul>
                                 {item.convenios.map((convenio, index) => (
@@ -183,7 +188,7 @@ function ListaAtendimentos() {
     return (
         <>
             <Toast ref={toast} />
-            <Modal  modalKey={modalIdRef.current} header='' modal={false} visible={atendimentoVisible} style={{ width: '80vw', height: '80vh' }} onHide={() => onHideModal()}>
+            <Modal modalKey={modalIdRef.current} header='' modal={false} visible={atendimentoVisible} style={{ width: '80vw', height: '80vh' }} onHide={() => onHideModal()}>
 
                 {/*<DataTable ref={dt} value={consultas} selection={selectedConsultas} onSelectionChange={e => setSelectedConsultas(e.value)}*/}
                 {/*dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} rowGroupMode="subheader" groupRowsBy="profissionais.nome" sortOrder={1}*/}

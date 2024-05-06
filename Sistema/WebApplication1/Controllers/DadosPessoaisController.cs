@@ -39,11 +39,11 @@ namespace app.Controllers
             try
             {
                 var token = ExtractAuthToken();
-                //UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
-                //if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
-                //{
-                //    return BadRequest(new { Message = "Usuário não autenticado!" });
-                //}
+                UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
 
                 var response = await _be.GetAll(dto);
                 return Ok(response);
@@ -63,16 +63,11 @@ namespace app.Controllers
             {
                 var token = ExtractAuthToken();
 
-                //UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
-                //if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
-                //{
-                //    return BadRequest(new { Message = "Usuário não autenticado!" });
-                //}
-
-                /*if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
+                UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
-                    return BadRequest(new { Message = "Usuário não autorizado!" });
-                }*/
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
 
                 _context.BeginTransaction();
                 var response = await _be.Insert(dadosPessoais);
@@ -94,17 +89,12 @@ namespace app.Controllers
             {
                 var token = ExtractAuthToken();
 
-                //UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
-                //if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
-                //{
-                //    return BadRequest(new { Message = "Usuário não autenticado!" });
-                //}
-
-                /*if (userValidationResponse.IdUserRole != null || userValidationResponse.IdUserRole == "c8fffd")
+                UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
                 {
-                    return BadRequest(new { Message = "Usuário não autorizado!" });
-                }*/
-
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
+       
                 _context.BeginTransaction();
                 var response = await _be.Update(dadosPessoais);
                 _context.Commit();
@@ -116,11 +106,5 @@ namespace app.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
-
-
     }
-    
-
 }

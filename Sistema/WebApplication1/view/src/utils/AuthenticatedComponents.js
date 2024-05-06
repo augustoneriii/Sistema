@@ -13,6 +13,7 @@ import AgendaProfissional from '../pages/Profissional/AgendaProfissional';
 import { SidebarContext } from '../context/SideBarContext';
 import ListaAtendimentos from '../pages/Profissional/ListaAtendimento';
 import Relatorio from '../pages/Profissional/Relatorio/index';
+import ConfirmaConsulta from '../pages/Agendamento/ConfirmaConsulta';
  
 
 function AuthenticatedComponents() {
@@ -31,7 +32,8 @@ function AuthenticatedComponents() {
         agendaProfissionalVisible,
         atendimentoVisible,
         agendaCalendarioVisible,
-        relatorioVisible
+        relatorioVisible,
+        confirmaConsultaVisible
     } = useContext(SidebarContext);
 
     useEffect(() => {
@@ -69,6 +71,7 @@ function AuthenticatedComponents() {
                     {perfilVisible && <Perfil />}
                     {atendimentoVisible && <ListaAtendimentos />}
                     {agendaCalendarioVisible && <AgendaCalendario />}
+                    {confirmaConsultaVisible && <ConfirmaConsulta />}
                 </>
             )}
         </>

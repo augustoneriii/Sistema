@@ -15,6 +15,8 @@ import { Dropdown } from 'primereact/dropdown';
 import { Checkbox } from 'primereact/checkbox';
 import { FloatLabel } from 'primereact/floatlabel';
 import Modal from '../../components/Modal/index.js'
+import { Commom } from '../../utils/Commom.js';
+
 
 export default function Paciente() {
     const { pacienteVisible, setPacienteVisible } = useContext(SidebarContext);
@@ -184,6 +186,9 @@ export default function Paciente() {
     const onInputChange = (e, name) => {
         const val = (e.target && e.target.value) || '';
         let _paciente = { ...paciente };
+        if(name === 'cpf') {
+            _paciente.cpf = Commom.formatCpf(val)
+        }
         _paciente[name] = val;
         setPaciente(_paciente);
     };
@@ -317,7 +322,7 @@ export default function Paciente() {
                         <div className="field col">
                             <FloatLabel>
                                 <label htmlFor="cpf">CPF</label>
-                                <InputText id="cpf" value={paciente.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={classNames({ 'p-invalid': submitted && !paciente.cpf })} />
+                                <InputText id="cpf" value={paciente.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={`w-full ${classNames({ 'p-invalid': submitted && !paciente.cpf })} maxLength={14}`} />
                                 {submitted && !paciente.cpf && <small className="p-error">CPF é obrigatório.</small>}
                             </FloatLabel>
                         </div>

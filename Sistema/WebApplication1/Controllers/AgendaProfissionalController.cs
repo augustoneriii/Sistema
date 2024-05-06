@@ -37,12 +37,12 @@ namespace app.Controllers
         [Route("getAllAgendas")]
         public async Task<IActionResult> GetAll([FromQuery] AgendaProfissionalDTO dto)
         {
-            //var token = ExtractAuthToken();
-            //UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
-            //if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
-            //{
-            //    return BadRequest(new { Message = "Usuário não autenticado!" });
-            //}
+            var token = ExtractAuthToken();
+            UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
+            if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+            {
+                return BadRequest(new { Message = "Usuário não autenticado!" });
+            }
             _context.BeginTransaction();
             var response = await _be.GetAll(dto);
             _context.Commit();
@@ -57,12 +57,12 @@ namespace app.Controllers
         {
             try
             {
-                //var token = ExtractAuthToken();
-                //UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
-                //if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
-                //{
-                //    return BadRequest(new { Message = "Usuário não autenticado!" });
-                //}
+                var token = ExtractAuthToken();
+                UserValidationResponse userValidationResponse = await _auth.CheckUser(token);
+                if (userValidationResponse == null || !userValidationResponse.IsAuthenticated)
+                {
+                    return BadRequest(new { Message = "Usuário não autenticado!" });
+                }
 
                 _context.BeginTransaction();
                 var response = await _be.Insert(agenda);

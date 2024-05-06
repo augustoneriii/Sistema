@@ -364,8 +364,6 @@ export default function Profissional() {
                         <Column field="telefone" header="Telefone" sortable></Column>
                         <Column field="email" header="E-mail" sortable></Column>
                         <Column header="Profissão" body={profissaoBodyTemplate}></Column>
-                        <Column header="Convenio" body={convenioBodyTemplate}></Column>
-                        <Column header="Conselho" body={conselhoBodyTemplate}></Column>
                         <Column field="ativo" header="Ativo" sortable></Column>
                         <Column body={actionBodyTemplate}></Column>
                     </DataTable>
@@ -415,7 +413,7 @@ export default function Profissional() {
                         <div className="field col mt-3">
                             <FloatLabel className="w-full">
                                 <label htmlFor="telefone">Telefone</label>
-                                <InputText className='w-full' id="telefone" value={profissional.telefone} onChange={(e) => onInputChange(e, 'telefone')} maxLength={14} />
+                                <InputText className='w-full' id="telefone" value={profissional.telefone} onChange={(e) => onInputChange(e, 'telefone')} maxLength={15} />
                             </FloatLabel>
                         </div>
                     </div>
