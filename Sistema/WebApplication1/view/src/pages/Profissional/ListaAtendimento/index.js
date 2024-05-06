@@ -9,7 +9,7 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { OrderList } from 'primereact/orderlist';
 import { usePacienteChamado } from '../../../context/PacienteChamadoContext .js'
-
+import { InputText } from 'primereact/inputtext';
 function ListaAtendimentos() {
     const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
     const { setPacienteChamado } = usePacienteChamado();
@@ -33,9 +33,11 @@ function ListaAtendimentos() {
     const [globalFilter, setGlobalFilter] = useState(null);
     const { atendimentoVisible, setAtendimentoVisible, profissionalId } = useContext(SidebarContext)
     const [dataLoaded, setDataLoaded] = useState(false);
+    const { setPaciente, modalData } = usePacienteChamado();
     const toast = useRef(null);
     const [profissionais, setProfissionais] = useState([]);
     const [selectedConsultas, setSelectedConsultas] = useState(null);
+    const [numeroSalas, setNumeroSalas] = useState({}); // Estado para armazenar número de sala de cada item
     //const dt = useRef(null);
     const [consulta, setConsulta] = useState(emptyConsulta);
     const [consultas, setConsultas] = useState([]);
@@ -140,10 +142,19 @@ function ListaAtendimentos() {
             );
         }
     };
-    const chamaPaciente = (dataRow) => {
-        setPacienteChamado(dataRow);
-        toast.current.show({ severity: 'success', summary: 'Sucesso', detail: `Paciente ${dataRow.pacientes.nome} chamado`, life: 4000 });
+    const chamaPaciente = (consultaSelecionada) => {
+        setPaciente({ ...consultaSelecionada, numeroSala: numeroSalas[consultaSelecionada.id] });
+        toast.current.show({ severity: 'success', summary: 'Sucesso', detail: `Paciente ${consultaSelecionada.pacientes.nome} chamado`, life: 4000 });
     }
+
+    const handleInputChange = (e, consultaId) => {
+        const { value } = e.target;
+        setNumeroSalas(prevState => ({
+            ...prevState,
+            [consultaId]: value
+        }));
+    };
+
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
@@ -153,7 +164,6 @@ function ListaAtendimentos() {
     };
 
     const itemTemplate = (item) => {
-        // Retorna o layout de cada item da lista
         return (
             <div className="flex flex-wrap p-2 align-items-center gap-3">
                 <div className="flex-1 flex flex-column gap-2 xl:mr-8">
@@ -164,7 +174,7 @@ function ListaAtendimentos() {
                         {item.convenios.length > 0 ? (
                             <ul>
                                 {item.convenios.map((convenio, index) => (
-                                    <span><li key={index}>{convenio}</li></span>
+                                    <span key={index}><li>{convenio}</li></span>
                                 ))}
                             </ul>
                         ) : (
@@ -172,8 +182,19 @@ function ListaAtendimentos() {
                         )}
                     </div>
                 </div>
-                <Button style={{ width: '14.28%' }} label="Chamar" header="Chamar Paciente" body={actionBodyTemplate}></Button>
+                <Button
+                    style={{ width: '14.28%' }}
+                    label="Chamar"
+                    header="Chamar Paciente"
+                    onClick={() => chamaPaciente(item)}
+                />
                 <span className="font-bold text-900">{formatHora(item.hora)}</span>
+                <InputText
+                    type="text"
+                    value={numeroSalas[item.id] || ''}
+                    onChange={(e) => handleInputChange(e, item.id)}
+                    placeholder="Número da Sala"
+                />
             </div>
         );
     };
@@ -188,27 +209,11 @@ function ListaAtendimentos() {
     return (
         <>
             <Toast ref={toast} />
-            <Modal modalKey={modalIdRef.current} header='' modal={false} visible={atendimentoVisible} style={{ width: '80vw', height: '80vh' }} onHide={() => onHideModal()}>
-
-                {/*<DataTable ref={dt} value={consultas} selection={selectedConsultas} onSelectionChange={e => setSelectedConsultas(e.value)}*/}
-                {/*dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} rowGroupMode="subheader" groupRowsBy="profissionais.nome" sortOrder={1}*/}
-                {/*sortField="profissionais.nome" paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"*/}
-                {/*expandableRowGroups expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)} sortMode="single" rowGroupHeaderTemplate={headerTemplate}*/}
-                {/*currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} consultas" globalFilter={globalFilter}>*/}
-                {/*<Column style={{ width: '14.28%' }} field="profissionais.nome" header="Profissional" sortable></Column>*/}
-                {/*<Column style={{ width: '14.28%' }} field="pacientes.nome" header="Paciente" sortable></Column>*/}
-                {/*<Column style={{ width: '14.28%' }} field="data" header="Data" body={(rowData) => formatDate(rowData.data)} sortable></Column>*/}
-                {/*<Column style={{ width: '14.28%' }} field="hora" header="Hora" body={(rowData) => formatDate(rowData.hora)} sortable></Column>*/}
-                {/*<Column style={{ width: '14.28%' }} field="status" header="Status" sortable></Column>*/}
-                {/*<Column style={{ width: '14.28%' }} field="tipo" header="Tipo" sortable></Column>*/}
-                {/*<Button style={{ width: '14.28%' }} label="Chamar" header="Chamar Paciente" body={actionBodyTemplate}></Button>*/}
-                {/*</DataTable>*/}
-
-                <OrderList value={consultas} dragdrop={false} itemTemplate={itemTemplate} header={header} onChange={(e) => setConsultas(e.value)}></OrderList>
-
+            <Modal modalKey={modalIdRef.current} header='' modal={false} visible={atendimentoVisible} style={{ width: '80vw', height: '80vh' }} onHide={onHideModal}>
+                <OrderList value={consultas} dragdrop={false} itemTemplate={itemTemplate} header={header}></OrderList>
             </Modal>
         </>
-    )
+    );
 }
 
 export default ListaAtendimentos
