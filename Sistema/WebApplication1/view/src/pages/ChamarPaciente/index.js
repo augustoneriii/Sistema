@@ -8,7 +8,7 @@ import { usePacienteChamado } from '../../context/PacienteChamadoContext ';
 function ChamarPaciente() {
     const [horarioAtual, setHorarioAtual] = useState(new Date());
     const { pacienteChamado } = usePacienteChamado();
-
+    const { modalData } = usePacienteChamado();
 
     // Atualiza o hor�rio atual a cada segundo
     useEffect(() => {
@@ -23,6 +23,7 @@ function ChamarPaciente() {
         <h1>Gerenciar Consultas</h1>
     );
 
+    const { pacientes, profissionais, hora, convenios, numeroSala } = modalData;
     return (
         <div className={styles.chamarPacienteContainer}>
             <div className={styles.header}>
@@ -38,7 +39,7 @@ function ChamarPaciente() {
                 </div>
                 <div className={styles.sala}>
                     <div className={styles.titulo}>Sala:</div>
-                    <div className={styles.numeroSala}>{pacienteChamado ? pacienteChamado.sala : "-"}</div>
+                    <div className={styles.numeroSala}>{pacienteChamado ? pacienteChamado.numeroSala : "-"}</div>
                 </div>
             </div>
             <div className={styles.chamadosAnteriormente}>
