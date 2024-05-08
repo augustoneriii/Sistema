@@ -132,40 +132,43 @@ export default function Paciente() {
         return cpf.replace(/[.-]/g, '');
     }
 
-    const savePaciente = async() => {
+    const savePaciente = async () => {
         setSubmitted(true);
 
-        if (paciente.nome && paciente.nome.trim()) { // Correção aqui
-            console.log("Paciente antes de salvar:", paciente); // Adiciona este console.log para verificar o objeto paciente antes de enviar
+        if (paciente.nome && paciente.nome.trim()) {
             let _pacientes = [...pacientes];
             let _paciente = { ...paciente };
 
             _paciente.cpf = removeCaracteres(_paciente.cpf);
-
             _paciente.ativo = checked ? 1 : 0;
-
-
-            //delete _paciente.convenio;
 
             const currentToken = localStorage.getItem('token') || '';
 
-            if (paciente.id) {
-                const index = findIndexById(paciente.id);
-                _pacientes[index] = _paciente;
-                toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Atualizado', life: 3000 });
-                console.log(_paciente)
-                await PacienteService.updatePaciente(_paciente, currentToken);
-            } else {
-                toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Paciente Criado', life: 3000 });;
-                PacienteService.createPaciente(_paciente, currentToken);
-            }
+            try {
+                if (paciente.id) {
+                    const index = findIndexById(paciente.id);
+                    _pacientes[index] = _paciente;
+                    await PacienteService.updatePaciente(_paciente, currentToken);
+                    toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Paciente Atualizado', life: 3000 });
+                } else {
+                    await PacienteService.createPaciente(_paciente, currentToken);
+                    toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Paciente Criado', life: 3000 });
+                }
 
-            PacienteService.getPacientes(currentToken)
-            setPacientes(_pacientes);
-            setPacienteDialog(false);
-            setPaciente(emptyPaciente);
+                // Após salvar/atualizar o paciente, buscar novamente a lista atualizada
+                const response = await PacienteService.getPacientes(currentToken);
+                setPacientes(response.data);
+
+                setPacienteDialog(false);
+                setPaciente(emptyPaciente);
+                setChecked(false);
+            } catch (error) {
+                console.error("Erro ao salvar paciente:", error);
+                toast.current.show({ severity: 'error', summary: 'Erro', detail: 'Erro ao salvar paciente', life: 3000 });
+            }
         }
     };
+
 
     const editPaciente = (paciente) => {
         setPaciente({ ...paciente });

@@ -14,6 +14,7 @@ function useAuth() {
             api.defaults.headers.Authorization = `Bearer ${JSON.parse(token)}`;
             setAuthenticated(true);
         }
+
     }, []);
 
     async function authUser(data) {

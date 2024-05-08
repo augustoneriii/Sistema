@@ -22,7 +22,9 @@ function Home() {
     const [profissionais, setProfissionais] = useState([]);
 
     useEffect(() => {
-        fetchConsulta();
+        fetchConsulta(); 
+        const interval = setInterval(fetchConsulta, 3000); 
+        return () => clearInterval(interval); 
     }, []);
 
     moment.tz.setDefault('America/Cuiaba')

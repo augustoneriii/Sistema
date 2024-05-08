@@ -96,24 +96,29 @@ function Usuarios() {
         setUsuario(_usuario);
     }
 
-    const saveUsuario = () => {
+    const saveUsuario = async () => {
         setSubmitted(true);
         if (usuario.userName.trim()) {
             const _usuarios = [...usuarios];
             const _usuario = { ...usuario };
             const currentToken = localStorage.getItem('token') || '';
-            if (usuario.id) {
-                const index = _usuarios.findIndex(u => u.id === usuario.id);
-                _usuarios[index] = _usuario;
-                UsuarioService.updateUsuario(_usuario, currentToken);
-            } else {
-                _usuarios.push(_usuario);
-                UsuarioService.createUsuario(_usuario, currentToken);
+            try {
+                if (usuario.id) {
+                    const index = _usuarios.findIndex(u => u.id === usuario.id);
+                    _usuarios[index] = _usuario;
+                    await UsuarioService.updateUsuario(_usuario, currentToken);
+                } else {
+                    _usuarios.push(_usuario);
+                    await UsuarioService.createUsuario(_usuario, currentToken);
+                }
+                toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Usuario Atualizado', life: 3000 });
+                setUsuarios(_usuarios);
+                setUsuarioDialog(false);
+                setUsuario({});
+            } catch (error) {
+                console.error("Erro ao salvar usuário:", error);
+                toast.current.show({ severity: 'error', summary: 'Erro', detail: 'Erro ao salvar usuário', life: 3000 });
             }
-            toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Usuario Atualizado', life: 3000 });
-            setUsuarios(_usuarios);
-            setUsuarioDialog(false);
-            setUsuario({});
         }
     };
 
