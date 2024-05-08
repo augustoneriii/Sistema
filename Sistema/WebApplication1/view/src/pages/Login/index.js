@@ -10,7 +10,7 @@ import { useContext, useState } from 'react'
 //context
 import { Context } from '../../context/UserContext'
 import { useNavigate } from 'react-router-dom'
-import  style from './style.module.css'
+import style from './style.module.css'
 import Logo from '../../assets/img/logoSysclin.png'
 import { FloatLabel } from 'primereact/floatlabel';
 function Login() {
@@ -38,6 +38,7 @@ function Login() {
             <div className="surface-card p-4 shadow-2 border-round  lg:w-6">
                 <div className="text-center ">
                     <img src={Logo} alt="hyper" height={200} className="mb-5" />
+                    <h3 className="mb-5">SysClin</h3>
                 </div>
                 <div>
                     <form onSubmit={handleSubmit}>
@@ -47,7 +48,7 @@ function Login() {
                                 <InputText id="email" name='email' onChange={handleChange} type="text" className="w-full" />
                             </FloatLabel>
                             <FloatLabel>
-                                <Password inputId="password" name='password' type="password" toggleMask onChange={handleChange} style={style} className="w-full" />
+                                <InputText inputId="password" name='password' type="password" toggleMask onChange={handleChange} style={style} className="w-full" />
                                 <label htmlFor="password">Password</label>
                             </FloatLabel>
                         </div>
@@ -55,7 +56,7 @@ function Login() {
                             <div className="flex align-items-center">
                             </div>
                         </div>
-                        <Button type="submit" label="Sign In" icon="pi pi-user" className="w-full" />
+                        <Button type="submit" label="Sign In" icon="pi pi-user" className="w-full" style={{ backgroundColor: '#70CEBE', color: 'white', border: 'none', borderRadius:'7px' }} />
                     </form>
                 </div>
             </div>

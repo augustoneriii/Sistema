@@ -31,7 +31,7 @@ function SideBar({ idUserRole }) {
     return (
         <div className={`d-flex flex-column flex-shrink-0 bg-light absolute ${styles.sidebar} ${isExpanded ? styles.expanded : styles.collapsed}`} style={{ height: '100vh' }}>
             <Link to="/home" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-                <img src={Logo} height={70} alt="Logo" />
+                <img src={Logo} height={70} alt="Logo" style={{ margin: '10px', borderRadius: '50%' }} />
                 {isExpanded ? <span className="fs-4">SysClin</span> : ''}
             </Link>
             <hr />
