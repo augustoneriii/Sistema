@@ -23,7 +23,7 @@ function Home() {
 
     useEffect(() => {
         fetchConsulta(); 
-        const interval = setInterval(fetchConsulta, 30); 
+        const interval = setInterval(fetchConsulta, 3000); 
         return () => clearInterval(interval); 
     }, []);
 
