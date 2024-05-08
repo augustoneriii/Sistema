@@ -398,7 +398,7 @@ export default function Profissional() {
                         <div className="field col mt-3">
                             <FloatLabel className="w-full">
                                 <label htmlFor="cpf">CPF</label>
-                                <InputText id="cpf" value={profissional.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={`w-full ${classNames({ 'p-invalid': submitted && !profissional.cpf })} maxLength={14}`} />
+                                <InputText id="cpf" value={profissional.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={`w-full ${classNames({ 'p-invalid': submitted && !profissional.cpf })} `} maxLength={14} />
                                 {submitted && !profissional.cpf && <small className="p-error">CPF é obrigatório.</small>}
                             </FloatLabel>
                         </div>

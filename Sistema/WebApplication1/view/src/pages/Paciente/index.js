@@ -186,10 +186,16 @@ export default function Paciente() {
     const onInputChange = (e, name) => {
         const val = (e.target && e.target.value) || '';
         let _paciente = { ...paciente };
-        if(name === 'cpf') {
+        if (name === 'cpf') {
             _paciente.cpf = Commom.formatCpf(val)
+        } else if (name === 'rg') {
+            _paciente.rg = Commom.formatRg(val)
+        } else if (name === 'telefone') {
+            _paciente.telefone = Commom.formatPhone(val)
+        } else {
+            _paciente[name] = val
         }
-        _paciente[name] = val;
+       
         setPaciente(_paciente);
     };
 
@@ -322,7 +328,7 @@ export default function Paciente() {
                         <div className="field col">
                             <FloatLabel>
                                 <label htmlFor="cpf">CPF</label>
-                                <InputText id="cpf" value={paciente.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={`w-full ${classNames({ 'p-invalid': submitted && !paciente.cpf })} maxLength={14}`} />
+                                <InputText id="cpf" value={paciente.cpf} onChange={(e) => onInputChange(e, 'cpf')} required className={`w-full ${classNames({ 'p-invalid': submitted && !paciente.cpf })} `}maxLength={14} />
                                 {submitted && !paciente.cpf && <small className="p-error">CPF é obrigatório.</small>}
                             </FloatLabel>
                         </div>
@@ -330,7 +336,7 @@ export default function Paciente() {
                         <div className="field col">
                             <FloatLabel>
                                 <label htmlFor="telefone">Telefone</label>
-                                <InputText id="telefone" value={paciente.telefone} onChange={(e) => onInputChange(e, 'telefone')} />
+                                <InputText id="telefone" value={paciente.telefone} onChange={(e) => onInputChange(e, 'telefone')} maxLength={15} />
                             </FloatLabel>
 
                         </div>
@@ -338,7 +344,7 @@ export default function Paciente() {
                         <div className="field col">
                             <FloatLabel>
                                 <label htmlFor="rg">RG</label>
-                                <InputText id="rg" value={paciente.rg} onChange={(e) => onInputChange(e, 'rg')} />
+                                <InputText id="rg" value={paciente.rg} onChange={(e) => onInputChange(e, 'rg')} maxLength={9} />
                             </FloatLabel>
                         </div>
 

@@ -88,12 +88,11 @@ function Usuarios() {
 
         if (name === 'cpf') {
             _usuario.cpf = Commom.formatCpf(val)
-        } else if (name === "rg") {
-            _usuario.rg = Commom.formatRg(val)
+        } else if (name === "phoneNumber") {
+            _usuario.phoneNumber = Commom.formatPhone(val)
         } else {
             _usuario[name] = val;
         }
-        _usuario[`${name}`] = val;
         setUsuario(_usuario);
     }
 
