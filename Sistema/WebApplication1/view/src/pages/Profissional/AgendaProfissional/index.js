@@ -7,6 +7,7 @@ import Modal from '../../../components/Modal/index.js'
 import { Splitter, SplitterPanel } from 'primereact/splitter';
 import { Card } from 'primereact/card';
 import { Dropdown } from 'primereact/dropdown';
+import { FloatLabel } from 'primereact/floatlabel';
 
 function AgendaProfissional() {
     const { agendaProfissionalVisible, setAgendaProfissionalVisible } = useContext(SidebarContext);
@@ -75,7 +76,7 @@ function AgendaProfissional() {
             AgendaProfissionalService.createAgenda(_agenda, currentToken)
                 .then(() => {
                     toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Agenda salva com sucesso.', life: 3000 });
-                    getAgendas(); 
+                    getAgendas();
                 })
                 .catch(error => {
                     console.error("Erro ao salvar agenda:", error);
@@ -145,9 +146,11 @@ function AgendaProfissional() {
         <Modal modalKey={modalIdRef.current} modal={false} header={headerTela} visible={agendaProfissionalVisible} style={{ width: '80vw' }} onHide={() => setAgendaProfissionalVisible(false)}>
             <Toast ref={toast} />
 
-            <div className="p-field">
-                <label htmlFor="day">Dia da Semana</label>
-                <Dropdown id="day" value={selectedDay} options={dropDownDiasDaSemana} onChange={onDayChange} optionLabel="label" placeholder="Selecione o dia" />
+            <div className="mb-3 mt-4">
+                <FloatLabel>
+                    <Dropdown id="day" value={selectedDay} options={dropDownDiasDaSemana} onChange={onDayChange} optionLabel="label" placeholder="Selecione o dia" style={{ width: '40%' }} />
+                    <label htmlFor="day">Dia da Semana</label>
+                </FloatLabel>
             </div>
 
             <Splitter className='p-3'>

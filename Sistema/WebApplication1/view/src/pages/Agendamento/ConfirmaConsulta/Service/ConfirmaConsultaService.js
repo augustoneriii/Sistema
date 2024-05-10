@@ -3,14 +3,8 @@ import api from '../../../../utils/api';
 
 export class ConfirmaConsultaService {
 
-    static async getPacientes(token, cpf) {
-        let query = '';
-
-        if (cpf) {
-            query = `?Cpf=${cpf}`;
-        }
-
-        return await api.get(`/getAllPacientes${query}`, {
+    static async getConsultas(token, cpfPaciente) {
+        return await api.get('/getAllConsultas', {
             headers: {
                 Authorization: `Bearer ${JSON.parse(token)}`
             }
@@ -34,12 +28,12 @@ export class ConfirmaConsultaService {
         });
     }
 
-    // static async updateConsulta(consulta, token) {
-    //     return await api.patch(`/updateConsulta`, consulta, {
-    //         headers: {
-    //             Authorization: `Bearer ${JSON.parse(token)}`
-    //         }
+    static async updateConsulta(consulta, token) {
+        return await api.patch(`/updateConsulta`, consulta, {
+            headers: {
+                Authorization: `Bearer ${JSON.parse(token)}`
+            }
 
-    //     });
-    // }
+        });
+    }
 }

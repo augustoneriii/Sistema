@@ -15,7 +15,6 @@ import { FloatLabel } from 'primereact/floatlabel';
 import { Commom } from '../../../utils/Commom.js';
 function ConvenioMedico() {
     const { convenioVisible, setConvenioVisible } = useContext(SidebarContext);
-    // const [convenioVisible, setConvenioVisible] = useState(true);
     const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
 
 
@@ -124,33 +123,6 @@ function ConvenioMedico() {
         setConvenioDialog(true);
     };
 
-    /*
-    const confirmDeleteConvenio = (convenio) => {
-        setConvenio(convenio);
-        setDeleteConvenioDialog(true);
-    };
-
-    const deleteConvenio = () => {
-        const currentToken = localStorage.getItem('token') || '';
-
-        if (convenio && convenio.id) {
-
-            ConvenioService.deleteConvenio(convenio.id, currentToken)
-                .then(() => {
-                    toast.current.show({ severity: 'success', summary: 'Sucesso', detail: 'Convenio Deletado', life: 3000 });
-                    setConvenios(convenios.filter(val => val.id !== convenio.id));
-                    setDeleteConvenioDialog(false);
-                    setConvenio(emptyConvenio);
-                })
-                .catch(error => {
-                    toast.current.show({ severity: 'Error', summary: 'Error', detail: `Erro ao deletar convenio: ${error}`, life: 3000 });
-                    console.error("Erro ao deletar convenio:", error);
-                });
-        } else {
-            console.error("Erro: id do convenio é undefined");
-        }
-    };*/
-
     const findIndexById = (id) => {
         let index = -1;
         for (let i = 0; i < convenios.length; i++) {
@@ -183,18 +155,18 @@ function ConvenioMedico() {
 
     const leftToolbarTemplate = () => {
         return (
-            <React.Fragment>
+            <>
                 <Button label="Novo" icon="pi pi-plus" className="border-round p-button-success mr-2" onClick={openNew} />
-            </React.Fragment>
+            </>
         );
     };
 
     const actionButtonGroupTemplate = (rowData) => {
         return (
-            <React.Fragment>
+            <>
                 <Button icon="pi pi-bars" className="border-round p-button-rounded p-button-text" onClick={(e) => toggleMenu(rowData, e)} />
                 <Menu model={menuModel} ref={menuRef} popup={true} id="popup_menu" />
-            </React.Fragment>
+            </>
         );
     };
 
@@ -222,10 +194,10 @@ function ConvenioMedico() {
     );
 
     /*const deleteConvenioDialogFooter = (
-        <React.Fragment>
+        <>
             <Button label="Não" icon="pi pi-times" className="border-round p-button-text" onClick={hideDeleteConvenioDialog} />
             <Button label="Sim" icon="pi pi-check" className="border-round p-button-text" onClick={deleteConvenio} />
-        </React.Fragment>
+        </>
     );
     <Dialog visible={deleteConvenioDialog} style={{ width: '450px' }} header="Confirmação" modal footer={deleteConvenioDialogFooter} onHide={hideDeleteConvenioDialog}>
                     <div className="confirmation-content">

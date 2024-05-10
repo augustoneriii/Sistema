@@ -14,11 +14,11 @@ namespace app.DAO
             _context = context;
         }
 
-        //get all SELECT "Id", "Nome", "Cpf", "ConvenioMedico", "Especialidade", "Chamado", "CreatedAt", "UpdatedAt" FROM "Sistema"."ConfirmarConsulta"; 
+        //get all
         public async Task<List<ConfirmaConsultaDTO>> GetAll(ConfirmaConsultaDTO dto)
         {
             var objSelect = new StringBuilder();
-            objSelect.Append("SELECT \"Id\", \"Nome\", \"Cpf\", \"ConvenioMedico\", \"Especialidade\", \"Chamado\", \"CreatedAt\", \"UpdatedAt\" FROM \"Sistema\".\"ConfirmarConsulta\"; ");
+            objSelect.Append("SELECT \"Id\", \"IdConsulta\", \"Nome\", \"Cpf\", \"ConvenioMedico\", \"Profissional\", \"Consultorio\" ,\"Chamado\", \"CreatedAt\", \"UpdatedAt\" FROM \"Sistema\".\"ConfirmarConsulta\"; ");
 
             if (dto.Id > 0)
             {
@@ -36,9 +36,9 @@ namespace app.DAO
             {
                 objSelect.Append($"AND \"ConvenioMedico\" = '{dto.ConvenioMedico}' ");
             }
-            if (!string.IsNullOrEmpty(dto.Especialidade))
+            if (!string.IsNullOrEmpty(dto.Profissional))
             {
-                objSelect.Append($"AND \"Especialidade\" = '{dto.Especialidade}' ");
+                objSelect.Append($"AND \"Profissional\" = '{dto.Profissional}' ");
             }
             if (dto.Chamado > 0)
             {
@@ -62,10 +62,12 @@ namespace app.DAO
                 {
                     var obj = new ConfirmaConsultaDTO();
                     obj.Id = row["Id"] != DBNull.Value ? Convert.ToInt64(row["Id"]) : (long?)null;
+                    obj.IdConsulta = row["IdConsulta"] != DBNull.Value ? Convert.ToInt64(row["IdConsulta"]) : (long?)null;
                     obj.Nome = row["Nome"] != DBNull.Value ? row["Nome"].ToString() : null;
                     obj.Cpf = row["Cpf"] != DBNull.Value ? row["Cpf"].ToString() : null;
                     obj.ConvenioMedico = row["ConvenioMedico"] != DBNull.Value ? row["ConvenioMedico"].ToString() : null;
-                    obj.Especialidade = row["Especialidade"] != DBNull.Value ? row["Especialidade"].ToString() : null;
+                    obj.Profissional = row["Profissional"] != DBNull.Value ? row["Profissional"].ToString() : null;
+                    obj.Consultorio = row["Consultorio"] != DBNull.Value ? row["Consultorio"].ToString() : null;
                     obj.Chamado = row["Chamado"] != DBNull.Value ? Convert.ToInt32(row["Chamado"]) : (int?)null;
                     obj.CreatedAt = row["CreatedAt"] != DBNull.Value ? Convert.ToDateTime(row["CreatedAt"]) : (DateTime?)null;
                     obj.UpdatedAt = row["UpdatedAt"] != DBNull.Value ? Convert.ToDateTime(row["UpdatedAt"]) : (DateTime?)null;
@@ -83,8 +85,8 @@ namespace app.DAO
             var objInsert = new StringBuilder();
             dto.CreatedAt = DateTime.Now;
             dto.UpdatedAt = DateTime.Now;
-            objInsert.Append("INSERT INTO \"Sistema\".\"ConfirmarConsulta\" (\"Nome\", \"Cpf\", \"ConvenioMedico\", \"Especialidade\", \"Chamado\", \"CreatedAt\", \"UpdatedAt\") ");
-            objInsert.Append($"VALUES ('{dto.Nome}', '{dto.Cpf}', '{dto.ConvenioMedico}', '{dto.Especialidade}', '{dto.Chamado}', '{dto.CreatedAt}', '{dto.UpdatedAt}') RETURNING \"Id\";");
+            objInsert.Append("INSERT INTO \"Sistema\".\"ConfirmarConsulta\" (\"IdConsulta\", \"Nome\", \"Cpf\", \"ConvenioMedico\", \"Profissional\", \"Consultorio\" , \"Chamado\", \"CreatedAt\", \"UpdatedAt\") ");
+            objInsert.Append($"VALUES ('{dto.IdConsulta}','{dto.Nome}', '{dto.Cpf}', '{dto.ConvenioMedico}', '{dto.Profissional}','{dto.Consultorio}' ,'{dto.Chamado}', '{dto.CreatedAt}', '{dto.UpdatedAt}') RETURNING \"Id\";");
 
             var id = await _context.ExecuteNonQuery(objInsert.ToString(), null);
 

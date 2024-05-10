@@ -15,10 +15,13 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { FilterMatchMode } from 'primereact/api';
 import Modal from '../../../components/Modal/index.js';
 import { FloatLabel } from 'primereact/floatlabel';
+import ConfirmaConsulta from '../ConfirmaConsulta/index.js';
+import { Menu } from 'primereact/menu';
 
 export default function Consulta() {
     const { setPacienteVisible } = useContext(SidebarContext);
     const { consultaVisible, setConsultaVisible } = useContext(SidebarContext);
+    console.log('consultaVisible', consultaVisible);
     const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
     const modalIdRef2 = useRef(Math.random().toString(36).substr(2, 9));
 
@@ -35,8 +38,6 @@ export default function Consulta() {
 
 
     };
-
-
     const [consultas, setConsultas] = useState([]);
     const [pacientes, setPacientes] = useState([]);
     const [profissionais, setProfissionais] = useState([]);
@@ -52,6 +53,10 @@ export default function Consulta() {
     const [checked, setChecked] = useState(true);
     const dt = useRef(null);
     const [activeConsulta, setActiveConsultas] = useState([]);
+    const [isConfirmaConsultaVisible, setIsConfirmaConsultaVisible] = useState(false);
+    const [consultaDataForModal, setConsultaDataForModal] = useState(null);
+    const [menuModel, setMenuModel] = useState([]);
+    const menuRef = useRef(null);
 
     useEffect(() => {
         async function fetchConsultas() {
@@ -118,6 +123,17 @@ export default function Consulta() {
     };
 
 
+    const openConfirmaConsultaModal = (rowData) => {
+        setConsultaDataForModal(rowData);
+        setIsConfirmaConsultaVisible(true);
+    };
+
+    const closeConfirmaConsultaModal = () => {
+        setIsConfirmaConsultaVisible(false);
+        setConsultaDataForModal(null);
+    };
+
+
     const openNew = () => {
         setConsulta(emptyConsulta);
         setSubmitted(false);
@@ -176,47 +192,6 @@ export default function Consulta() {
         }
     };
 
-
-
-    //const saveConsulta = () => {
-    //    setSubmitted(true);
-
-    //   
-
-    //        let postConsulta = {
-    //            ConsultaId:  _consulta.id,
-    //            PacienteId: _consulta.paciente.id,
-    //            ProfissionalId: _consulta.profissional.id,
-    //            Data: _consulta.data,
-    //            Hora: _consulta.hora,
-    //            Status: _consulta.status,
-    //            Tipo: _consulta.tipo,
-    //            Observacoes: _consulta.observacoes,
-    //            Atendida: false
-    //        };
-
-    //        console.log("consulta", postConsulta);
-
-    //        const currentToken = localStorage.getItem('token') || '';
-    //        if (consulta.id) {
-    //            console.log(consulta)
-    //            const index = findIndexById(consulta.id);
-    //            _consultas[index] = _consulta;
-    //            toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Atualizado', life: 3000 });
-    //            ConsultaService.updateConsulta(postConsulta, currentToken);
-    //        } else {
-    //            console.log("create consulta", _consulta);
-    //            _consultas.push(postConsulta);
-    //            toast.current.show({ severity: 'secondary', summary: 'Sucesso', detail: 'Consulta Criado', life: 3000 });
-    //            ConsultaService.createConsulta(postConsulta, currentToken);
-    //        }
-
-    //        setConsultas(_consultas);
-    //        setConsultaDialog(false);
-    //        setConsulta(emptyConsulta);
-    //    }
-    //};
-
     const editConsulta = (consultaData) => {
         setConsulta({
             ...consultaData,
@@ -242,8 +217,6 @@ export default function Consulta() {
         return index;
     };
 
-
-
     const onInputChange = (name, value) => {
         setConsulta(prevConsulta => ({
             ...prevConsulta,
@@ -260,32 +233,39 @@ export default function Consulta() {
 
     const leftToolbarTemplate = () => {
         return (
-            <React.Fragment>
+            <>
                 <Button label="Novo" icon="pi pi-plus" className="border-round p-button-secondary mr-2" onClick={openNew} />
-            </React.Fragment>
+            </>
         );
+    };
+
+
+    const toggleMenu = (rowData, e) => {
+        setMenuModel([])
+
+        let arrayMenu = [
+            { label: 'Editar', icon: 'pi pi-pencil', command: () => editConsulta(rowData) },
+            { label: 'Confirmar Consulta', icon: 'pi pi-check', command: () => openConfirmaConsultaModal(rowData) }
+        ];
+
+        arrayMenu.forEach((item) => {
+            setMenuModel(prevState => [...prevState, item]);
+        });
+
+        if (menuRef.current) {
+            menuRef.current.toggle(e);
+        } else {
+            console.error('Menu ref não está definido');
+        }
     };
 
     const actionBodyTemplate = (rowData) => {
         return (
-            <React.Fragment>
-                <Button icon="pi pi-pencil" className="border-round p-button-rounded p-button-secondary mr-2" onClick={() => editConsulta(rowData)} />
-
-            </React.Fragment>
+            <>
+                <Button icon="pi pi-bars" className="border-round p-button-rounded p-button-text" onClick={(e) => toggleMenu(rowData, e)} />
+                <Menu model={menuModel} ref={menuRef} popup={true} id="popup_menu" />
+            </>
         );
-    };
-
-    const expandAll = () => {
-        let _expandedRows = [];
-        consultas.forEach((consulta) => {
-            _expandedRows.push(consulta.id);
-        });
-        console.log(_expandedRows);
-        setExpandedRows(_expandedRows);
-    };
-
-    const collapseAll = () => {
-        setExpandedRows([]);
     };
 
     const [filters, setFilters] = useState({
@@ -318,10 +298,10 @@ export default function Consulta() {
     // const header = renderHeader();
 
     const consultaDialogFooter = (
-        <React.Fragment>
+        <>
             <Button label="Cancelar" icon="pi pi-times" className="border-round p-button-text" onClick={hideDialog} />
             <Button label="Salvar" icon="pi pi-check" className="border-round p-button-text" onClick={saveConsulta} />
-        </React.Fragment>
+        </>
     );
 
     return (
@@ -336,13 +316,13 @@ export default function Consulta() {
                         sortField="profissionais.nome" paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         expandableRowGroups expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)} sortMode="single" rowGroupHeaderTemplate={headerTemplate}
                         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} consultas" globalFilter={globalFilter} header={header}>
+                        <Column style={{ width: '14.28%' }} header="Ações" body={actionBodyTemplate}></Column>
                         <Column style={{ width: '14.28%' }} field="profissionais.nome" header="Profissional" sortable></Column>
                         <Column style={{ width: '14.28%' }} field="pacientes.nome" header="Paciente" sortable></Column>
                         <Column style={{ width: '14.28%' }} field="data" header="Data" body={(rowData) => formatDate(rowData.data)} sortable></Column>
                         <Column style={{ width: '14.28%' }} field="hora" header="Hora" body={(rowData) => formatDate(rowData.hora)} sortable></Column>
                         <Column style={{ width: '14.28%' }} field="status" header="Status" sortable></Column>
                         <Column style={{ width: '14.28%' }} field="tipo" header="Tipo" sortable></Column>
-                        <Column style={{ width: '14.28%' }} header="Ações" body={actionBodyTemplate}></Column>
                     </DataTable>
                 </div>
                 <Modal
@@ -383,20 +363,22 @@ export default function Consulta() {
                     </div>
                     <div className='grid'>
                         <div className="field col">
-                            <label htmlFor="data">Data</label>
-                            <Calendar id="data" value={consulta.data} onChange={(e) => onInputChange('data', e.value)} showIcon />
+                            <FloatLabel>
+                                <Calendar id="data" className='w-full' value={consulta.data} onChange={(e) => onInputChange('data', e.value)} showIcon />
+                                <label htmlFor="data">Data</label>
+                            </FloatLabel>
                         </div>
 
                         <div className="field col">
-                            <label htmlFor="hora">Hora</label>
-                            <Calendar id="hora" value={consulta.hora} onChange={(e) => onInputChange('hora', e.value)} timeOnly />
-                        </div>
-                    </div>
-                    <div className='grid'>
-                        <div className="field col">
                             <FloatLabel>
+                                <Calendar id="hora" className='w-full' value={consulta.hora} onChange={(e) => onInputChange('hora', e.value)} timeOnly />
+                                <label htmlFor="hora">Hora</label>
+                            </FloatLabel>
+                        </div>
+                        <div className="field col-12">
+                            <FloatLabel>
+                                <InputTextarea id="observacoes" className='w-full' value={consulta.observacoes} onChange={(e) => onInputChange('observacoes', e.target.value)} />
                                 <label htmlFor="observacoes">Observações</label>
-                                <InputTextarea id="observacoes" value={consulta.observacoes} onChange={(e) => onInputChange('observacoes', e.target.value)} />
                             </FloatLabel>
                         </div>
                     </div>
@@ -406,6 +388,11 @@ export default function Consulta() {
                     </div>
                 </Modal>
             </Modal>
+            <ConfirmaConsulta
+                data={consultaDataForModal}
+                openModal={isConfirmaConsultaVisible}
+                closeModal={closeConfirmaConsultaModal}
+            />
         </>
     );
 }

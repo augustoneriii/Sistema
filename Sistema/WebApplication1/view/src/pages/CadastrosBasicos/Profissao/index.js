@@ -13,6 +13,8 @@ import { Menu } from 'primereact/menu';
 import Modal from '../../../components/Modal/index.js';
 import { Checkbox } from 'primereact/checkbox';
 import { FloatLabel } from 'primereact/floatlabel';
+//import check e close icons do prime react
+import 'primeicons/primeicons.css';
 function Profissao() {
     const { profissaoVisible, setProfissaoVisible } = useContext(SidebarContext);
     const modalIdRef = useRef(Math.random().toString(36).substr(2, 9));
@@ -220,7 +222,7 @@ function Profissao() {
 
 
     const header = (
-        <h1>Profissões Médicos</h1>
+        <h1>Profissões</h1>
     );
 
     /*const deleteProfissaoDialogFooter = (
@@ -252,8 +254,8 @@ function Profissao() {
                         </div>
                         <div className="field col-12">
                             <FloatLabel>
+                                <Dropdown className='w-full' id="conselhoProfissional" value={profissao.conselhoProfissional} options={conselhoProfissionalOptions} onChange={(e) => onInputChange(e, 'conselhoProfissional')} />
                                 <label htmlFor="conselhoProfissional">Conselho Profissional</label>
-                                <Dropdown className='w-full' id="conselhoProfissional" value={profissao.conselhoProfissional} options={conselhoProfissionalOptions} onChange={(e) => onInputChange(e, 'conselhoProfissional')}  />
                             </FloatLabel>
                         </div>
                         <div className=" col-12 flex align-items-center">
@@ -274,10 +276,14 @@ function Profissao() {
                         <Column body={actionButtonGroupTemplate}></Column>
                         <Column field="nome" header="Nome" sortable></Column>
                         <Column field="conselhoProfissional" header="Conselho Profissional" sortable></Column>
-                        <Column field="ativo" header="Ativo" body={(rowData) => rowData.ativo !== null ? rowData.ativo : ''} sortable></Column>
+                        <Column field="ativo" header="Ativo" body={(rowData) => {
+                            if (rowData.ativo === 1) { return <i className="pi pi-check" style={{ fontSize: '1rem' }}></i>; } else {
+                                return <i className="pi pi-times" style={{ fontSize: '1rem' }}></i>;
+                            }
+                        }} sortable ></Column>
                     </DataTable>
                 </div>
-            </Modal>
+            </Modal >
         </>
     )
 }

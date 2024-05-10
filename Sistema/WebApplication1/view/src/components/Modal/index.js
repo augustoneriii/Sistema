@@ -11,9 +11,7 @@ function Modal({ modalKey, children, header, modal, visible, style, onHide, foot
     //passar classe para o elemento pai do modalId
 
     const handleClick = () => {
-        console.log(modalId);
         let modalContainer = document.getElementById(modalId)?.parentNode;
-        console.log("modalContainer", modalContainer)
         if (modalContainer) {
             modalContainer.style.zIndex = zIndex;
         }

@@ -34,7 +34,7 @@ namespace app.Controllers
         [HttpGet]
         [Route("getAllConfirmaConsultas")]
         public async Task<IActionResult> GetAll(ConfirmaConsultaDTO dto)
-        {
+            {
 /*            var token = ExtractAuthToken();
             UserValidationResponse userLogado = await _auth.CheckUser(token);
             if (userLogado == null || !userLogado.IsAuthenticated)

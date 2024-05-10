@@ -36,6 +36,7 @@ builder.Services.AddScoped<AgendaProfissionalBE>();
 builder.Services.AddScoped<DadosPessoaisBE>();
 builder.Services.AddScoped<RelatorioBE>();
 builder.Services.AddScoped<ProntuarioMedicoBE>();
+builder.Services.AddScoped<ConfirmaConsultaBE>();
 
 builder.Services.AddControllers();
 

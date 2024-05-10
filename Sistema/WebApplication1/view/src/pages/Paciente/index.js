@@ -298,13 +298,12 @@ export default function Paciente() {
                     dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]} scrollable scrollHeight="200px"
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} pacientes" header={header}>
-                    <Column field="id" header="Id" sortable></Column>
+                    <Column field="id" header="Cód. Paciente" sortable></Column>
                     <Column field="nome" header="Nome" sortable></Column>
                     <Column field="cpf" header="CPF" sortable></Column>
                     <Column field="telefone" header="Telefone" sortable></Column>
                     <Column field="endereco" header="Endereço" sortable></Column>
                     <Column field="nascimento" header="Nascimento" body={(rowData) => formatDate(rowData.nascimento)} sortable></Column>
-                    <Column field="sexo" header="Sexo" sortable></Column>
                     <Column field="email" header="E-mail" sortable></Column>
                     <Column field="ativo" header="Ativo" sortable></Column>
                     <Column body={actionBodyTemplate}></Column>

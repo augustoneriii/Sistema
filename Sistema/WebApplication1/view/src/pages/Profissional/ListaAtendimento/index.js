@@ -49,6 +49,8 @@ function ListaAtendimentos() {
 
     useEffect(() => {
         const currentToken = localStorage.getItem('token') || '';
+        //remover . e - do cpf
+        user.cpf = user.cpf.replace(/\./g, '').replace(/-/g, '');
         AtendimentoService.getProfissionais(currentToken, `Cpf=${user.cpf}`)
             .then(response => {
                 setProfissionais(response.data);
@@ -209,8 +211,8 @@ function ListaAtendimentos() {
     return (
         <>
             <Toast ref={toast} />
-            <Modal modalKey={modalIdRef.current} header='' modal={false} visible={atendimentoVisible} style={{ width: '80vw', height: '80vh' }} onHide={onHideModal}>
-                <OrderList value={consultas} dragdrop={false} itemTemplate={itemTemplate} header={header}></OrderList>
+            <Modal modalKey={modalIdRef.current} header={header} modal={false} visible={atendimentoVisible} style={{ width: '80vw', height: '80vh' }} onHide={onHideModal}>
+                <OrderList value={consultas} header={false} dragdrop={false} itemTemplate={itemTemplate} ></OrderList>
             </Modal>
         </>
     );

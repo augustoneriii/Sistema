@@ -7,9 +7,9 @@ import { HomeService } from './service/HomeService';
 import 'moment-timezone'
 import 'moment/locale/pt-br';
 import { Dialog } from 'primereact/dialog';
-
-
-
+import ConfirmaConsulta from '../Agendamento/ConfirmaConsulta';
+import { Button } from 'primereact/button';
+import { Divider } from 'primereact/divider';
 
 
 function Home() {
@@ -20,16 +20,17 @@ function Home() {
     const [consultaDialogVisible, setConsultaDialogVisible] = useState(false);
     const [dataLoaded, setDataLoaded] = useState(false);
     const [profissionais, setProfissionais] = useState([]);
+    const [isConfirmaConsultaVisible, setIsConfirmaConsultaVisible] = useState(false);
+    const [consultaDataForModal, setConsultaDataForModal] = useState(null);
 
     useEffect(() => {
-        fetchConsulta(); 
-        const interval = setInterval(fetchConsulta, 3000); 
-        return () => clearInterval(interval); 
+        fetchConsulta();
+        const interval = setInterval(fetchConsulta, 3000);
+        return () => clearInterval(interval);
     }, []);
 
     moment.tz.setDefault('America/Cuiaba')
     moment.locale('pt-br');
-
 
     const localizer = momentLocalizer(moment)
 
@@ -47,6 +48,9 @@ function Home() {
                 setDataLoaded(true);
 
             } else {
+
+                //remove . - / from cpf
+                user.cpf = user.cpf.replace(/[.-]/g, '');
                 const response = await HomeService.getConsultas(currentToken, `?Profissionais.Cpf=${user.cpf}`);
 
                 const consultasComIdProfissional = response.data.map(consulta => {
@@ -120,7 +124,7 @@ function Home() {
 
             return {
 
-                title: `Paciente: ${consulta.pacientes.nome}`, 
+                title: `Paciente: ${consulta.pacientes.nome}`,
                 start: startDateTime,
                 end: endDateTime,
                 backgroundColor: backgroundColor,
@@ -129,7 +133,15 @@ function Home() {
         });
     };
 
+    const openConfirmaConsultaModal = (rowData) => {
+        setConsultaDataForModal(rowData);
+        setIsConfirmaConsultaVisible(true);
+    };
 
+    const closeConfirmaConsultaModal = () => {
+        setIsConfirmaConsultaVisible(false);
+        setConsultaDataForModal(null);
+    };
 
     const handleConsultaClick = (event) => {
         const consultaData = event.consultaData;
@@ -137,80 +149,91 @@ function Home() {
         setConsultaDialogVisible(true);
     };
 
-
-
     return (
-        <div className="text-center h-screen w-50 m-auto">
-            <h2 className='pt-4'>Seja Bem-Vindo {user.userName}</h2>
-            <hr />
-            <Calendar
-                localizer={localizer}
-                style={{ height: '70vh' }}
-                events={formatConsultasForCalendar()}
-                startAccessor="start"
-                endAccessor="end"
-                defaultView="month"
-                messages={messages}
-                BackgroundWrapper=""
-                onSelectEvent={handleConsultaClick}
-                eventPropGetter={(event) => {
-                    return {
-                        style: {
-                            backgroundColor: event.backgroundColor,
-                            color: event.color
-                        }
-                    };
-                }}
-                tooltipAccessor={(event) => {
-                    const consultaData = event.consultaData;
-                    return `${moment(consultaData.hora).format('HH:mm')} - ${consultaData.tipo} - DR: ${consultaData.profissionais.nome}`;
-                }}
+        <>
+            <div className="text-center h-screen w-50 m-auto">
+                <h2 className='pt-4'>Seja Bem-Vindo {user.userName}</h2>
+                <hr />
+                <Calendar
+                    localizer={localizer}
+                    style={{ height: '70vh' }}
+                    events={formatConsultasForCalendar()}
+                    startAccessor="start"
+                    endAccessor="end"
+                    defaultView="month"
+                    messages={messages}
+                    BackgroundWrapper=""
+                    onSelectEvent={handleConsultaClick}
+                    eventPropGetter={(event) => {
+                        return {
+                            style: {
+                                backgroundColor: event.backgroundColor,
+                                color: event.color
+                            }
+                        };
+                    }}
+                    tooltipAccessor={(event) => {
+                        const consultaData = event.consultaData;
+                        return `${moment(consultaData.hora).format('HH:mm')} - ${consultaData.tipo} - DR: ${consultaData.profissionais.nome}`;
+                    }}
+                />
+
+                <Dialog
+                    header={<h2>Detalhes da Consulta</h2>}
+                    visible={consultaDialogVisible}
+                    onHide={() => setConsultaDialogVisible(false)}
+                    modal={false}
+                    style={{ width: '30vw' }}
+                >
+                    {consultaSelecionada && (
+                        <div className='grid'>
+                            <div className='col-6 flex gap-1'>
+                                <h5 className='text-xl'>Profissional:</h5>
+                                <p className='text-xl'> {consultaSelecionada.profissionais.nome}</p>
+                            </div>
+                            <div className='col-6 flex gap-1'>
+                                <h5 className='text-xl'>Paciente:</h5>
+                                <p className='text-xl'>{consultaSelecionada.pacientes.nome}</p>
+                            </div>
+                            <div className='col-6 flex gap-1'>
+                                <h5 className='text-xl'>Data:</h5>
+                                <p className='text-xl'> {moment(consultaSelecionada.data).format('DD-MM-YYYY')}</p>
+                            </div>
+                            <div className='col-6 flex gap-1'>
+                                <h5 className='text-xl'>Hora:</h5>
+                                <p className='text-xl'> {moment(consultaSelecionada.hora).format('HH:mm:ss')}</p>
+                            </div>
+                            <div className='col-6 flex gap-1'>
+                                <h5 className='text-xl'>Status:</h5>
+                                <p className='text-xl'>{consultaSelecionada.status}</p>
+                            </div>
+                            {
+                                !consultaSelecionada.observacoes ? null :
+                                    <div className='col-12 flex gap-1'>
+                                        <h5 className='text-xl'>Observações:</h5>
+                                        <p className='text-xl'>{consultaSelecionada.observacoes}</p>
+                                    </div>
+                            }
+                            {
+                                user.idUserRole !== "f8abf4" && user.idUserRole !== "f3f629" ? null :
+                                    (
+                                        <>
+                                            <Divider />
+                                            <Button icon="pi pi-pencil" label='Confirmar Consulta' className="border-round p-button-rounded " onClick={() => openConfirmaConsultaModal(consultaSelecionada)} />
+                                        </>
+                                    )
+                            }
+                        </div>
+                    )}
+                </Dialog>
+            </div>
+            <ConfirmaConsulta
+                openModal={isConfirmaConsultaVisible}
+                closeModal={closeConfirmaConsultaModal}
+                data={consultaDataForModal}
             />
 
-
-
-
-            <Dialog
-                header={<h2>Detalhes da Consulta</h2>}
-                visible={consultaDialogVisible}
-                onHide={() => setConsultaDialogVisible(false)}
-            >
-                {consultaSelecionada && (
-                    <div className='grid'>
-                        <div className='col-12 flex gap-3'>
-                            <h5 className='text-xl'>Profissional:</h5>
-                            <p className='text-xl'> {consultaSelecionada.profissionais.nome}</p>
-                        </div>
-                        <hr />
-                        <div className='col-12 flex gap-3'>
-                            <h5 className='text-xl'>Paciente:</h5>
-                            <p className='text-xl'>{consultaSelecionada.pacientes.nome}</p>
-                        </div>
-                        <hr />
-                        <div className='col-12 flex gap-3'>
-                            <h5 className='text-xl'>Data:</h5>
-                            <p className='text-xl'> {moment(consultaSelecionada.data).format('DD-MM-YYYY')}</p>
-                        </div>
-                        <hr />
-                        <div className='col-12 flex gap-3'>
-                            <h5 className='text-xl'>Hora:</h5>
-                            <p className='text-xl'> {moment(consultaSelecionada.hora).format('HH:mm:ss')}</p>
-                        </div>
-                        <hr />
-                        <hr />
-                        <div className='col-12 flex gap-3'>
-                            <h5 className='text-xl'>Status:</h5>
-                            <p className='text-xl'>{consultaSelecionada.status}</p>
-                        </div>
-                        <div className='col-12 flex gap-3'>
-                            <h5 className='text-xl'>Observações:</h5>
-                            <p className='text-xl'>{consultaSelecionada.observacoes}</p>
-                        </div>
-
-                    </div>
-                )}
-            </Dialog>
-        </div>
+        </>
     );
 }
 
