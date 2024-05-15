@@ -37,7 +37,7 @@ function Modal({ modalKey, children, header, modal, visible, style, onHide, foot
     const headerIcon = (
         <button
             type="button"
-            className="p-dialog-titlebar-icon p-dialog-titlebar-minimize p-link mr-2"
+            className="p-dialog-titlebar-icon p-dialog-titlebar-minimize p-link mr-2 hidden"
             onClick={onMinimize}
         >
             <span className="p-dialog-titlebar-icon">__</span>
